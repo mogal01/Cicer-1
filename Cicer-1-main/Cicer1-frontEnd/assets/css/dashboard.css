@@ -1,0 +1,87 @@
+.bg-gradient-primary {
+  background-color: #2c58a9;
+  background-image: linear-gradient(0deg, #ffb20d, #183d89);
+}
+
+.sidebar {
+  width: auto !important;
+}
+
+#content {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.iconsdiv {
+  display: block;
+}
+
+.rounded-circle {
+  position: relative;
+  width: 4rem;
+  height: auto;
+  opacity: 10%;
+  position: absolute;
+  left: 8rem;
+  top: 8px;
+  z-index: 11;
+}
+
+.secondary-icon {
+  width: 2.5rem;
+  height: auto;
+  position: relative;
+  left: 0px;
+  top: 0px;
+  z-index: 10;
+  color: white;
+}
+
+.col-lg-7 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.fa-stack {
+  line-height: 1.8em;
+}
+
+.card {
+  box-shadow: 0px 0px 3px 1px rgb(204,205,207);
+  /*margin-top: 2rem;*/
+}
+
+.table-responsive {
+  width: 90%;
+  height: auto;
+  margin-left: 2rem;
+}
+
+.insertData {
+  margin-bottom: .5rem;
+}
+
+.btn-primary2 {
+  --bs-btn-color: #000;
+  --bs-btn-bg: #fff;
+  --bs-btn-border-color: #4e73df;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #4262be;
+  --bs-btn-hover-border-color: #3e5cb2;
+  --bs-btn-focus-shadow-rgb: 105, 136, 228;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #fff;
+  --bs-btn-active-border-color: #3b56a7;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #4e73df;
+  --bs-btn-disabled-border-color: #4e73df;
+}
+

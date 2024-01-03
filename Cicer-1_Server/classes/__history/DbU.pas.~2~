@@ -1,0 +1,19 @@
+unit DbU;
+
+interface
+
+type
+  tDb = class
+    function logIn(aEmail, aPsw: String): boolean;
+  end;
+
+implementation
+
+{ tDb }
+
+function tDb.logIn(aEmail, aPsw: String): boolean;
+begin
+//
+end;
+
+end.
