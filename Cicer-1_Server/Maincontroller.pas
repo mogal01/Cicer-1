@@ -20,7 +20,8 @@ uses
   FireDAC.DApt,
   Data.DB,
   FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, DbU, System.SysUtils,
+  FireDAC.Comp.Client, DbU, System.SysUtils, System.Character, DateUtils,
+  System.RegularExpressions,
   MVCFramework,
   MVCFramework.Logger,
   MVCFramework.Commons,
@@ -32,6 +33,12 @@ type
   [MVCPath('/')]
   TApp1MainController = class(TMVCController)
 
+    function checkDataUtente(aNome, aCognome, aEmail, aPsw: string): Boolean;
+    function checkDataEvento(aNome, aTipo: String;
+      aDataOraInizio, aDataOraFine: TDateTime;
+      aIdResponsabile: SmallInt): Boolean;
+    function checkDataResponsabile(aNome, aCognome, aOraInizioRic,
+      aOraFineRic: String; aDestinazione: SmallInt): Boolean;
   public
 
     [MVCPath('/')]
@@ -66,83 +73,83 @@ type
     [MVCHTTPMethod([httpGET])]
     procedure GetListUtenti(aFiltro: String);
 
-    [MVCPath('/Edificio/Aggiungi/($aNome)')]
-    [MVCHTTPMethod([httpPOST])]
-    procedure AggiungiEdificio(aNome: String);
+    [MVCPath('/Utente/GetUtente/($aToken)/($aFiltro)')]
+    [MVCHTTPMethod([httpGET])]
+    procedure GetUtente(aToken: String; aFiltro: SmallInt);
 
-    [MVCPath('/Edificio/Remove/($aId)')]
-    [MVCHTTPMethod([httpPOST])]
-    procedure RemoveEdificio(aId: SmallInt);
-
-    [MVCPath('/Edificio/Update/($aNome)/($aId)')]
-    [MVCHTTPMethod([httpPOST])]
-    procedure UpdateEdificio(aNome: String; aId: SmallInt);
+    [MVCPath('/Utente/GetProfilo/($aToken)')]
+    [MVCHTTPMethod([httpGET])]
+    procedure GetProfilo(aToken: String);
 
     [MVCPath('/Edificio/GetList/($aFiltro)')]
     [MVCHTTPMethod([httpGET])]
     procedure GetListEdifici(aFiltro: String);
 
-    [MVCPath('/Evento/Aggiungi/($aNome)/($aDataOraInizio)/($aDataOraFine)/($aTipo)/($aIdDestinazione)/($aIdUtente)/($aIdResponsabile)')
+    [MVCPath('/Evento/Aggiungi/($aNome)/($aDataOraInizio)/($aDataOraFine)/($aTipo)/($aToken)/($aIdDestinazione)/($aIdResponsabile)')
       ]
     [MVCHTTPMethod([httpPOST])]
     procedure AggiungiEvento(aNome: String;
-      aDataOraInizio, aDataOraFine: String; aTipo: String;
-      aIdDestinazione, aIdUtente, aIdResponsabile: SmallInt);
+      aDataOraInizio, aDataOraFine: String; aTipo, aToken: String;
+      aIdDestinazione, aIdResponsabile: SmallInt);
 
-    [MVCPath('/Evento/Remove/($aId)')]
+    [MVCPath('/Evento/Remove/($aToken)/($aId)')]
     [MVCHTTPMethod([httpPOST])]
-    procedure RemoveEvento(aId: SmallInt);
+    procedure RemoveEvento(aToken: String; aId: SmallInt);
 
-    [MVCPath('/Evento/Update/($aNome)/($aDataOraInizio)/($aDataOraFine)/($aTipo)/($aIdDestinazione)/($aIdUtente)/($aIdResponsabile)/($aId)')
+    [MVCPath('/Evento/Update/($aNome)/($aDataOraInizio)/($aDataOraFine)/($aTipo)/($aToken)/($aIdDestinazione)/($aIdResponsabile)/($aId)')
       ]
     [MVCHTTPMethod([httpPOST])]
     procedure UpdateEvento(aNome: String; aDataOraInizio, aDataOraFine: String;
-      aTipo: String; aIdDestinazione, aIdUtente, aIdResponsabile,
-      aId: SmallInt);
+      aTipo, aToken: String; aIdDestinazione, aIdResponsabile, aId: SmallInt);
 
     [MVCPath('/Evento/GetList/($aFiltro)')]
     [MVCHTTPMethod([httpGET])]
     procedure GetListEventi(aFiltro: String);
 
-    [MVCPath('/Responsabile/Aggiungi/($aNome)/($aCognome)/($aOraInizioRicevimento)/($aOraFineRicevimento)/($aIdDestinazione)')
+    [MVCPath('/Evento/GetEvento/($aFiltro)')]
+    [MVCHTTPMethod([httpGET])]
+    procedure GetEvento(aFiltro: SmallInt);
+
+    [MVCPath('/Responsabile/Aggiungi/($aNome)/($aCognome)/($aOraInizioRicevimento)/($aOraFineRicevimento)/($aToken)/($aIdDestinazione )')
       ]
     [MVCHTTPMethod([httpPOST])]
     procedure AggiungiResponsabile(aNome, aCognome, aOraInizioRicevimento,
-      aOraFineRicevimento: String; aIdDestinazione: SmallInt);
+      aOraFineRicevimento, aToken: String; aIdDestinazione: SmallInt);
 
-    [MVCPath('/Responsabile/Remove/($aId)')]
+    [MVCPath('/Responsabile/Remove/($aToken)/($aId)')]
     [MVCHTTPMethod([httpPOST])]
-    procedure RemoveResponsabile(aId: SmallInt);
+    procedure RemoveResponsabile(aToken: String; aId: SmallInt);
 
-    [MVCPath('/Responsabile/Update/($aNome)/($aCognome)/($aOraInizioRicevimento)/($aOraFineRicevimento)/($aIdDestinazione)/(%aId)')
+    [MVCPath('/Responsabile/Update/($aNome)/($aCognome)/($aOraInizioRicevimento)/($aOraFineRicevimento)/($aToken)/($aIdDestinazione)/(%aId)')
       ]
     [MVCHTTPMethod([httpPOST])]
     procedure UpdateResponsabile(aNome, aCognome, aOraInizioRicevimento,
-      aOraFineRicevimento: String; aIdDestinazione, aId: SmallInt);
+      aOraFineRicevimento, aToken: String; aIdDestinazione, aId: SmallInt);
 
     [MVCPath('/Responsabile/GetList/($aFiltro)')]
     [MVCHTTPMethod([httpGET])]
     procedure GetListResponsabile(aFiltro: String);
 
-    [MVCPath('/Destinazione/Aggiungi/($aNome)/($aStato)/($aTipo)/($aIdEdificio)')
-      ]
-    [MVCHTTPMethod([httpPOST])]
-    procedure AggiungiDestinazione(aNome, aStato, aTipo: String;
-      aIdEdificio: SmallInt);
-
-    [MVCPath('/Destinazione/Remove/($aId)')]
-    [MVCHTTPMethod([httpPOST])]
-    procedure RemoveDestinazione(aId: SmallInt);
-
-    [MVCPath('/Destinazione/Update/($aNome)/($aStato)/($aTipo)/($aIdEdificio)/($aId)')
-      ]
-    [MVCHTTPMethod([httpPOST])]
-    procedure UpdateDestinazione(aNome, aStato, aTipo: String;
-      aIdEdificio, aId: SmallInt);
-
-    [MVCPath('/Destinazione/GetList/($aFiltro)')]
+    [MVCPath('/Responsabile/GetResponsabile/($aFiltro)')]
     [MVCHTTPMethod([httpGET])]
-    procedure GetListDestinazioni(aFiltro: String);
+    procedure GetResponsabile(aFiltro: SmallInt);
+
+    [MVCPath('/Destinazione/Update/($aToken)/($aStato)/($aId)')
+      ]
+    [MVCHTTPMethod([httpPOST])]
+    procedure UpdateDestinazione(aStato, aToken: String; aId: SmallInt);
+
+    [MVCPath('/Destinazione/GetList/($aFiltro)/($aFiltroStato)')]
+    [MVCHTTPMethod([httpGET])]
+    procedure GetListDestinazioni(aFiltro,aFiltroStato: String);
+
+    [MVCPath('/Destinazione/GetUffici/($aFiltro)')]
+    [MVCHTTPMethod([httpGET])]
+    procedure GetListDestinazioniUffici(aFiltro: String);
+
+    [MVCPath('/Destinazione/GetDestinazione/($aFiltro)')]
+    [MVCHTTPMethod([httpGET])]
+    procedure GetDestinazione(aFiltro: SmallInt);
 
   end;
 
@@ -220,6 +227,95 @@ begin
   end;
 end;
 
+function TApp1MainController.checkDataUtente(aNome, aCognome, aEmail,
+  aPsw: string): Boolean;
+const
+  EmailRegexPattern = '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$';
+var
+  carattere: Char;
+  checkNome: Boolean;
+  checkCognome: Boolean;
+  checkEmail: Boolean;
+begin
+  checkNome := aNome <> ''; // La stringa non è vuota
+  checkCognome := aCognome <> '';
+  if (checkNome) then
+  begin
+    for carattere in aNome do
+    begin
+      if not TCharacter.IsLetter(carattere) then
+      begin
+        checkNome := false;
+        Break;
+      end;
+    end;
+  end;
+  if (checkCognome) then
+  begin
+    for carattere in aCognome do
+    begin
+      if not TCharacter.IsLetter(carattere) then
+      begin
+        checkCognome := false;
+        Break;
+      end;
+    end;
+  end;
+  checkEmail := TRegEx.IsMatch(aEmail, EmailRegexPattern);
+  if (checkNome and checkCognome and (Length(aPsw) >= 6) and
+    (Length(aPsw) <= 20) and checkEmail) then
+  begin
+    result := true;
+  end
+  else
+  begin
+    result := false;
+  end;
+
+end;
+
+function TApp1MainController.checkDataEvento(aNome, aTipo: String;
+  aDataOraInizio, aDataOraFine: TDateTime; aIdResponsabile: SmallInt): Boolean;
+
+begin
+
+  if ((aNome = '') or (Length(aNome) > 50)) then
+  begin
+    result := false;
+  end
+  else
+  begin
+    if ((aTipo = 'Lezione') or (aTipo = 'Laurea') or (aTipo = 'Convegno') or
+      (aTipo = 'Esame') or (aTipo = 'Orientamento')) then
+    begin
+      if (CompareDateTime(aDataOraInizio, aDataOraFine) <= 0) then
+        result := true;
+    end;
+  end;
+
+end;
+
+function TApp1MainController.checkDataResponsabile(aNome, aCognome,
+  aOraInizioRic, aOraFineRic: String; aDestinazione: SmallInt): Boolean;
+var
+  oraInizio: TDateTime;
+  oraFine: TDateTime;
+begin
+  oraInizio := StrToDateTime(aOraInizioRic);
+  oraFine := StrToDateTime(aOraFineRic);
+  if (((aNome = '') or (Length(aNome) > 50)) and
+    ((aCognome = '') or (Length(aCognome) > 50))) then
+  begin
+    result := false;
+  end
+  else
+  begin
+    if ((CompareTime(oraInizio, oraFine) <= 0) and (aDestinazione > 0)) then
+      result := true;
+  end;
+
+end;
+
 procedure TApp1MainController.AggiungiUtente(aToken, aNome, aCognome, aEmail,
   aPsw, aPermessi: String);
 var
@@ -235,16 +331,24 @@ begin
     if (lUtente.checkAccessFunzionalitaUtenti(aToken)) then
     begin
 
-      if (lUtente.aggiungi(aNome, aCognome, aEmail, aPsw, aPermessi)) then
+      if (checkDataUtente(aNome, aCognome, aEmail, aPsw)) then
       begin
-        JSONResponse.S['Result'] := 'Aggiunta avvenuta con successo';
-        render(JSONResponse, false);
+        if (lUtente.aggiungi(aNome, aCognome, aEmail, aPsw, aPermessi)) then
+        begin
+          JSONResponse.S['Result'] := 'Aggiunta avvenuta con successo';
+          render(JSONResponse, false);
 
+        end
+        else
+        begin
+          JSONResponse.S['Result'] := 'Aggiunta non avvenuta perchè già esiste';
+          render(500, JSONResponse, false);
+        end;
       end
-
       else
       begin
-        JSONResponse.S['Result'] := 'Aggiunta non avvenuta con successo';
+        JSONResponse.S['Result'] :=
+          'Aggiunta non avvenuta con successo perchè i campi so sbagliti';
         render(500, JSONResponse, false);
       end;
 
@@ -315,12 +419,14 @@ begin
   try
     if (lUtente.checkAccessFunzionalitaUtenti(aToken)) then
     begin
-
-      if (lUtente.Update(aNome, aCognome, aEmail, aPsw, aPermessi, aId)) then
+      if (checkDataUtente(aNome, aCognome, aEmail, aPsw)) then
       begin
-        JSONResponse.S['Result'] := 'Modifica avvenuta con successo';
-        render(JSONResponse, false);
+        if (lUtente.Update(aNome, aCognome, aEmail, aPsw, aPermessi, aId)) then
+        begin
+          JSONResponse.S['Result'] := 'Modifica avvenuta con successo';
+          render(JSONResponse, false);
 
+        end;
       end
 
       else
@@ -380,94 +486,97 @@ begin
 
 end;
 
-procedure TApp1MainController.AggiungiEdificio(aNome: String);
-
+procedure TApp1MainController.GetProfilo(aToken: String);
 var
-  lEdificio: tEdifici;
-  JSONResponse: TJsonObject;
+  lUtente: tUtenti;
+  lIdUtente: SmallInt;
+  lFDQuery: tFDQuery;
+  lJSONResponse: TJsonObject;
 
 begin
-  lEdificio := tEdifici.Create;
-  JSONResponse := TJsonObject.Create;
-
+  lUtente := tUtenti.Create;
+  lJSONResponse := TJsonObject.Create;
   try
-    if (lEdificio.aggiungi(aNome)) then
-
     begin
-      JSONResponse.S['Result'] := 'Aggiunta avvenuta con successo';
-      render(JSONResponse, false);
-    end
+      lIdUtente := lUtente.getIdByToken(aToken);
+      if (lIdUtente > 0) then
+      begin
+        lFDQuery := lUtente.GetUtente(lIdUtente);
 
-    else
-    begin
-      JSONResponse.S['Result'] := 'Aggiunta non avvenuta con successo';
-      render(500, JSONResponse, false);
+        if (lFDQuery <> nil) then
+        begin
+          lFDQuery.First;
+          if (not lFDQuery.Eof) then
+          begin
+            lJSONResponse.I['id'] := lFDQuery.FieldByName('id').AsInteger;
+            lJSONResponse.S['nome'] := lFDQuery.FieldByName('nome').AsString;
+            lJSONResponse.S['cognome'] :=
+              lFDQuery.FieldByName('cognome').AsString;
+            lJSONResponse.S['email'] := lFDQuery.FieldByName('email').AsString;
+            lJSONResponse.S['permessi'] :=
+              lFDQuery.FieldByName('permessi').AsString;
+
+          end;
+          render(lJSONResponse, false);
+          lFDQuery.Free;
+        end;
+      end
+      else
+      begin
+        lJSONResponse.S['Result'] := 'Non esiste questo token';
+        render(404, lJSONResponse, false);
+      end;
     end;
   finally
-    JSONResponse.Free;
-    lEdificio.Free;
-
+    lJSONResponse.Free;
+    lUtente.Free;
   end;
+
 end;
 
-procedure TApp1MainController.RemoveEdificio(aId: SmallInt);
-
+procedure TApp1MainController.GetUtente(aToken: String; aFiltro: SmallInt);
 var
-  lEdificio: tEdifici;
-  JSONResponse: TJsonObject;
+  lUtente: tUtenti;
+  lFDQuery: tFDQuery;
+  lJSONResponse: TJsonObject;
 
 begin
-  lEdificio := tEdifici.Create;
-  JSONResponse := TJsonObject.Create;
 
+  lUtente := tUtenti.Create;
+  lJSONResponse := TJsonObject.Create;
   try
-    if (lEdificio.Remove(aId)) then
+    if (lUtente.checkAccessFunzionalitaUtenti(aToken)) then
     begin
-      JSONResponse.S['Result'] := 'Eliminazione avvenuta con successo';
-      render(JSONResponse, false);
+      lFDQuery := lUtente.GetUtente(aFiltro);
+      if (lFDQuery <> nil) then
+      begin
+        lFDQuery.First;
+        if (not lFDQuery.Eof) then
+        begin
+          lJSONResponse.I['id'] := lFDQuery.FieldByName('id').AsInteger;
+          lJSONResponse.S['nome'] := lFDQuery.FieldByName('nome').AsString;
+          lJSONResponse.S['cognome'] := lFDQuery.FieldByName('cognome')
+            .AsString;
+          lJSONResponse.S['password'] :=
+            lFDQuery.FieldByName('password').AsString;
+          lJSONResponse.S['email'] := lFDQuery.FieldByName('email').AsString;
+          lJSONResponse.S['permessi'] :=
+            lFDQuery.FieldByName('permessi').AsString;
 
+        end;
+        render(lJSONResponse, false);
+      end;
     end
-
     else
     begin
-      JSONResponse.S['Result'] := 'Eliminazione non avvenuta';
-      render(500, JSONResponse, false);
+      lJSONResponse.S['Result'] := 'Non hai i permessi';
+      render(403, lJSONResponse, false);
     end;
 
   finally
-    JSONResponse.Free;
-    lEdificio.Free;
-  end;
-end;
-
-procedure TApp1MainController.UpdateEdificio(aNome: String; aId: SmallInt);
-
-var
-  lEdificio: tEdifici;
-  JSONResponse: TJsonObject;
-
-begin
-  lEdificio := tEdifici.Create;
-  JSONResponse := TJsonObject.Create;
-
-  try
-    if (lEdificio.Update(aNome, aId)) then
-
-    begin
-      JSONResponse.S['Result'] := 'Modifica avvenuta con successo';
-      render(JSONResponse, false);
-
-    end
-
-    else
-    begin
-      JSONResponse.S['Result'] := 'Modifica non avvenuta';
-      render(500, JSONResponse, false);
-    end;
-
-  finally
-    JSONResponse.Free;
-    lEdificio.Free;
+    lJSONResponse.Free;
+    lFDQuery.Free;
+    lUtente.Free;
   end;
 end;
 
@@ -508,101 +617,134 @@ begin
 end;
 
 procedure TApp1MainController.AggiungiEvento(aNome: String;
-  aDataOraInizio, aDataOraFine: String; aTipo: String;
-  aIdDestinazione, aIdUtente, aIdResponsabile: SmallInt);
+  aDataOraInizio, aDataOraFine: String; aTipo, aToken: String;
+  aIdDestinazione, aIdResponsabile: SmallInt);
 var
+  lUtente: tUtenti;
   lEvento: tEventi;
   JSONResponse: TJsonObject;
+  lIdUtente: SmallInt;
 
 begin
+  lUtente := tUtenti.Create;
   lEvento := tEventi.Create;
   JSONResponse := TJsonObject.Create;
 
   try
-    if (lEvento.aggiungi(aNome, StrToDateTime(aDataOraInizio.Replace('-', '/')),
-      StrToDateTime(aDataOraFine.Replace('-', '/')), aTipo, aIdDestinazione,
-      aIdUtente, aIdResponsabile)) then
-
+    lIdUtente := lUtente.getIdByToken(aToken);
+    if (lIdUtente > 0) then
     begin
 
-      JSONResponse.S['Result'] := 'Aggiunta avvenuta con successo';
-      render(JSONResponse, false);
+      if (checkDataEvento(aNome, aTipo,
+        StrToDateTime(aDataOraInizio.Replace('-', '/')),
+        StrToDateTime(aDataOraFine.Replace('-', '/')), aIdResponsabile)) then
+      begin
+        if (lEvento.aggiungi(aNome, StrToDateTime(aDataOraInizio.Replace('-',
+          '/')), StrToDateTime(aDataOraFine.Replace('-', '/')), aTipo,
+          aIdDestinazione, lIdUtente, aIdResponsabile)) then
+        begin
+          JSONResponse.S['Result'] := 'Aggiunta avvenuta con successo';
+          render(JSONResponse, false);
+        end
+        else
+        begin
 
-    end
+          JSONResponse.S['Result'] := 'Aggiunta non avvenuta con successo';
+          render(500, JSONResponse, false);
 
-    else
-
-    begin
-
-      JSONResponse.S['Result'] := 'Aggiunta non avvenuta con successo';
-      render(500, JSONResponse, false);
+        end;
+      end;
 
     end;
   finally
+
     JSONResponse.Free;
     lEvento.Free;
+    lUtente.Free;
   end;
 
 end;
 
-procedure TApp1MainController.RemoveEvento(aId: SmallInt);
+procedure TApp1MainController.RemoveEvento(aToken: String; aId: SmallInt);
 var
+  lUtente: tUtenti;
   lEvento: tEventi;
   JSONResponse: TJsonObject;
+  lIdUtente: SmallInt;
+
 begin
+  lUtente := tUtenti.Create;
   lEvento := tEventi.Create;
   JSONResponse := TJsonObject.Create;
 
   try
-
-    if (lEvento.Remove(aId)) then
+    lIdUtente := lUtente.getIdByToken(aToken);
+    if (lIdUtente > 0) then
     begin
-      JSONResponse.S['Result'] := 'Eliminazione avvenuta con successo';
-      render(JSONResponse, false);
+      if (lEvento.Remove(aId)) then
+      begin
+        JSONResponse.S['Result'] := 'Eliminazione avvenuta con successo';
+        render(JSONResponse, false);
 
-    end
+      end
 
-    else
-    begin
-      JSONResponse.S['Result'] := 'Eliminazione non avvenuta';
-      render(500, JSONResponse, false);
+      else
+      begin
+        JSONResponse.S['Result'] := 'Eliminazione non avvenuta';
+        render(500, JSONResponse, false);
+      end;
     end;
 
   finally
     JSONResponse.Free;
     lEvento.Free;
+    lUtente.Free;
   end;
 end;
 
 procedure TApp1MainController.UpdateEvento(aNome, aDataOraInizio, aDataOraFine,
-  aTipo: String; aIdDestinazione, aIdUtente, aIdResponsabile, aId: SmallInt);
+  aTipo, aToken: String; aIdDestinazione, aIdResponsabile, aId: SmallInt);
 var
+  lUtente: tUtenti;
   lEvento: tEventi;
   JSONResponse: TJsonObject;
+  lIdUtente: SmallInt;
 
 begin
+  lUtente := tUtenti.Create;
   lEvento := tEventi.Create;
   JSONResponse := TJsonObject.Create;
 
   try
-    if (lEvento.Update(aNome, StrToDateTime(aDataOraInizio.Replace('-', '/')),
-      StrToDateTime(aDataOraFine.Replace('-', '/')), aTipo, aIdDestinazione,
-      aIdUtente, aIdResponsabile, aId)) then
-
+    lIdUtente := lUtente.getIdByToken(aToken);
+    if (lIdUtente > 0) then
     begin
-      JSONResponse.S['Result'] := 'Modifica avvenuta con successo';
-      render(JSONResponse, false);
 
-    end
+      if (checkDataEvento(aNome, aTipo,
+        StrToDateTime(aDataOraInizio.Replace('-', '/')),
+        StrToDateTime(aDataOraFine.Replace('-', '/')), aIdResponsabile)) then
+      begin
+        if (lEvento.Update(aNome, StrToDateTime(aDataOraInizio.Replace('-', '/')
+          ), StrToDateTime(aDataOraFine.Replace('-', '/')), aTipo,
+          aIdDestinazione, lIdUtente, aIdResponsabile, aId)) then
 
-    else
-    begin
-      JSONResponse.S['Result'] := 'Modifica non avvenuta';
-      render(500, JSONResponse, false);
+        begin
+          JSONResponse.S['Result'] := 'Modifica avvenuta con successo';
+          render(JSONResponse, false);
+
+        end
+
+        else
+        begin
+          JSONResponse.S['Result'] := 'Modifica non avvenuta';
+          render(500, JSONResponse, false);
+        end;
+      end;
     end;
   finally
     JSONResponse.Free;
     lEvento.Free;
+    lUtente.Free;
   end;
 end;
 
@@ -631,11 +773,9 @@ begin
         lJSONRecord.S['data_ora_fine'] :=
           lFDQuery.FieldByName('data_ora_fine').AsString;
         lJSONRecord.S['tipo'] := lFDQuery.FieldByName('tipo').AsString;
-        lJSONRecord.I['destinazione'] := lFDQuery.FieldByName('destinazione')
-          .AsInteger;
-        lJSONRecord.I['utente'] := lFDQuery.FieldByName('utente').AsInteger;
-        lJSONRecord.I['responsabile'] := lFDQuery.FieldByName('responsabile')
-          .AsInteger;
+        lJSONRecord.S['destinazione'] := lFDQuery.FieldByName('ndset').AsString;
+        lJSONRecord.S['utente'] := lFDQuery.FieldByName('nadmin').AsString;
+        lJSONRecord.S['responsabile'] := lFDQuery.FieldByName('nresp').AsString;
 
         lJSONArray.Add(lJSONRecord);
         lFDQuery.Next;
@@ -650,99 +790,173 @@ begin
   end;
 end;
 
+procedure TApp1MainController.GetEvento(aFiltro: SmallInt);
+var
+  lEvento: tEventi;
+  lFDQuery: tFDQuery;
+  lJSONResponse: TJsonObject;
+begin
+  lEvento := tEventi.Create;
+  lJSONResponse := TJsonObject.Create;
+  try
+    lFDQuery := lEvento.GetEvento(aFiltro);
+    if (lFDQuery <> nil) then
+    begin
+      lFDQuery.First;
+      if (not lFDQuery.Eof) then
+      begin
+        lJSONResponse.I['id'] := lFDQuery.FieldByName('id').AsInteger;
+        lJSONResponse.S['nome'] := lFDQuery.FieldByName('nome').AsString;
+        lJSONResponse.S['data_ora_inizio'] :=
+          lFDQuery.FieldByName('data_ora_inizio').AsString;
+        lJSONResponse.S['data_ora_fine'] :=
+          lFDQuery.FieldByName('data_ora_fine').AsString;
+        lJSONResponse.S['tipo'] := lFDQuery.FieldByName('tipo').AsString;
+        lJSONResponse.I['destinazione'] := lFDQuery.FieldByName('destinazione')
+          .AsInteger;
+        lJSONResponse.I['utente'] := lFDQuery.FieldByName('utente').AsInteger;
+        lJSONResponse.I['responsabile'] := lFDQuery.FieldByName('responsabile')
+          .AsInteger;
+
+      end;
+      render(lJSONResponse, false);
+
+    end;
+  finally
+    lJSONResponse.Free;
+    lFDQuery.Free;
+    lEvento.Free;
+  end;
+
+end;
+
 procedure TApp1MainController.AggiungiResponsabile(aNome, aCognome,
-  aOraInizioRicevimento, aOraFineRicevimento: String;
+  aOraInizioRicevimento, aOraFineRicevimento, aToken: String;
   aIdDestinazione: SmallInt);
 var
+  lUtente: tUtenti;
   lResponsabile: tResponsabili;
   JSONResponse: TJsonObject;
+  lIdUtente: SmallInt;
 
 begin
+  lUtente := tUtenti.Create;
   lResponsabile := tResponsabili.Create;
   JSONResponse := TJsonObject.Create;
 
   try
-    if (lResponsabile.aggiungi(aNome, aCognome,
-      StrToDateTime(aOraInizioRicevimento), StrToDateTime(aOraFineRicevimento),
-      aIdDestinazione)) then
-
+    lIdUtente := lUtente.getIdByToken(aToken);
+    if (lIdUtente > 0) then
     begin
-      JSONResponse.S['Result'] := 'Aggiunta avvenuta con successo';
-      render(JSONResponse, false);
-    end
+      if (checkDataResponsabile(aNome, aCognome, aOraInizioRicevimento,
+        aOraFineRicevimento, aIdDestinazione)) then
+      begin
 
-    else
-    begin
-      JSONResponse.S['Result'] := 'Aggiunta non avvenuta con successo';
-      render(500, JSONResponse, false);
+        if (lResponsabile.aggiungi(aNome, aCognome,
+          StrToDateTime(aOraInizioRicevimento),
+          StrToDateTime(aOraFineRicevimento), aIdDestinazione)) then
+
+        begin
+          JSONResponse.S['Result'] := 'Aggiunta avvenuta con successo';
+          render(JSONResponse, false);
+        end
+
+        else
+        begin
+          JSONResponse.S['Result'] := 'Aggiunta non avvenuta con successo';
+          render(500, JSONResponse, false);
+        end;
+      end;
     end;
   finally
     JSONResponse.Free;
     lResponsabile.Free;
+    lUtente.Free;
 
   end;
 end;
 
-procedure TApp1MainController.RemoveResponsabile(aId: SmallInt);
+procedure TApp1MainController.RemoveResponsabile(aToken: String; aId: SmallInt);
 var
+  lUtente: tUtenti;
   lResponsabile: tResponsabili;
   JSONResponse: TJsonObject;
+  lIdUtente: SmallInt;
 
 begin
+  lUtente := tUtenti.Create;
   lResponsabile := tResponsabili.Create;
   JSONResponse := TJsonObject.Create;
 
   try
-    if (lResponsabile.Remove(aId)) then
-
+    lIdUtente := lUtente.getIdByToken(aToken);
+    if (lIdUtente > 0) then
     begin
-      JSONResponse.S['Result'] := 'Eliminazione avvenuta con successo';
-      render(JSONResponse, false);
+      if (lResponsabile.Remove(aId)) then
 
-    end
+      begin
+        JSONResponse.S['Result'] := 'Eliminazione avvenuta con successo';
+        render(JSONResponse, false);
 
-    else
-    begin
-      JSONResponse.S['Result'] := 'Eliminazione non avvenuta';
-      render(500, JSONResponse, false);
+      end
+
+      else
+      begin
+        JSONResponse.S['Result'] := 'Eliminazione non avvenuta';
+        render(500, JSONResponse, false);
+      end;
     end;
 
   finally
     JSONResponse.Free;
     lResponsabile.Free;
+    lUtente.Free;
   end;
 end;
 
 procedure TApp1MainController.UpdateResponsabile(aNome, aCognome,
-  aOraInizioRicevimento, aOraFineRicevimento: String;
+  aOraInizioRicevimento, aOraFineRicevimento, aToken: String;
   aIdDestinazione, aId: SmallInt);
 var
+  lUtente: tUtenti;
   lResponsabile: tResponsabili;
   JSONResponse: TJsonObject;
+  lIdUtente: SmallInt;
 
 begin
+  lUtente := tUtenti.Create;
   lResponsabile := tResponsabili.Create;
   JSONResponse := TJsonObject.Create;
 
   try
-    if (lResponsabile.Update(aNome, aCognome,
-      StrToDateTime(aOraInizioRicevimento), StrToDateTime(aOraFineRicevimento),
-      aIdDestinazione, aId)) then
-
+    lIdUtente := lUtente.getIdByToken(aToken);
+    if (lIdUtente > 0) then
     begin
-      JSONResponse.S['Result'] := 'Modifica avvenuta con successo';
-      render(JSONResponse, false);
+      if (checkDataResponsabile(aNome, aCognome, aOraInizioRicevimento,
+        aOraFineRicevimento, aIdDestinazione)) then
+      begin
+        if (lResponsabile.Update(aNome, aCognome,
+          StrToDateTime(aOraInizioRicevimento),
+          StrToDateTime(aOraFineRicevimento), aIdDestinazione, aId)) then
 
-    end
+        begin
+          JSONResponse.S['Result'] := 'Modifica avvenuta con successo';
+          render(JSONResponse, false);
 
-    else
-    begin
-      JSONResponse.S['Result'] := 'Modifica non avvenuta';
-      render(500, JSONResponse, false);
+        end
+
+        else
+        begin
+          JSONResponse.S['Result'] := 'Modifica non avvenuta';
+          render(500, JSONResponse, false);
+        end;
+      end;
     end;
   finally
+
     JSONResponse.Free;
     lResponsabile.Free;
+    lUtente.Free;
 
   end;
 end;
@@ -787,99 +1001,83 @@ begin
   end;
 end;
 
-procedure TApp1MainController.AggiungiDestinazione(aNome, aStato, aTipo: String;
-  aIdEdificio: SmallInt);
+procedure TApp1MainController.GetResponsabile(aFiltro: SmallInt);
 var
-  lDestinazione: tDestinazioni;
-  JSONResponse: TJsonObject;
-
+  lResponsabile: tResponsabili;
+  lFDQuery: tFDQuery;
+  lJSONResponse: TJsonObject;
 begin
-  lDestinazione := tDestinazioni.Create;
-  JSONResponse := TJsonObject.Create;
-
+  lResponsabile := tResponsabili.Create;
+  lJSONResponse := TJsonObject.Create;
   try
-    if (lDestinazione.aggiungi(aNome, aStato, aTipo, aIdEdificio)) then
-
+    lFDQuery := lResponsabile.GetResponsabile(aFiltro);
+    if (lFDQuery <> nil) then
     begin
-      JSONResponse.S['Result'] := 'Aggiunta avvenuta con successo';
-      render(JSONResponse, false);
-    end
+      lFDQuery.First;
+      if (not lFDQuery.Eof) then
+      begin
+        lJSONResponse := TJsonObject.Create;
+        lJSONResponse.I['id'] := lFDQuery.FieldByName('id').AsInteger;
+        lJSONResponse.S['nome'] := lFDQuery.FieldByName('nome').AsString;
+        lJSONResponse.S['cognome'] := lFDQuery.FieldByName('cognome').AsString;
+        lJSONResponse.S['orario_inizio_ricevimento'] :=
+          lFDQuery.FieldByName('orario_inizio_ricevimento').AsString;
+        lJSONResponse.S['orario_fine_ricevimento'] :=
+          lFDQuery.FieldByName('orario_fine_ricevimento').AsString;
+        lJSONResponse.I['destinazione'] := lFDQuery.FieldByName('destinazione')
+          .AsInteger;
 
-    else
-    begin
-      JSONResponse.S['Result'] := 'Aggiunta non avvenuta con successo';
-      render(500, JSONResponse, false);
+      end;
+      render(lJSONResponse, false);
     end;
   finally
-    JSONResponse.Free;
-    lDestinazione.Free;
+    lJSONResponse.Free;
+    lFDQuery.Free;
+    lResponsabile.Free;
 
   end;
 end;
 
-procedure TApp1MainController.RemoveDestinazione(aId: SmallInt);
+procedure TApp1MainController.UpdateDestinazione(aStato, aToken: String;
+  aId: SmallInt);
 var
+  lUtente: tUtenti;
   lDestinazione: tDestinazioni;
   JSONResponse: TJsonObject;
+  lIdUtente: SmallInt;
 
 begin
+  lUtente := tUtenti.Create;
   lDestinazione := tDestinazioni.Create;
   JSONResponse := TJsonObject.Create;
 
   try
-    if (lDestinazione.Remove(aId)) then
-
+    lIdUtente := lUtente.getIdByToken(aToken);
+    if (lIdUtente > 0) then
     begin
-      JSONResponse.S['Result'] := 'Eliminazione avvenuta con successo';
-      render(JSONResponse, false);
+      if (lDestinazione.Update(aStato, aId)) then
 
-    end
+      begin
+        JSONResponse.S['Result'] := 'Modifica avvenuta con successo';
+        render(JSONResponse, false);
 
-    else
-    begin
-      JSONResponse.S['Result'] := 'Eliminazione non avvenuta';
-      render(500, JSONResponse, false);
-    end;
+      end
 
-  finally
-    JSONResponse.Free;
-    lDestinazione.Free;
-
-  end;
-end;
-
-procedure TApp1MainController.UpdateDestinazione(aNome, aStato, aTipo: String;
-  aIdEdificio, aId: SmallInt);
-var
-  lDestinazione: tDestinazioni;
-  JSONResponse: TJsonObject;
-
-begin
-  lDestinazione := tDestinazioni.Create;
-  JSONResponse := TJsonObject.Create;
-
-  try
-    if (lDestinazione.Update(aNome, aStato, aTipo, aIdEdificio, aId)) then
-
-    begin
-      JSONResponse.S['Result'] := 'Modifica avvenuta con successo';
-      render(JSONResponse, false);
-
-    end
-
-    else
-    begin
-      JSONResponse.S['Result'] := 'Modifica non avvenuta';
-      render(500, JSONResponse, false);
+      else
+      begin
+        JSONResponse.S['Result'] := 'Modifica non avvenuta';
+        render(500, JSONResponse, false);
+      end;
     end;
   finally
     JSONResponse.Free;
     lDestinazione.Free;
+    lUtente.Free;
 
   end;
 end;
 
-procedure TApp1MainController.GetListDestinazioni(aFiltro: String);
+procedure TApp1MainController.GetListDestinazioni(aFiltro,aFiltroStato: String);
 var
   lDestinazione: tDestinazioni;
   lFDQuery: tFDQuery;
@@ -889,7 +1087,7 @@ var
 begin
 
   lDestinazione := tDestinazioni.Create;
-  lFDQuery := lDestinazione.getList(aFiltro);
+  lFDQuery := lDestinazione.getList(aFiltro,aFiltroStato);
   if (lFDQuery <> nil) then
   begin
 
@@ -904,6 +1102,7 @@ begin
         lJSONRecord.S['stato'] := lFDQuery.FieldByName('stato').AsString;
         lJSONRecord.S['tipo'] := lFDQuery.FieldByName('tipo').AsString;
         lJSONRecord.S['edificio'] := lFDQuery.FieldByName('edificio').AsString;
+        lJSONRecord.S['nomeEd'] := lFDQuery.FieldByName('nomeEd').AsString;
         lJSONArray.Add(lJSONRecord);
         lFDQuery.Next;
       end;
@@ -915,6 +1114,74 @@ begin
     end;
   end;
 
+end;
+
+procedure TApp1MainController.GetListDestinazioniUffici(aFiltro: String);
+var
+  lDestinazione: tDestinazioni;
+  lFDQuery: tFDQuery;
+  lJSONArray: TJsonArray;
+  lJSONRecord: TJsonObject;
+
+begin
+
+  lDestinazione := tDestinazioni.Create;
+  lFDQuery := lDestinazione.getUffici(aFiltro);
+  if (lFDQuery <> nil) then
+  begin
+
+    lJSONArray := TJsonArray.Create;
+
+    try
+      while (not lFDQuery.Eof) do
+      begin
+        lJSONRecord := TJsonObject.Create;
+        lJSONRecord.S['nome'] := lFDQuery.FieldByName('nome').AsString;
+        lJSONArray.Add(lJSONRecord);
+        lFDQuery.Next;
+      end;
+      render(lJSONArray, false);
+    finally
+      lJSONArray.Free;
+      lFDQuery.Free;
+      lDestinazione.Free;
+    end;
+  end;
+
+end;
+
+procedure TApp1MainController.GetDestinazione(aFiltro: SmallInt);
+var
+  lDestinazione: tDestinazioni;
+  lFDQuery: tFDQuery;
+  lJSONResponse: TJsonObject;
+begin
+  lDestinazione := tDestinazioni.Create;
+  lJSONResponse := TJsonObject.Create;
+  try
+    lFDQuery := lDestinazione.GetDestinazione(aFiltro);
+    if (lFDQuery <> nil) then
+    begin
+      lFDQuery.First;
+      if (not lFDQuery.Eof) then
+      begin
+        lJSONResponse := TJsonObject.Create;
+        lJSONResponse.I['id'] := lFDQuery.FieldByName('id').AsInteger;
+        lJSONResponse.S['nome'] := lFDQuery.FieldByName('nome').AsString;
+        lJSONResponse.S['stato'] := lFDQuery.FieldByName('stato').AsString;
+        lJSONResponse.S['tipo'] := lFDQuery.FieldByName('tipo').AsString;
+        lJSONResponse.I['edificio'] := lFDQuery.FieldByName('edificio')
+          .AsInteger;
+
+      end;
+      render(lJSONResponse, false);
+    end;
+  finally
+    lJSONResponse.Free;
+    lFDQuery.Free;
+    lDestinazione.Free;
+
+  end;
 end;
 
 end.

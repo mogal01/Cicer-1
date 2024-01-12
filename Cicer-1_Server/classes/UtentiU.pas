@@ -34,7 +34,9 @@ type
     function update(aNome, aCognome, aEmail, aPsw, aPermessi: String;
       aId: SmallInt): boolean;
     function getList(aFiltr: String): TFDQuery;
+    function getUtente(aFiltr:SmallInt): TFDQuery;
     function checkAccessFunzionalitaUtenti(aToken: String): boolean;
+    function getIdByToken(aFiltr:String): SmallInt;
   private
     fDB: tDB;
   end;
@@ -135,17 +137,26 @@ begin
   result := false;
 
   try
+    lQuery := 'SELECT * from utente where email=' +QuotedStr(aEmail);
+    lFDQuery:= fDB.getQueryResult(lQuery);
+    if(lFDQuery.RecordCount=0) then
+    begin
     lQuery := 'INSERT INTO utente (nome, cognome, email, password, permessi) VALUES ('
       + QuotedStr(aNome) + ', ' + QuotedStr(aCognome) + ', ' + QuotedStr(aEmail)
       + ', ' + QuotedStr(aPsw) + ', ' + QuotedStr(aPermessi) + ')';
 
     lFDQuery := fDB.executeQuery(lQuery);
-
+//
     if (lFDQuery.RowsAffected > 0) then
     begin
 
       result := true;
 
+    end;
+    end
+    else
+    begin
+    result :=false;
     end;
 
   finally
@@ -215,6 +226,25 @@ begin
   end;
 end;
 
+function tUTenti.getIdByToken(aFiltr: String): SmallInt;
+var
+  lQuery: String;
+  lFDQuery: TFDQuery;
+begin
+
+  result := 0;
+  try
+    lQuery := 'select utente from token where token='+ QuotedStr(aFiltr);
+
+    lFDQuery := fDB.getQueryResult(lQuery);
+
+    result := lFDQuery.FieldByName('utente').AsInteger;
+  finally
+
+  end;
+
+end;
+
 function tUTenti.getList(aFiltr: String): TFDQuery;
 var
   lQuery: String;
@@ -236,6 +266,24 @@ begin
 
 end;
 
+function tUTenti.getUtente(aFiltr: SmallInt): TFDQuery;
+var
+  lQuery: String;
+  lFDQuery: TFDQuery;
+begin
+
+  result := nil;
+  try
+    lQuery := 'SELECT *  FROM utente WHERE id= '+aFiltr.ToString;
+
+    lFDQuery := fDB.getQueryResult(lQuery);
+
+    result := lFDQuery;
+  finally
+
+  end;
+end;
+
 function tUTenti.checkAccessFunzionalitaUtenti(aToken: String): boolean;
 var
   lQuery: String;
@@ -244,13 +292,13 @@ begin
   result := false;
 
   try
-  
+
     lQuery := 'Select permessi from utente, token where token=' +
       QuotedStr(aToken) + ' and utente.id= token.utente';
     lFDQuery := fDB.getQueryResult(lQuery);
-    
+
     if (lFDQuery.FieldByName('permessi').AsString = 'amministratore') then
-    
+
     begin
       result := true;
     end

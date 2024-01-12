@@ -28,6 +28,7 @@ type
     function remove(aId: SmallInt): boolean;
     function update(aNome: String; aId: SmallInt): boolean;
     function getList(aFiltr: String): TFDQuery;
+    function getEdificio(aFiltr:SmallInt):TFDQuery;
 
   private
     fDB: tDB;
@@ -134,6 +135,24 @@ begin
 
   end;
 
+end;
+
+function tEdifici.getEdificio(aFiltr: SmallInt): TFDQuery;
+var
+  lQuery: String;
+  lFDQuery: TFDQuery;
+begin
+
+  result := nil;
+  try
+    lQuery := 'SELECT *  FROM edificio WHERE id= '+aFiltr.ToString;
+
+    lFDQuery := fDB.getQueryResult(lQuery);
+
+    result := lFDQuery;
+  finally
+
+  end;
 end;
 
 function tEdifici.getList(aFiltr: String): TFDQuery;

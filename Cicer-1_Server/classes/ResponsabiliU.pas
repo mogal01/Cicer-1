@@ -34,6 +34,7 @@ type
       aOraInizioRicevimento, aOraFineRicevimento: TTime;
       aDestinazione: SmallInt; aId: SmallInt): boolean;
     function getList(aFiltr: String): TFDQuery;
+    function getResponsabile(aFiltr:SmallInt): TFDQuery;
   private
     fDB: tDB;
   end;
@@ -171,5 +172,23 @@ begin
 
 end;
 
+
+function tResponsabili.getResponsabile(aFiltr: SmallInt): TFDQuery;
+var
+  lQuery: String;
+  lFDQuery: TFDQuery;
+begin
+
+  result := nil;
+  try
+    lQuery := 'SELECT *  FROM responsabile WHERE id= '+aFiltr.ToString;
+
+    lFDQuery := fDB.getQueryResult(lQuery);
+
+    result := lFDQuery;
+  finally
+
+  end;
+end;
 
 end.
