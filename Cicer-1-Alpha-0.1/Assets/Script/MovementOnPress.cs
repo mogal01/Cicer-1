@@ -8,7 +8,7 @@ public class MovementOnPress : MonoBehaviour
 
     public GameObject obj;
     public List<GameObject> pathPoints;
-    public int numberOfPoints;
+    //public int numberOfPoints;
     public float speed;
 
     private bool toNext;
@@ -27,7 +27,7 @@ public class MovementOnPress : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        x = 0;
+        /*x = 0;
         numberOfPoints = 0;
         currentAngle = obj.transform.eulerAngles;
         toNext = false;
@@ -35,7 +35,7 @@ public class MovementOnPress : MonoBehaviour
         {
             pathPoints.Add(GameObject.Find("Checkpoint (" + i + ")"));
             numberOfPoints++;
-        }
+        }*/
     }
 
    public void toNextPositive()
@@ -54,12 +54,16 @@ public class MovementOnPress : MonoBehaviour
             actualPosition = obj.transform.position;
             obj.transform.position = Vector3.MoveTowards(actualPosition, pathPoints[x].transform.position, speed * Time.deltaTime);
             //obj.transform.LookAt(pathPoints[x].transform);
-            if (actualPosition == pathPoints[x].transform.position && x != numberOfPoints - 1)
+            if (actualPosition == pathPoints[x].transform.position && x != pathPoints.Count - 1)
             {
                 x++;
                 toNext = false;
          
             }
+            //Vector3 tempVector = obj.transform.position;
+            //tempVector.y = (float)-8.5;
+            //obj.transform.position = tempVector;
+            
 
            
         }

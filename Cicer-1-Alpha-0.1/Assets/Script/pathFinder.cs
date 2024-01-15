@@ -17,6 +17,12 @@ public class pathFinder : MonoBehaviour
     void Start()
     {        
         iterativeDeepeningA(start, destination);
+        Debug.Log(" percorso trovato");
+        foreach (GameObject nodo in path)
+        {
+            Debug.Log(nodo.GetComponent<CheckpointData>().nome);
+        }
+        GameObject.Find("MovementManager").GetComponent<MovementOnPress>().pathPoints = path;
     }
 
      
@@ -29,11 +35,7 @@ public class pathFinder : MonoBehaviour
         {         
             float t = searchPath(path, 0, bound);
             if (t==-1) {
-                Debug.Log(" percorso trovato");
-                foreach (GameObject nodo in path)
-                {
-                    Debug.Log(nodo.GetComponent<dati>().nome);
-                }
+           
                 break;
             }
             if(t==float.MaxValue)
@@ -61,17 +63,17 @@ public class pathFinder : MonoBehaviour
         
         float min = float.MaxValue;
       
-        foreach (GameObject vicino in node.GetComponent<dati>().nodiConnessi)
+        foreach (GameObject vicino in node.GetComponent<CheckpointData>().nodiConnessi)
         {
             if(!apath.Contains(vicino))
             {
                 apath.Add(vicino);
                 
                 float t = searchPath(apath, g + getDistance(node, vicino), bound);
-                Debug.Log("Test path numero " + count);
+               
                 foreach (GameObject nodo in apath)
                 {
-                    Debug.Log(nodo.GetComponent<dati>().nome);
+                    Debug.Log(nodo.GetComponent<CheckpointData>().nome);
                 }
                 count++;
                 if (t == -1) return t;
