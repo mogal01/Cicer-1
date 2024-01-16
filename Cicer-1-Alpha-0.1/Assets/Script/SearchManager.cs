@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 public class SearchManager : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class SearchManager : MonoBehaviour
     public int totalElements;
     private bool isEmpty;
     public GameObject erroreRicerca;
+    public GameObject erroreCarattereSpeciale;
+    public GameObject erroreOrario;
+    public TMP_Dropdown dp;
 
     // Start is called before the first frame update
 
@@ -25,17 +29,52 @@ public class SearchManager : MonoBehaviour
             Element[i] = ContentHolder.transform.GetChild(i).gameObject;
         }
     }
+
+    public void MainSearch(){
+      // Ottieni il valore selezionato
+        int selectedValue = dp.value;
+
+        // Puoi anche ottenere la stringa del testo selezionato
+        string selectedText = dp.options[selectedValue].text;
+
+        // Ora puoi fare qualcosa con il valore selezionato
+        Debug.Log("Valore selezionato: " + selectedValue);
+        Debug.Log("Testo selezionato: " + selectedText);
+
+        if(selectedText=="Nome"){
+            SearchByName();
+            Debug.Log("Eccomi 43");
+        }
+            else
+            if(selectedText=="Orario"){
+             SearchByOrario();
+             Debug.Log("Eccomi 48");
+            }
+            else{
+                SearchByResponsabile();
+                Debug.Log("Eccomi 52");
+            }
+    }
     
-    public void Search()
+    public void SearchByName()
     {
         isEmpty=true;
         erroreRicerca.SetActive(false);
+        erroreCarattereSpeciale.SetActive(false);
         string SearchText = SearchBar.GetComponent<TMP_InputField>().text;
         int searchTxtLength = SearchText.Length;
         int searchedElements = 0;
-    
+
+        Regex regex = new Regex("^[a-zA-Z0-9 ]+$");
+        Match match = regex.Match(SearchText);
+        
+        if(!match.Success){
+            erroreCarattereSpeciale.SetActive(true);
+        }
+        if(erroreCarattereSpeciale.activeSelf == false){
         foreach(GameObject ele in Element)
         {
+            erroreCarattereSpeciale.SetActive(false);
             searchedElements++;
             if (ele.GetComponentInChildren<Text>().text.Length >= searchTxtLength)
             {
@@ -51,7 +90,10 @@ public class SearchManager : MonoBehaviour
 
             }
         }
-        if(isEmpty){
+        }
+    
+
+        if((isEmpty)&&(erroreCarattereSpeciale.activeSelf == false)){
 
                 erroreRicerca.SetActive(true);
         }
@@ -59,4 +101,94 @@ public class SearchManager : MonoBehaviour
     }
     // Update is called once per frame
     
+
+
+    public void SearchByOrario()
+    {
+        isEmpty=true;
+        erroreRicerca.SetActive(false);
+        erroreOrario.SetActive(false);
+        string SearchText = SearchBar.GetComponent<TMP_InputField>().text;
+        int searchTxtLength = SearchText.Length;
+        int searchedElements = 0;
+        
+    
+        Regex regex = new Regex("^[0-9 ]+$");
+        Match match = regex.Match(SearchText);
+        
+        if(!match.Success){
+            erroreOrario.SetActive(true);
+        }
+
+        if(erroreOrario.activeSelf == false){
+        foreach(GameObject ele in Element)
+        {
+            erroreOrario.SetActive(false);
+            string orario=ele.transform.GetChild(2).GetComponentInChildren<Text>().text.Substring(11);
+            searchedElements++;
+            if (orario.Length >= searchTxtLength)
+            {
+                if(orario.ToLower().Contains(SearchText.ToLower()))
+                {
+                    ele.SetActive(true);
+                    isEmpty=false;
+                }
+                else
+                {
+                    ele.SetActive(false);
+                }
+
+            }
+        }
+        }
+        
+        if((isEmpty)&&(erroreOrario.activeSelf == false)){
+
+                erroreRicerca.SetActive(true);
+        }
+        
+    }
+
+
+     public void SearchByResponsabile()
+    {
+        isEmpty=true;
+        erroreRicerca.SetActive(false);
+        erroreCarattereSpeciale.SetActive(false);
+        string SearchText = SearchBar.GetComponent<TMP_InputField>().text;
+        int searchTxtLength = SearchText.Length;
+        int searchedElements = 0;
+        
+        Regex regex = new Regex("^[a-zA-Z0-9 ]+$");
+        Match match = regex.Match(SearchText);
+        
+        if(!match.Success){
+            erroreCarattereSpeciale.SetActive(true);
+        }
+    
+        foreach(GameObject ele in Element)
+        {
+            string responsabile=ele.transform.GetChild(1).GetComponentInChildren<Text>().text;
+            searchedElements++;
+            if (responsabile.Length >= searchTxtLength)
+            {
+                if(responsabile.ToLower().Contains(SearchText.ToLower()))
+                {
+                    ele.SetActive(true);
+                    isEmpty=false;
+                }
+                else
+                {
+                    ele.SetActive(false);
+                }
+
+            }
+        }
+        
+        if(isEmpty){
+
+                erroreRicerca.SetActive(true);
+        }
+        
+    }
 }
