@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
 public class MainMenuNavigate : MonoBehaviour
 {
@@ -17,8 +18,7 @@ public class MainMenuNavigate : MonoBehaviour
     public GameObject ricercaristoro;
     public GameObject ricercaufficio;
 
-
-   
+    public GameObject searchManagerEvento;
 
     public void PressStart()
     {
@@ -29,6 +29,7 @@ public class MainMenuNavigate : MonoBehaviour
         tornaindietro.SetActive(true);
 
     }
+
     public void PressRicercaDestinazione()
     {
         ricercaevento.SetActive(false);
@@ -38,6 +39,7 @@ public class MainMenuNavigate : MonoBehaviour
         ricercaufficio.SetActive(true);
 
     }
+
     public void PressRicercaAula()
     {
         ricercaaula.SetActive(false);
@@ -46,6 +48,7 @@ public class MainMenuNavigate : MonoBehaviour
         menuricercadestinazione.SetActive(true);
 
     }
+
     public void PressRicercaRistoro()
     {
         ricercaaula.SetActive(false);
@@ -54,6 +57,7 @@ public class MainMenuNavigate : MonoBehaviour
         menuricercadestinazione.SetActive(true);
 
     }
+
     public void PressRicercaUfficio()
     {
         ricercaaula.SetActive(false);
@@ -63,28 +67,23 @@ public class MainMenuNavigate : MonoBehaviour
 
 
     }
+
     public void PressRicercaEvento()
     {
         ricercaevento.SetActive(false);
         ricercadestinazione.SetActive(false);
         menuricercaevento.SetActive(true);
+        searchManagerEvento.GetComponent<EventiListManager>().popolaListaEventi();
     }
+
     public void PressIndietro()
     {
         SceneManager.LoadScene("MainMenu");
     }
+
     public void TestScena()
     {
         SceneManager.LoadScene("NavigationScene");
     }
-    void Start()
-    {
-       
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

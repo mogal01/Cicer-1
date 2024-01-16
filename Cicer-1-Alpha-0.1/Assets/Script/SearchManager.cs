@@ -12,7 +12,7 @@ public class SearchManager : MonoBehaviour
     public int totalElements;
     // Start is called before the first frame update
 
-    void Start()
+    public void popola()
     {
         totalElements = ContentHolder.transform.childCount;
 
@@ -46,8 +46,5 @@ public class SearchManager : MonoBehaviour
         }
     }
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }
