@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="it">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Login</title>
+    <meta property="og:image" content="assets/img/logo_edited.png">
+    <link rel="icon" type="image/png" sizes="200x200" href="assets/img/logo_edited.png">
+    <link rel="icon" type="image/png" sizes="200x200" href="assets/img/logo_edited.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="200x200" href="assets/img/logo_edited.png">
+    <link rel="icon" type="image/png" sizes="200x200" href="assets/img/logo_edited.png" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/png" sizes="200x200" href="assets/img/logo_edited.png">
+    <link rel="icon" type="image/png" sizes="200x200" href="assets/img/logo_edited.png">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/Data-Summary-Panel---3-Column-Overview--Mobile-Responsive.css">
+    <link rel="stylesheet" href="assets/css/Features-Centered-Icons-icons.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="stylesheet" href="assets/css/modal.css">
+    <link rel="stylesheet" href="assets/css/table.css">
+</head>
+
+<body class="bg-gradient-primary">
+    <div class="container"><img id="immagineLogin" src="assets/img/logo_edited.png">
+        <div class="p-5">
+            <div class="text-center">
+                <h4 class="text-dark mb-4">Login Amministratore</h4>
+            </div>
+            <form class="userForm" action="" onsubmit="return sendLoginRequestServer();">
+                <div class="mb-3"><input class="form-control form-control-lg form-control-user" type="email" id="InputUtenteEmailTI" aria-describedby="emailHelp" placeholder="Email" name="email"></div>
+                <div class="mb-3 d-flex flex-row align-items-center"><input class="form-control form-control-lg form-control-user form-passwordField" type="password" id="InputUserPasswordTI" placeholder="Password" name="password" style="width: 19.05rem!important;"><span id="spanToggle"><i class="fa fa-eye" id="toggleEyePass" onclick="showModifyPasswordToggle()"></i></span></div>
+                <div class="mb-3">
+                    <div class="custom-control custom-checkbox small"></div>
+                </div>
+                <hr><input class="btn btn-primary btn-lg d-block btn-user w-100" type="submit" value="Accedi" style="font-size: 15px;font-family: Nunito, sans-serif;">
+            </form>
+            <div class="text-center"></div>
+        </div>
+    </div>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/functions.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+table.dataTable.table-striped > tbody > tr:nth-of-type(2n + 1) > * {
+  background-color: #dde7ff;
+}
+
+table.dataTable.table-hover > tbody > tr:hover > * {
+  background-color: rgb(194, 212, 255);
+}
+
+thead, tbody, tfoot, tr, td, th {
+  border-color: #dde7ff;
+  border-style: solid;
+  border-width: 0;
+}
+
+.paginate_button {
+  -webkit-appearance: none !important;
+  text-decoration: none;
+  color: black;
+  padding: .5rem;
+  background-color: #ccd4ee;
+}
+
+.paginate_button:hover {
+  cursor: pointer;
+  border-color: #93a5da;
+}
+
+.paginate_button.current {
+  -webkit-appearance: none !important;
+  text-decoration: none;
+  color: black;
+  background-color: #90a1d4;
+}
+
+.fa.fa-trash-o {
+  background-color: rgb(255, 157, 157);
+  width: 2rem;
+  height: 2rem;
+}
+
+.fa.fa-trash-o:hover {
+  background-color: rgb(255, 86, 86);
+}
+
+.btn.btn-primary2.modify {
+  height: fit-content;
+  margin: 0 .8rem;
+}
+

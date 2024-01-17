@@ -1,0 +1,92 @@
+#InputUtenteEmailTI {
+  border-color: var(--bs-primary);
+  border-radius: 5px;
+  width: 19.05rem!important;
+}
+
+#immagineLogin {
+  position: relative;
+  display: block;
+  transform-origin: center;
+  width: 160.5px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255,255,255,0.67);
+  width: 60%;
+  max-width: 400px;
+  align-items: center;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 13px;
+}
+
+#spanToggle:hover {
+  cursor: pointer;
+}
+
+#spanToggle {
+  position: relative;
+  margin-left: 17.3rem;
+}
+
+mb-3 {
+  margin-bottom: 1rem;
+}
+
+.userForm {
+  height: auto;
+}
+
+.p-5 {
+  position: static;
+  display: block;
+  width: auto;
+  padding: 2em 3em!important;
+  height: auto;
+}
+
+.form-passwordField {
+  border-color: var(--bs-primary);
+  font-size: 13.8px;
+  border-radius: 5px;
+  position: absolute;
+  width: 19.1rem;
+  max-height: 60%;
+}
+
+#passwordUtenteTI {
+  border-style: none;
+  position: absolute;
+  width: 65%;
+  padding-bottom: 0.2rem;
+  /*padding-right: 3rem;*/
+}
+
+.fa.fa-eye, .fa.fa-eye-slash {
+  color: #183d89;
+  font-size: 1.5rem;
+  /*padding-right: 3.2rem;*/
+}
+
+.bg-gradient-primary {
+  background: url("../../assets/img/unisaaaaa.jpg");
+  background-size: cover, contain;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-control-user {
+  padding: .375rem .75rem;
+  font-size: 1rem!important;
+}
+

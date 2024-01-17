@@ -12,7 +12,7 @@ public class IstanziaBottoni : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-     
+     istanzia();
     }
 
     // Update is called once per frame
@@ -21,7 +21,7 @@ public class IstanziaBottoni : MonoBehaviour
         
     }
 
-    public void istanzia(string nome)
+    public void istanzia()
     {
         Button instance = Instantiate(prefabBottone);
         instance.transform.SetParent(parent);
