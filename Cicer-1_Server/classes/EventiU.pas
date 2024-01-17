@@ -35,6 +35,7 @@ type
     function checkEvento(aDataOraInizio, aDataOraFine: TDateTime;
       aIdDestinazione, aIdResponsabile: SmallInt): boolean;
     function getEvento(aFiltr: SmallInt): TFDQuery;
+    function getNumEventi(): TFDQuery;
   private
     fDB: tDB;
   end;
@@ -202,7 +203,7 @@ begin
 
   result := nil;
   try
-    lQuery := 'SELECT *  FROM evento where id = '+ aFiltr.ToString;
+    lQuery := 'SELECT *  FROM evento where id = ' + aFiltr.ToString;
 
     lFDQuery := fDB.getQueryResult(lQuery);
 
@@ -220,10 +221,32 @@ begin
 
   result := nil;
   try
-    lQuery := 'SELECT evento.id , evento.nome,data_ora_inizio,data_ora_fine, evento.tipo, destinazione.nome as ndset, utente.nome as nadmin, responsabile.nome as nresp'
+    lQuery := 'SELECT evento.id , evento.nome,data_ora_inizio,data_ora_fine, evento.tipo, destinazione.nome as ndset, utente.nome as nadmin, responsabile.nome as nresp, responsabile.cognome as cognome'
       + ' FROM evento join destinazione on evento.destinazione=destinazione.id join utente on evento.utente=utente.id join responsabile on evento.responsabile=responsabile.id where UPPER(evento.nome) LIKE UPPER('
       + QuotedStr('%' + aFiltr + '%') + ') or UPPER(evento.tipo) LIKE UPPER(' +
       QuotedStr('%' + aFiltr + '%') + ')';
+    lFDQuery := fDB.getQueryResult(lQuery);
+    result := lFDQuery;
+  finally
+
+  end;
+
+end;
+
+function tEventi.getNumEventi: TFDQuery;
+var
+  lQuery: String;
+  lFDQuery: TFDQuery;
+begin
+
+  result := nil;
+  try
+    lQuery := 'select * '+
+    'from (	(SELECT COUNT(*) AS eventi_mese '+
+            'FROM evento ' +
+            'WHERE EXTRACT(MONTH FROM data_ora_inizio) = EXTRACT (MONTH FROM CURRENT_DATE))) as eventi_mese, '+
+	  	'((SELECT COUNT(*) AS eventi_giorno FROM evento WHERE EXTRACT(DAY FROM data_ora_inizio) = EXTRACT (DAY FROM CURRENT_DATE)))as eventi_giorno,'+
+		'(SELECT COUNT(*) AS eventi_totali FROM evento) as eventi_totali';
     lFDQuery := fDB.getQueryResult(lQuery);
     result := lFDQuery;
   finally

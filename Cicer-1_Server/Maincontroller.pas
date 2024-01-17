@@ -73,6 +73,10 @@ type
     [MVCHTTPMethod([httpGET])]
     procedure GetListUtenti(aFiltro: String);
 
+    [MVCPath('/Utente/GetNumUtenti')]
+    [MVCHTTPMethod([httpGET])]
+    procedure GetNumUtenti();
+
     [MVCPath('/Utente/GetUtente/($aToken)/($aFiltro)')]
     [MVCHTTPMethod([httpGET])]
     procedure GetUtente(aToken: String; aFiltro: SmallInt);
@@ -110,7 +114,11 @@ type
     [MVCHTTPMethod([httpGET])]
     procedure GetEvento(aFiltro: SmallInt);
 
-    [MVCPath('/Responsabile/Aggiungi/($aNome)/($aCognome)/($aOraInizioRicevimento)/($aOraFineRicevimento)/($aToken)/($aIdDestinazione )')
+    [MVCPath('/Evento/GetNumEventi')]
+    [MVCHTTPMethod([httpGET])]
+    procedure GetNumEventi();
+
+    [MVCPath('/Responsabile/Aggiungi/($aNome)/($aCognome)/($aOraInizioRicevimento)/($aOraFineRicevimento)/($aToken)/($aIdDestinazione)')
       ]
     [MVCHTTPMethod([httpPOST])]
     procedure AggiungiResponsabile(aNome, aCognome, aOraInizioRicevimento,
@@ -141,11 +149,15 @@ type
 
     [MVCPath('/Destinazione/GetList/($aFiltro)/($aFiltroStato)')]
     [MVCHTTPMethod([httpGET])]
-    procedure GetListDestinazioni(aFiltro,aFiltroStato: String);
+    procedure GetListDestinazioni(aFiltro, aFiltroStato: String);
 
     [MVCPath('/Destinazione/GetUffici/($aFiltro)')]
     [MVCHTTPMethod([httpGET])]
     procedure GetListDestinazioniUffici(aFiltro: String);
+
+    [MVCPath('/Destinazione/GetNumDest')]
+    [MVCHTTPMethod([httpGET])]
+    procedure GetNumDest();
 
     [MVCPath('/Destinazione/GetDestinazione/($aFiltro)')]
     [MVCHTTPMethod([httpGET])]
@@ -160,35 +172,44 @@ uses MVCFramework.Serializer.JSONDataObjects,
 
 procedure TApp1MainController.Index;
 begin
+  // Reindirizza la richiesta alla pagina principale dell'applicazione, "/app/index.html".
   Redirect('/app/index.html');
 end;
 
 procedure TApp1MainController.LogIn(aEmail, aPsw: String);
 var
-  lUtente: tUtenti;
-  JSONResponse: TJsonObject;
-  lToken: String;
+  lUtente: tUtenti; // Oggetto utente che gestirà l'autenticazione.
+  JSONResponse: TJsonObject; // Oggetto JSON per creare la risposta JSON.
+  lToken: String; // Stringa per memorizzare il token di autenticazione.
 
 begin
-  lUtente := tUtenti.Create;
+  lUtente := tUtenti.Create; // Creazione di un'istanza della classe utenti.
   JSONResponse := TJsonObject.Create;
+  // Creazione di un'istanza della classe JSON per costruire la risposta.
 
   try
 
     lToken := lUtente.LogIn(aEmail, aPsw);
+    // Chiamata al metodo di autenticazione dell'utente con email e password.
+    // Verifica se il token è stato restituito (autenticazione riuscita).
     if (lToken <> '') then
     begin
+      // Se l'autenticazione è riuscita, imposta il messaggio di benvenuto e il token nella risposta JSON.
       JSONResponse.S['Result'] := 'Bentornato amico!';
       JSONResponse.S['token'] := lToken;
+      // Utilizza il metodo render per inviare la risposta JSON al client.
       render(JSONResponse, false);
     end
     else
     begin
+      // Se l'autenticazione non è riuscita, imposta un messaggio di errore nella risposta JSON.
       JSONResponse.S['Result'] := 'Chi sei? Goku non lo sai!';
+      // Utilizza il metodo render con codice di stato 403 per indicare un accesso vietato.
       render(403, JSONResponse, false);
     end;
 
   finally
+    // Libera le risorse allocate.
     JSONResponse.Free;
     lUtente.Free;
 
@@ -202,21 +223,26 @@ var
   JSONResponse: TJsonObject;
 
 begin
+
   lUtente := tUtenti.Create;
   JSONResponse := TJsonObject.Create;
 
   try
-
+    // Chiamata al metodo di logout dell'utente con il token di autenticazione.
     if (lUtente.LogOut(aToken)) then
     begin
+      // Se il logout ha avuto successo, imposta un messaggio di successo nella risposta JSON.
       JSONResponse.S['Result'] := 'Eliminazione avvenuta con successo';
+      // Utilizza il metodo render per inviare la risposta JSON al client.
       render(JSONResponse, false);
 
     end
 
     else
     begin
+      // Se il logout non ha avuto successo, imposta un messaggio di errore nella risposta JSON.
       JSONResponse.S['Result'] := 'Eliminazione non avvenuta';
+      // Utilizza il metodo render con codice di stato 500 per indicare un errore del server.
       render(500, JSONResponse, false);
     end;
 
@@ -230,6 +256,7 @@ end;
 function TApp1MainController.checkDataUtente(aNome, aCognome, aEmail,
   aPsw: string): Boolean;
 const
+  // Espressione regolare per validare l'indirizzo email.
   EmailRegexPattern = '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$';
 var
   carattere: Char;
@@ -237,13 +264,16 @@ var
   checkCognome: Boolean;
   checkEmail: Boolean;
 begin
+  // Inizializza le variabili di controllo ai valori di default.
   checkNome := aNome <> ''; // La stringa non è vuota
   checkCognome := aCognome <> '';
+  // Verifica la validità del nome.
   if (checkNome) then
   begin
     for carattere in aNome do
     begin
-      if not TCharacter.IsLetter(carattere) then
+      // Controlla se ogni carattere del nome è una lettera o uno spazio.
+      if not(TCharacter.IsLetter(carattere) or (carattere = ' ')) then
       begin
         checkNome := false;
         Break;
@@ -254,21 +284,25 @@ begin
   begin
     for carattere in aCognome do
     begin
-      if not TCharacter.IsLetter(carattere) then
+      if not(TCharacter.IsLetter(carattere) or (carattere = ' ')) then
       begin
         checkCognome := false;
         Break;
       end;
     end;
   end;
+  // Verifica la validità dell'indirizzo email utilizzando l'espressione regolare.
   checkEmail := TRegEx.IsMatch(aEmail, EmailRegexPattern);
+  // Verifica complessiva: nome, cognome, lunghezza della password e validità email.
   if (checkNome and checkCognome and (Length(aPsw) >= 6) and
     (Length(aPsw) <= 20) and checkEmail) then
   begin
+    // Tutte le condizioni sono soddisfatte, restituisce true.
     result := true;
   end
   else
   begin
+    // Almeno una condizione non è soddisfatta, restituisce false.
     result := false;
   end;
 
@@ -278,18 +312,21 @@ function TApp1MainController.checkDataEvento(aNome, aTipo: String;
   aDataOraInizio, aDataOraFine: TDateTime; aIdResponsabile: SmallInt): Boolean;
 
 begin
-
+  // Verifica se il nome dell'evento è vuoto o supera i 50 caratteri.
   if ((aNome = '') or (Length(aNome) > 50)) then
   begin
+    // Se il nome dell'evento non è valido, restituisce false.
     result := false;
   end
   else
   begin
+    // Se il nome dell'evento è valido, verifica il tipo dell'evento.
     if ((aTipo = 'Lezione') or (aTipo = 'Laurea') or (aTipo = 'Convegno') or
-      (aTipo = 'Esame') or (aTipo = 'Orientamento')) then
+      (aTipo = 'Esame') or (aTipo = 'Orientamento') or (aTipo <> '')) then
     begin
+      // Se il tipo dell'evento è valido, verifica se la data di inizio è precedente o uguale a quella di fine.
       if (CompareDateTime(aDataOraInizio, aDataOraFine) <= 0) then
-        result := true;
+        result := true; // Se la data è valida, restituisce true.
     end;
   end;
 
@@ -301,17 +338,22 @@ var
   oraInizio: TDateTime;
   oraFine: TDateTime;
 begin
+  // Converti le stringhe di orario in oggetti TDateTime.
   oraInizio := StrToDateTime(aOraInizioRic);
   oraFine := StrToDateTime(aOraFineRic);
-  if (((aNome = '') or (Length(aNome) > 50)) and
+  // Verifica se il nome e il cognome del responsabile sono vuoti o superano i 50 caratteri.
+  if (((aNome = '') or (Length(aNome) > 50)) or
     ((aCognome = '') or (Length(aCognome) > 50))) then
   begin
+    // Se il nome o il cognome del responsabile non sono validi, restituisce false.
     result := false;
   end
   else
   begin
+    // Se il nome e il cognome del responsabile sono validi, verifica se l'orario di inizio è precedente o uguale a quello di fine
+    // e se la destinazione è un numero positivo.
     if ((CompareTime(oraInizio, oraFine) <= 0) and (aDestinazione > 0)) then
-      result := true;
+      result := true; // Se tutti i controlli sono superati, restituisce true.
   end;
 
 end;
@@ -328,38 +370,48 @@ begin
   JSONResponse := TJsonObject.Create;
 
   try
+    // Verifica se l'utente che invia la richiesta ha i permessi necessari.
     if (lUtente.checkAccessFunzionalitaUtenti(aToken)) then
     begin
-
+      // Se l'utente ha i permessi, verifica la validità dei dati dell'utente.
       if (checkDataUtente(aNome, aCognome, aEmail, aPsw)) then
       begin
+        // Se i dati dell'utente sono validi, tenta di aggiungere l'utente.
         if (lUtente.aggiungi(aNome, aCognome, aEmail, aPsw, aPermessi)) then
         begin
+          // Se l'aggiunta ha successo, imposta un messaggio di successo nella risposta JSON.
           JSONResponse.S['Result'] := 'Aggiunta avvenuta con successo';
+          // Utilizza il metodo render per inviare la risposta JSON al client.
           render(JSONResponse, false);
 
         end
         else
         begin
+          // Se l'aggiunta non ha successo (utente già esistente), imposta un messaggio di errore nella risposta JSON.
           JSONResponse.S['Result'] := 'Aggiunta non avvenuta perchè già esiste';
+          // Utilizza il metodo render con codice di stato 500 per indicare un errore del server.
           render(500, JSONResponse, false);
         end;
       end
       else
       begin
+        // Se i dati dell'utente non sono validi, imposta un messaggio di errore nella risposta JSON.
         JSONResponse.S['Result'] :=
           'Aggiunta non avvenuta con successo perchè i campi so sbagliti';
-        render(500, JSONResponse, false);
+        // Utilizza il metodo render con codice di stato 500 per indicare un errore del server.
+        render(400, JSONResponse, false);
       end;
-
     end
     else
     begin
+      // Se l'utente non ha i permessi, imposta un messaggio di errore nella risposta JSON.
       JSONResponse.S['Result'] := 'Non hai i permessi';
+      // Utilizza il metodo render con codice di stato 403 per indicare un accesso vietato.
       render(403, JSONResponse, false);
     end;
 
   finally
+    // Libera le risorse allocate.
     JSONResponse.Free;
     lUtente.Free;
 
@@ -377,25 +429,30 @@ begin
   JSONResponse := TJsonObject.Create;
 
   try
+    // Verifica se l'utente che invia la richiesta ha i permessi necessari.
     if (lUtente.checkAccessFunzionalitaUtenti(aToken)) then
     begin
-
+      // Se l'utente ha i permessi, tenta di rimuovere l'utente con l'ID specificato.
       if (lUtente.Remove(aId)) then
       begin
+        // Se la rimozione ha successo, imposta un messaggio di successo nella risposta JSON.
         JSONResponse.S['Result'] := 'Eliminazione avvenuta con successo';
+        // Utilizza il metodo render per inviare la risposta JSON al client.
         render(JSONResponse, false);
-
       end
-
       else
       begin
+        // Se la rimozione non ha successo, imposta un messaggio di errore nella risposta JSON.
         JSONResponse.S['Result'] := 'Eliminazione non avvenuta';
+        // Utilizza il metodo render con codice di stato 500 per indicare un errore del server.
         render(500, JSONResponse, false);
       end;
     end
     else
     begin
+      // Se l'utente non ha i permessi, imposta un messaggio di errore nella risposta JSON.
       JSONResponse.S['Result'] := 'Non hai i permessi';
+      // Utilizza il metodo render con codice di stato 403 per indicare un accesso vietato.
       render(403, JSONResponse, false);
     end;
 
@@ -417,12 +474,16 @@ begin
   JSONResponse := TJsonObject.Create;
 
   try
+    // Verifica se l'utente che invia la richiesta ha i permessi necessari.
     if (lUtente.checkAccessFunzionalitaUtenti(aToken)) then
     begin
+      // Verifica se i dati dell'utente sono validi
       if (checkDataUtente(aNome, aCognome, aEmail, aPsw)) then
       begin
+        // Aggiorna le informazioni dell'utente
         if (lUtente.Update(aNome, aCognome, aEmail, aPsw, aPermessi, aId)) then
         begin
+          // Se l'aggiornamento è riuscito, imposta il risultato in JSONResponse e lo renderizza
           JSONResponse.S['Result'] := 'Modifica avvenuta con successo';
           render(JSONResponse, false);
 
@@ -431,12 +492,14 @@ begin
 
       else
       begin
+        // Se i dati dell'utente non sono validi, imposta il risultato in JSONResponse e lo renderizza con stato 500
         JSONResponse.S['Result'] := 'Modifica non avvenuta';
         render(500, JSONResponse, false);
       end;
     end
     else
     begin
+      // Se l'utente non ha i permessi richiesti, imposta il risultato in JSONResponse e lo renderizza con stato 403
       JSONResponse.S['Result'] := 'Non hai i permessi';
       render(403, JSONResponse, false);
     end;
@@ -450,34 +513,44 @@ end;
 
 procedure TApp1MainController.GetListUtenti(aFiltro: String);
 var
-  lUtente: tUtenti;
-  lFDQuery: tFDQuery;
+  lUtente: tUtenti; // Oggetto utente per gestire l'ottenimento della lista.
+  lFDQuery: tFDQuery; // Oggetto FDQuery per eseguire la query sul database.
   lJSONArray: TJsonArray;
+  // Oggetto JSONArray per creare una lista di oggetti JSON.
   lJSONRecord: TJsonObject;
+  // Oggetto JsonObject per rappresentare un singolo record JSON.
 
 begin
 
   lUtente := tUtenti.Create;
+  // Esecuzione della query per ottenere la lista degli utenti in base al filtro specificato.
   lFDQuery := lUtente.getList(aFiltro);
   if (lFDQuery <> nil) then
   begin
-
+    // Creazione di un array JSON per contenere la lista degli utenti.
     lJSONArray := TJsonArray.Create;
 
     try
+      // Scorrimento dei record nella query.
       while (not lFDQuery.Eof) do
       begin
+        // Creazione di un oggetto JSON per rappresentare un singolo record.
         lJSONRecord := TJsonObject.Create;
+        // Popolamento del record JSON con i dati del record corrente nella query.
         lJSONRecord.I['id'] := lFDQuery.FieldByName('id').AsInteger;
         lJSONRecord.S['nome'] := lFDQuery.FieldByName('nome').AsString;
         lJSONRecord.S['cognome'] := lFDQuery.FieldByName('cognome').AsString;
         lJSONRecord.S['email'] := lFDQuery.FieldByName('email').AsString;
         lJSONRecord.S['permessi'] := lFDQuery.FieldByName('permessi').AsString;
+        // Aggiunta del record JSON all'array JSON.
         lJSONArray.Add(lJSONRecord);
+        // Passaggio al record successivo nella query.
         lFDQuery.Next;
       end;
+      // Invio dell'array JSON al client.
       render(lJSONArray, false);
     finally
+      // Libera le risorse allocate.
       lJSONArray.Free;
       lFDQuery.Free;
       lUtente.Free;
@@ -486,28 +559,68 @@ begin
 
 end;
 
-procedure TApp1MainController.GetProfilo(aToken: String);
+procedure TApp1MainController.GetNumUtenti();
 var
   lUtente: tUtenti;
-  lIdUtente: SmallInt;
   lFDQuery: tFDQuery;
   lJSONResponse: TJsonObject;
 
 begin
+
   lUtente := tUtenti.Create;
   lJSONResponse := TJsonObject.Create;
   try
+    lFDQuery := lUtente.GetNumUtenti();
+    if (lFDQuery <> nil) then
     begin
+      lFDQuery.First;
+      if (not lFDQuery.Eof) then
+      begin
+        lJSONResponse.I['nUtentiPerm'] := lFDQuery.FieldByName('amm_perm')
+          .AsInteger;
+        lJSONResponse.I['nUtentiSenzaPerm'] :=
+          lFDQuery.FieldByName('amm_sen_perm').AsInteger;
+        lJSONResponse.I['nUtentiTot'] :=
+          lFDQuery.FieldByName('somma_amministratori').AsInteger;
+
+      end;
+      render(lJSONResponse, false);
+    end;
+
+  finally
+    lJSONResponse.Free;
+    lFDQuery.Free;
+  end;
+end;
+
+procedure TApp1MainController.GetProfilo(aToken: String);
+var
+  lUtente: tUtenti; // Oggetto utente per gestire l'ottenimento del profilo.
+  lIdUtente: SmallInt; // ID dell'utente ottenuto dal token.
+  lFDQuery: tFDQuery; // Oggetto FDQuery per eseguire la query sul database.
+  lJSONResponse: TJsonObject;
+  // Oggetto JsonObject per rappresentare il profilo JSON.
+
+begin
+  lUtente := tUtenti.Create;
+  // Creazione di un oggetto JSON per rappresentare la risposta JSON.
+  lJSONResponse := TJsonObject.Create;
+  try
+    begin
+      // Ottenimento dell'ID dell'utente dal token.
       lIdUtente := lUtente.getIdByToken(aToken);
       if (lIdUtente > 0) then
       begin
+        // Esecuzione della query per ottenere il profilo dell'utente.
         lFDQuery := lUtente.GetUtente(lIdUtente);
 
         if (lFDQuery <> nil) then
         begin
+          // Posizionamento sulla prima riga della query.
           lFDQuery.First;
           if (not lFDQuery.Eof) then
           begin
+            // Popolamento dell'oggetto JSON con i dati del profilo dell'utente.
             lJSONResponse.I['id'] := lFDQuery.FieldByName('id').AsInteger;
             lJSONResponse.S['nome'] := lFDQuery.FieldByName('nome').AsString;
             lJSONResponse.S['cognome'] :=
@@ -517,13 +630,17 @@ begin
               lFDQuery.FieldByName('permessi').AsString;
 
           end;
+          // Invio della risposta JSON al client.
           render(lJSONResponse, false);
+          // Libera le risorse della query.
           lFDQuery.Free;
         end;
       end
       else
       begin
+        // Se non esiste l'ID dell'utente, imposta un messaggio di errore nella risposta JSON.
         lJSONResponse.S['Result'] := 'Non esiste questo token';
+        // Utilizza il metodo render con codice di stato 404 per indicare risorsa non trovata.
         render(404, lJSONResponse, false);
       end;
     end;
@@ -545,31 +662,27 @@ begin
   lUtente := tUtenti.Create;
   lJSONResponse := TJsonObject.Create;
   try
-    if (lUtente.checkAccessFunzionalitaUtenti(aToken)) then
+    lFDQuery := lUtente.GetUtente(aFiltro);
+    if (lFDQuery <> nil) then
     begin
-      lFDQuery := lUtente.GetUtente(aFiltro);
-      if (lFDQuery <> nil) then
+      lFDQuery.First;
+      if (not lFDQuery.Eof) then
       begin
-        lFDQuery.First;
-        if (not lFDQuery.Eof) then
-        begin
-          lJSONResponse.I['id'] := lFDQuery.FieldByName('id').AsInteger;
-          lJSONResponse.S['nome'] := lFDQuery.FieldByName('nome').AsString;
-          lJSONResponse.S['cognome'] := lFDQuery.FieldByName('cognome')
-            .AsString;
-          lJSONResponse.S['password'] :=
-            lFDQuery.FieldByName('password').AsString;
-          lJSONResponse.S['email'] := lFDQuery.FieldByName('email').AsString;
-          lJSONResponse.S['permessi'] :=
-            lFDQuery.FieldByName('permessi').AsString;
+        lJSONResponse.I['id'] := lFDQuery.FieldByName('id').AsInteger;
+        lJSONResponse.S['nome'] := lFDQuery.FieldByName('nome').AsString;
+        lJSONResponse.S['cognome'] := lFDQuery.FieldByName('cognome').AsString;
+        lJSONResponse.S['password'] := lFDQuery.FieldByName('password')
+          .AsString;
+        lJSONResponse.S['email'] := lFDQuery.FieldByName('email').AsString;
+        lJSONResponse.S['permessi'] := lFDQuery.FieldByName('permessi')
+          .AsString;
 
-        end;
-        render(lJSONResponse, false);
       end;
+      render(lJSONResponse, false);
     end
     else
     begin
-      lJSONResponse.S['Result'] := 'Non hai i permessi';
+      lJSONResponse.S['Result'] := 'No!';
       render(403, lJSONResponse, false);
     end;
 
@@ -775,7 +888,8 @@ begin
         lJSONRecord.S['tipo'] := lFDQuery.FieldByName('tipo').AsString;
         lJSONRecord.S['destinazione'] := lFDQuery.FieldByName('ndset').AsString;
         lJSONRecord.S['utente'] := lFDQuery.FieldByName('nadmin').AsString;
-        lJSONRecord.S['responsabile'] := lFDQuery.FieldByName('nresp').AsString;
+        lJSONRecord.S['responsabile'] := lFDQuery.FieldByName('nresp').AsString
+          + ' ' + lFDQuery.FieldByName('cognome').AsString;
 
         lJSONArray.Add(lJSONRecord);
         lFDQuery.Next;
@@ -830,6 +944,38 @@ begin
 
 end;
 
+procedure TApp1MainController.GetNumEventi;
+var
+  lEvento: tEventi;
+  lFDQuery: tFDQuery;
+  lJSONResponse: TJsonObject;
+begin
+  lEvento := tEventi.Create;
+  lJSONResponse := TJsonObject.Create;
+  try
+    lFDQuery := lEvento.GetNumEventi();
+    if (lFDQuery <> nil) then
+    begin
+      lFDQuery.First;
+      if (not lFDQuery.Eof) then
+      begin
+        lJSONResponse.I['nEventiMese'] := lFDQuery.FieldByName('eventi_mese')
+          .AsInteger;
+        lJSONResponse.I['nEventiGiorno'] :=
+          lFDQuery.FieldByName('eventi_giorno').AsInteger;
+        lJSONResponse.I['nEventiTot'] := lFDQuery.FieldByName('eventi_totali')
+          .AsInteger;
+
+      end;
+      render(lJSONResponse, false);
+    end;
+
+  finally
+    lJSONResponse.Free;
+    lFDQuery.Free;
+  end;
+end;
+
 procedure TApp1MainController.AggiungiResponsabile(aNome, aCognome,
   aOraInizioRicevimento, aOraFineRicevimento, aToken: String;
   aIdDestinazione: SmallInt);
@@ -866,6 +1012,12 @@ begin
           JSONResponse.S['Result'] := 'Aggiunta non avvenuta con successo';
           render(500, JSONResponse, false);
         end;
+      end
+      else
+      begin
+        JSONResponse.S['Result'] :=
+          'Aggiunta non avvenuta con successo perchè i campi so sbagliti';
+        render(400, JSONResponse, false);
       end;
     end;
   finally
@@ -978,15 +1130,14 @@ begin
       while (not lFDQuery.Eof) do
       begin
         lJSONRecord := TJsonObject.Create;
-        lJSONRecord.I['id'] := lFDQuery.FieldByName('id').AsInteger;
-        lJSONRecord.S['nome'] := lFDQuery.FieldByName('nome').AsString;
-        lJSONRecord.S['cognome'] := lFDQuery.FieldByName('cognome').AsString;
+        lJSONRecord.I['id'] := lFDQuery.FieldByName('ID').AsInteger;
+        lJSONRecord.S['nome'] := lFDQuery.FieldByName('NOME').AsString;
+        lJSONRecord.S['cognome'] := lFDQuery.FieldByName('COGNOME').AsString;
         lJSONRecord.S['orario_inizio_ricevimento'] :=
-          lFDQuery.FieldByName('orario_inizio_ricevimento').AsString;
+          lFDQuery.FieldByName('ORA_INIZIO').AsString;
         lJSONRecord.S['orario_fine_ricevimento'] :=
-          lFDQuery.FieldByName('orario_fine_ricevimento').AsString;
-        lJSONRecord.I['destinazione'] := lFDQuery.FieldByName('destinazione')
-          .AsInteger;
+          lFDQuery.FieldByName('ORA_FINE').AsString;
+        lJSONRecord.S['destinazione'] := lFDQuery.FieldByName('DNOME').AsString;
 
         lJSONArray.Add(lJSONRecord);
         lFDQuery.Next;
@@ -1077,7 +1228,8 @@ begin
   end;
 end;
 
-procedure TApp1MainController.GetListDestinazioni(aFiltro,aFiltroStato: String);
+procedure TApp1MainController.GetListDestinazioni(aFiltro,
+  aFiltroStato: String);
 var
   lDestinazione: tDestinazioni;
   lFDQuery: tFDQuery;
@@ -1087,7 +1239,7 @@ var
 begin
 
   lDestinazione := tDestinazioni.Create;
-  lFDQuery := lDestinazione.getList(aFiltro,aFiltroStato);
+  lFDQuery := lDestinazione.getList(aFiltro, aFiltroStato);
   if (lFDQuery <> nil) then
   begin
 
@@ -1136,6 +1288,7 @@ begin
       while (not lFDQuery.Eof) do
       begin
         lJSONRecord := TJsonObject.Create;
+        lJSONRecord.I['id'] := lFDQuery.FieldByName('id').AsInteger;
         lJSONRecord.S['nome'] := lFDQuery.FieldByName('nome').AsString;
         lJSONArray.Add(lJSONRecord);
         lFDQuery.Next;
@@ -1171,6 +1324,39 @@ begin
         lJSONResponse.S['stato'] := lFDQuery.FieldByName('stato').AsString;
         lJSONResponse.S['tipo'] := lFDQuery.FieldByName('tipo').AsString;
         lJSONResponse.I['edificio'] := lFDQuery.FieldByName('edificio')
+          .AsInteger;
+
+      end;
+      render(lJSONResponse, false);
+    end;
+  finally
+    lJSONResponse.Free;
+    lFDQuery.Free;
+    lDestinazione.Free;
+
+  end;
+end;
+
+procedure TApp1MainController.GetNumDest;
+var
+  lDestinazione: tDestinazioni;
+  lFDQuery: tFDQuery;
+  lJSONResponse: TJsonObject;
+begin
+  lDestinazione := tDestinazioni.Create;
+  lJSONResponse := TJsonObject.Create;
+  try
+    lFDQuery := lDestinazione.getNumAule();
+    if (lFDQuery <> nil) then
+    begin
+      lFDQuery.First;
+      if (not lFDQuery.Eof) then
+      begin
+        lJSONResponse.I['nAuleAcc'] := lFDQuery.FieldByName('aule_accessibili')
+          .AsInteger;
+        lJSONResponse.I['nAuleNonAcc'] :=
+          lFDQuery.FieldByName('aule_non_accessibili').AsInteger;
+        lJSONResponse.I['nAuleTot'] := lFDQuery.FieldByName('somma_totale')
           .AsInteger;
 
       end;

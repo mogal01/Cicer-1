@@ -33,6 +33,7 @@ type
     function getList(aFiltr, aFiltrStato: String): TFDQuery;
     function getUffici(aFiltr: String): TFDQuery;
     function getDestinazione(aFiltr: SmallInt): TFDQuery;
+    function getNumAule():TFDQuery;
   private
     fDB: tDB;
   end;
@@ -189,6 +190,28 @@ begin
 
 end;
 
+function tDestinazioni.getNumAule: TFDQuery;
+var
+  lQuery: String;
+  lFDQuery: TFDQuery;
+
+begin
+
+  result := nil;
+  try
+    lQuery :='select *, x.aule_accessibili + y.aule_non_accessibili as somma_totale '+
+              'from (	(SELECT COUNT(*) AS aule_accessibili FROM destinazione WHERE tipo=''AULA'' and stato=''ACCESSIBILE'')) as x, '+
+              '((SELECT COUNT(*) AS aule_non_accessibili FROM destinazione WHERE  tipo=''AULA'' and stato=''NON ACCESSIBILE''))as y';
+
+    lFDQuery := fDB.getQueryResult(lQuery);
+    result := lFDQuery;
+
+  finally
+
+  end;
+
+end;
+
 function tDestinazioni.getUffici(aFiltr: String): TFDQuery;
 var
   lQuery: String;
@@ -198,7 +221,7 @@ begin
 
   result := nil;
   try
-    lQuery := 'SELECT nome  FROM destinazione WHERE UPPER(tipo) LIKE UPPER(' +
+    lQuery := 'SELECT id, nome  FROM destinazione WHERE UPPER(tipo) LIKE UPPER(' +
       QuotedStr('%' + aFiltr + '%') + ')';
 
     lFDQuery := fDB.getQueryResult(lQuery);

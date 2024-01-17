@@ -34,9 +34,10 @@ type
     function update(aNome, aCognome, aEmail, aPsw, aPermessi: String;
       aId: SmallInt): boolean;
     function getList(aFiltr: String): TFDQuery;
-    function getUtente(aFiltr:SmallInt): TFDQuery;
+    function getUtente(aFiltr: SmallInt): TFDQuery;
     function checkAccessFunzionalitaUtenti(aToken: String): boolean;
-    function getIdByToken(aFiltr:String): SmallInt;
+    function getIdByToken(aFiltr: String): SmallInt;
+    function getNumUtenti(): TFDQuery;
   private
     fDB: tDB;
   end;
@@ -64,35 +65,41 @@ end;
 function tUTenti.logIn(aEmail, aPsw: String): String;
 var
   lQuery: String;
-  lFDQuery: TFDQuery;
+  // Query SQL per ottenere l'utente in base all'email e alla password.
+  lFDQuery: TFDQuery; // Oggetto FDQuery per eseguire la query sul database.
   lFDQueryToken: TFDQuery;
-  lQueryToken: String;
-  lToken: String;
+  // Oggetto FDQuery per eseguire la query di inserimento del token.
+  lQueryToken: String; // Query SQL per inserire il token nel database.
+  lToken: String; // Token generato per l'utente autenticato.
 
 begin
 
   result := '';
 
   try
+    // Costruzione della query SQL per selezionare l'utente in base all'email e alla password.
     lQuery := 'Select * from utente where email=' + QuotedStr(aEmail) +
       ' and password= ' + QuotedStr(aPsw);
+    // Esecuzione della query e ottenimento del risultato.
     lFDQuery := fDB.getQueryResult(lQuery);
-
+    // Se esiste un solo record, significa che l'utente è stato trovato e può effettuare l'accesso.
     if (lFDQuery.RecordCount = 1) then
     begin
-
+      // Generazione di un nuovo token univoco.
       lToken := TGUID.NewGuid.ToString;
-
+      // Costruzione della query SQL per inserire il token nel database.
       lQueryToken := 'INSERT INTO token (utente,token) VALUES (' +
         lFDQuery.FieldByName('id').AsString + ',' + QuotedStr(lToken) + ')';
       lFDQueryToken := fDB.executeQuery(lQueryToken);
+      // Imposta il risultato della funzione come il token generato.
       result := lToken;
+      // Libera le risorse della query di inserimento del token.
       lFDQueryToken.Free;
 
     end;
 
   finally
-
+    // Libera le risorse della query di selezione dell'utente.
     lFDQuery.Free;
 
   end;
@@ -106,19 +113,20 @@ var
 begin
   result := false;
   try
+    // Costruzione della query SQL per eliminare il token associato dall'utente.
     lQuery := 'DELETE FROM token WHERE token=' + QuotedStr(aToken);
-
+    // Esecuzione della query di eliminazione del token dal database.
     lFDQuery := fDB.executeQuery(lQuery);
-
+    // Se almeno una riga è stata influenzata dalla query, il logout è considerato riuscito.
     if (lFDQuery.RowsAffected > 0) then
     begin
-
+      // Imposta il risultato della funzione come 'true' per indicare un logout riuscito.
       result := true;
 
     end;
 
   finally
-
+    // Libera le risorse della query di eliminazione del token.
     lFDQuery.Free;
 
   end;
@@ -137,26 +145,32 @@ begin
   result := false;
 
   try
-    lQuery := 'SELECT * from utente where email=' +QuotedStr(aEmail);
-    lFDQuery:= fDB.getQueryResult(lQuery);
-    if(lFDQuery.RecordCount=0) then
+    // Costruzione della query SQL per verificare se l'utente esiste già nel database.
+    lQuery := 'SELECT * from utente where email=' + QuotedStr(aEmail);
+    // Esecuzione della query di verifica.
+    lFDQuery := fDB.getQueryResult(lQuery);
+    // Se non esiste un utente con la stessa email, procedi con l'inserimento del nuovo utente.
+    if (lFDQuery.RecordCount = 0) then
     begin
-    lQuery := 'INSERT INTO utente (nome, cognome, email, password, permessi) VALUES ('
-      + QuotedStr(aNome) + ', ' + QuotedStr(aCognome) + ', ' + QuotedStr(aEmail)
-      + ', ' + QuotedStr(aPsw) + ', ' + QuotedStr(aPermessi) + ')';
+      // Costruzione della query SQL per l'inserimento del nuovo utente.
+      lQuery := 'INSERT INTO utente (nome, cognome, email, password, permessi) VALUES ('
+        + QuotedStr(aNome) + ', ' + QuotedStr(aCognome) + ', ' +
+        QuotedStr(aEmail) + ', ' + QuotedStr(aPsw) + ', ' +
+        QuotedStr(aPermessi) + ')';
+      // Esecuzione della query di inserimento del nuovo utente nel database.
+      lFDQuery := fDB.executeQuery(lQuery);
+      // Se almeno una riga è stata influenzata dalla query, l'aggiunta dell'utente è considerata riuscita.
+      if (lFDQuery.RowsAffected > 0) then
+      begin
+        // Imposta il risultato della funzione come 'true' per indicare un'aggiunta riuscita.
+        result := true;
 
-    lFDQuery := fDB.executeQuery(lQuery);
-//
-    if (lFDQuery.RowsAffected > 0) then
-    begin
-
-      result := true;
-
-    end;
+      end;
     end
     else
     begin
-    result :=false;
+      // Se esiste già un utente con la stessa email, l'aggiunta dell'utente non è possibile.
+      result := false;
     end;
 
   finally
@@ -176,13 +190,14 @@ begin
   result := false;
 
   try
+    // Costruzione della query SQL per eliminare l'utente in base all'ID
     lQuery := 'DELETE FROM utente WHERE id=' + (aId).ToString;
-
+    // Esecuzione della query di eliminazione dell'utente dal database.
     lFDQuery := fDB.executeQuery(lQuery);
-
+    // Se almeno una riga è stata influenzata dalla query, la rimozione dell'utente è considerata riuscita.
     if (lFDQuery.RowsAffected > 0) then
     begin
-
+      // Imposta il risultato della funzione come 'true' per indicare una rimozione riuscita.
       result := true;
 
     end;
@@ -205,16 +220,17 @@ begin
   result := false;
 
   try
+    // Costruzione della query SQL per aggiornare i dati dell'utente in base all'ID.
     lQuery := 'UPDATE utente SET nome= ' + QuotedStr(aNome) + ' ,cognome= ' +
       QuotedStr(aCognome) + ', email= ' + QuotedStr(aEmail) + ', password=' +
       QuotedStr(aPsw) + ', permessi= ' + QuotedStr(aPermessi) + ' WHERE id=' +
       aId.ToString;
-
+    // Esecuzione della query di aggiornamento dei dati dell'utente nel database.
     lFDQuery := fDB.executeQuery(lQuery);
-
+    // Se almeno una riga è stata influenzata dalla query, l'aggiornamento è considerato riuscito.
     if (lFDQuery.RowsAffected > 0) then
     begin
-
+      // Imposta il risultato della funzione come 'true' per indicare un aggiornamento riuscito.
       result := true;
 
     end;
@@ -234,13 +250,14 @@ begin
 
   result := 0;
   try
-    lQuery := 'select utente from token where token='+ QuotedStr(aFiltr);
-
+    // Costruzione della query SQL per ottenere l'ID di un utente in base al token.
+    lQuery := 'select utente from token where token=' + QuotedStr(aFiltr);
+    // Esecuzione della query per ottenere l'ID.
     lFDQuery := fDB.getQueryResult(lQuery);
-
+    // Assegna l'ID ottenuto al risultato della funzione.
     result := lFDQuery.FieldByName('utente').AsInteger;
   finally
-
+      lFDQuery.Free;
   end;
 
 end;
@@ -253,12 +270,35 @@ begin
 
   result := nil;
   try
+    // Costruzione della query SQL per ottenere la lista di utenti in base al filtro.
     lQuery := 'SELECT *  FROM utente WHERE UPPER(nome) LIKE UPPER(' +
       QuotedStr('%' + aFiltr + '%') + ') or UPPER(cognome) LIKE UPPER(' +
       QuotedStr('%' + aFiltr + '%') + ')';
-
+    // Esecuzione della query per ottenere la lista di utenti.
     lFDQuery := fDB.getQueryResult(lQuery);
+    // Assegna la query ottenuta al risultato della funzione.
+    result := lFDQuery;
+  finally
 
+  end;
+
+end;
+
+function tUTenti.getNumUtenti(): TFDQuery;
+var
+  lQuery: String;
+  lFDQuery: TFDQuery;
+begin
+
+  result := nil;
+  try
+    // Costruzione della query SQL per ottenere il numero totale di utenti e amministratori.
+    lQuery := 'select *, x.amm_perm+y.amm_sen_perm as somma_amministratori from '
+      + '((select count(*) as amm_perm from utente where permessi=''amministratore'')) as x ,'
+      + '((select count(*) as amm_sen_perm from utente where permessi=''nessunPermesso'')) as y';
+    // Esecuzione della query per ottenere il numero totale di utenti e amministratori.
+    lFDQuery := fDB.getQueryResult(lQuery);
+    // Assegna la query ottenuta al risultato della funzione.
     result := lFDQuery;
   finally
 
@@ -274,10 +314,11 @@ begin
 
   result := nil;
   try
-    lQuery := 'SELECT *  FROM utente WHERE id= '+aFiltr.ToString;
-
+    // Costruzione della query SQL per ottenere i dati di un utente in base all'ID.
+    lQuery := 'SELECT *  FROM utente WHERE id= ' + aFiltr.ToString;
+    // Esecuzione della query per ottenere i dati dell'utente.
     lFDQuery := fDB.getQueryResult(lQuery);
-
+    // Assegna la query ottenuta al risultato della funzione.
     result := lFDQuery;
   finally
 
@@ -292,11 +333,12 @@ begin
   result := false;
 
   try
-
+    // Costruzione della query SQL per ottenere i permessi dell'utente in base al token.
     lQuery := 'Select permessi from utente, token where token=' +
       QuotedStr(aToken) + ' and utente.id= token.utente';
+    // Esecuzione della query per ottenere i permessi dell'utente.
     lFDQuery := fDB.getQueryResult(lQuery);
-
+    // Se i permessi dell'utente sono "amministratore", la funzione restituisce 'true'.
     if (lFDQuery.FieldByName('permessi').AsString = 'amministratore') then
 
     begin

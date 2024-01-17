@@ -39,34 +39,44 @@ implementation
 
 function tDB.connect: TfdConnection;
 begin
+  // Creazione di un nuovo oggetto TfdConnection
   FFDConnection := TfdConnection.Create(nil);
-
+  // Impostazione del driver per PostgreSQL
   FFDConnection.DriverName := 'PG';
-
+  // Configurazione dei parametri di connessione al database PostgreSQL
   FFDConnection.Params.Add('Server=localhost');
   FFDConnection.Params.Add('Database=Cicer1');
   FFDConnection.Params.Add('User_Name=postgres');
   FFDConnection.Params.Add('Password=159753');
+  // Connessione effettiva al database
   FFDConnection.Connected := True;
-
+  // Restituzione dell'oggetto TfdConnection
   result := FFDConnection;
 end;
 
 function tDB.getQueryResult(aQuery: String): TFDQuery;
 begin
+  // Creazione di un nuovo oggetto TFDQuery
   result := TFDQuery.Create(nil);
+  // Configurazione della connessione per la query
   result.Connection := connect();
+  // Impostazione del testo della query SQL
   result.SQL.Text := aQuery;
+  // Esecuzione della query e apertura del set di risultati
   result.Open();
+  // Spostamento al primo record nel set di risultati
   result.First;
 end;
 
 function tDB.executeQuery(aQuery: String): TFDQuery;
 begin
-
+  // Creazione di un nuovo oggetto TFDQuery
   result := TFDQuery.Create(nil);
+  // Configurazione della connessione per l'esecuzione della query
   result.Connection := connect();
+  // Impostazione del testo della query SQL
   result.SQL.Text := aQuery;
+  // Esecuzione della query senza restituzione di un set di risultati
   result.ExecSQL();
 
 end;

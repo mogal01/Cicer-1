@@ -21,4 +21,19 @@
     <Transaction>2023/12/06 12:09:40.000.928,=C:\Users\simon\Desktop\Progetto Cicer-1\Cicer-1_Server\Unit1.pas</Transaction>
     <Transaction>2023/12/06 12:12:51.000.418,=C:\Users\simon\Desktop\Progetto Cicer-1\Cicer-1_Server\Settings\MVCFramework.Middleware.CORS.pas</Transaction>
   </Transactions>
+	<ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="classes"/>
+    <File Path="classes\DbU.pas"/>
+    <File Path="classes\DestinazioniU.pas"/>
+    <File Path="classes\EdificiU.pas"/>
+    <File Path="classes\EventiU.pas"/>
+    <File Path="classes\ResponsabiliU.pas"/>
+    <File Path="classes\UtentiU.pas"/>
+    <File Path="Settings"/>
+    <File Path="Settings\MVCFramework.Middleware.CORS.pas"/>
+    <File Path="Maincontroller.pas"/>
+    <File Path="..\..\sources\MVCFramework.Middleware.StaticFiles.pas"/>
+    <File Path="WebModuleUnit1.pas"/>
+    <File Path="WebModuleUnit1.dfm"/>
+  </ProjectSortOrder>
 </BorlandProject>
