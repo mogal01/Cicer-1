@@ -1,0 +1,39 @@
+.icon-header {
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  padding: 0 calc(var(--bs-modal-header-padding-x) * .5);
+  /*margin: calc(-.5 * var(--bs-modal-header-padding-y)) calc(-.5 * var(--bs-modal-header-padding-x)) calc(-.5 * var(--bs-modal-header-padding-y)) auto;*/
+}
+
+.form-label {
+  margin-top: 0.6rem;
+  margin-bottom: .2rem;
+  width: 11rem;
+}
+
+.spanIconPass {
+}
+
+.form-pass-modal {
+  margin-top: 1rem;
+  margin-left: -3.1rem;
+  width: 68%!important;
+  border-color: var(--bs-body-color)!important;
+  border: var(--bs-border-width) solid var(--bs-border-color)!important;
+}
+
+.spanIconPass {
+  margin-top: 1rem;
+  margin-left: -1.5rem;
+}
+
+.form-passwordField {
+  width: 100%!important;
+  display: block;
+  padding: .375rem .75rem;
+  font-size: 1rem!important;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
