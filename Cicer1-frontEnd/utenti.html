@@ -24,211 +24,222 @@
     <link rel="stylesheet" href="assets/css/Features-Centered-Icons-icons.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="assets/css/modal.css">
+    <link rel="stylesheet" href="assets/css/scriptLoading.css">
     <link rel="stylesheet" href="assets/css/table.css">
 </head>
 
 <body id="page-top">
-    <div id="wrapper">
-        <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
-            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#"><img src="assets/img/logo_edited.png" width="50" height="auto">
-                    <div class="sidebar-brand-icon rotate-n-15"></div>
-                    <div class="sidebar-brand-text mx-3"><span>cicer-1</span></div>
-                </a>
-                <hr class="sidebar-divider my-0">
-                <ul class="navbar-nav text-light" id="accordionSidebar-1">
-                    <li class="nav-item"><a class="nav-link" href="dashboard.html"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 24 24" width="1em" fill="currentColor">
-                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"></path>
-                            </svg><span>Dashboard</span></a><a class="nav-link active" href="utenti.html"><i class="fa fa-users"></i><span>Gestione utenti</span></a><a class="nav-link" href="destinazioni.html"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 24 24" width="1em" fill="currentColor">
-                                <path d="M0 0h24v24H0V0z" fill="none"></path>
-                                <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 4h2v5l-1-.75L9 9V4zm9 16H6V4h1v9l3-2.25L13 13V4h5v16z"></path>
-                            </svg><span>Gestione destinazioni</span></a><a class="nav-link" href="eventi.html"><i class="material-icons">event</i><span>Gestione eventi</span></a><a class="nav-link" href="responsabili.html"><i class="fa fa-user"></i><span>Gestione responsabili</span></a></li>
-                </ul>
-                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle-1" type="button"></button></div>
-            </div>
-        </nav>
-        <div class="d-flex flex-column" id="content-wrapper">
-            <div id="content">
-                <nav class="navbar navbar-expand bg-white shadow mb-4 topbar static-top navbar-light">
-                    <div class="container-fluid">
-                        <ul class="navbar-nav flex-nowrap ms-auto">
-                            <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
-                                <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
-                                    <form class="me-auto navbar-search w-100">
-                                        <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
-                                            <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter"></span></a>
-                                    <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 12, 2019</span>
-                                                <p>A new monthly report is ready to download!</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 7, 2019</span>
-                                                <p>$290.29 has been deposited into your account!</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 2, 2019</span>
-                                                <p>Spending Alert: We've noticed unusually high spending for your account.</p>
-                                            </div>
-                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter"></span></a>
-                                    <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar4.jpeg">
-                                                <div class="bg-success status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Hi there! I am wondering if you can help me with a problem I've been having.</span></div>
-                                                <p class="small text-gray-500 mb-0">Emily Fowler - 58m</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar2.jpeg">
-                                                <div class="status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>I have the photos that you ordered last month!</span></div>
-                                                <p class="small text-gray-500 mb-0">Jae Chun - 1d</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar3.jpeg">
-                                                <div class="bg-warning status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Last month's report looks great, I am very happy with the progress so far, keep up the good work!</span></div>
-                                                <p class="small text-gray-500 mb-0">Morgan Alvarez - 2d</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar5.jpeg">
-                                                <div class="bg-success status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</span></div>
-                                                <p class="small text-gray-500 mb-0">Chicken the Dog · 2w</p>
-                                            </div>
-                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                                    </div>
-                                </div>
-                                <div class="shadow dropdown-list dropdown-menu dropdown-menu-end" aria-labelledby="alertsDropdown"></div>
-                            </li>
-                            <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" id="spanEmailUser"></a>
-                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="profile.html"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
-                                        <div class="dropdown-divider"></div><a class="dropdown-item" onclick="logOut()"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul><img class="icon-circle" src="assets/img/avatars/avatar5.jpeg">
-                    </div>
-                </nav>
-                <div class="container-fluid head-button">
-                    <h3 class="text-dark mb-1">Utenti</h3>
-                    <div class="d-flex flex-column">
-                        <div class="d-flex justify-content-end button" style="margin-bottom: 1rem;width: 92%;"><button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#utenteModal" onclick="setAddDataUserModal(0)">Aggiungi</button></div>
-                        <div class="table-responsive">
-                            <table class="table table-hover table-striped" id="utentiTable">
-                                <thead align="center">
-                                    <tr>
-                                        <th colspan="1" rowspan="1" tabindex="0">id</th>
-                                        <th colspan="1" rowspan="1" tabindex="0">nome</th>
-                                        <th colspan="1" rowspan="1" tabindex="0">cognome</th>
-                                        <th colspan="1" rowspan="1" tabindex="0">email</th>
-                                        <th colspan="1" rowspan="1" tabindex="0">permessi</th>
-                                        <th colspan="1" rowspan="1" tabindex="0"></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody class="tbody"></tbody>
-                            </table>
-                        </div>
-                    </div>
+    <div id="loading-screen">
+        <div class="loader d-flex align-items-center">
+            <p class="paragraph-loader">Loading...</p>
+        </div>
+    </div>
+    <div id="main-content">
+        <div id="wrapper">
+            <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
+                <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#"><img src="assets/img/logo_edited.png" width="50" height="auto">
+                        <div class="sidebar-brand-icon rotate-n-15"></div>
+                        <div class="sidebar-brand-text mx-3"><span>cicer-1</span></div>
+                    </a>
+                    <hr class="sidebar-divider my-0">
+                    <ul class="navbar-nav text-light" id="accordionSidebar-1">
+                        <li class="nav-item"><a class="nav-link" href="dashboard.html"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 24 24" width="1em" fill="currentColor">
+                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"></path>
+                                </svg><span>Dashboard</span></a><a class="nav-link active" href="utenti.html"><i class="fa fa-users"></i><span>Gestione utenti</span></a><a class="nav-link" href="destinazioni.html"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 24 24" width="1em" fill="currentColor">
+                                    <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                    <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 4h2v5l-1-.75L9 9V4zm9 16H6V4h1v9l3-2.25L13 13V4h5v16z"></path>
+                                </svg><span>Gestione destinazioni</span></a><a class="nav-link" href="eventi.html"><i class="material-icons">event</i><span>Gestione eventi</span></a><a class="nav-link" href="responsabili.html"><i class="fa fa-user"></i><span>Gestione responsabili</span></a></li>
+                    </ul>
+                    <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle-1" type="button"></button></div>
                 </div>
-                <section id="amihub-elemnt-menubar">
-                    <div class="modal fade" role="dialog" tabindex="-1" id="utenteModal" aria-labelledby="utenteModalLabel">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header" id="modal-header">
-                                    <div class="icon-header"><i class="fa fa-plus icon-dashboard" id="icon_utente"></i>
-                                        <h4 style="padding: 0 calc(var(--bs-modal-header-padding-x) * .5);margin: calc(-.5 * var(--bs-modal-header-padding-y)) calc(-.5 * var(--bs-modal-header-padding-x)) calc(-.5 * var(--bs-modal-header-padding-y)) auto;">Utente</h4>
-                                    </div><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
-                                </div>
-                                <div class="modal-body" id="modalBody">
-                                    <form id="utenteForm">
-                                        <div class="form-group mb-3"><label class="form-label">Email:</label>
-                                            <div class="modal fade" role="dialog" tabindex="-1" aria-labelledby="addDashModalLabel">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <div class="icon-header"><i class="fa fa-plus icon-dashboard"></i>
-                                                                <h4 style="padding: 0 calc(var(--bs-modal-header-padding-x) * .5);margin: calc(-.5 * var(--bs-modal-header-padding-y)) calc(-.5 * var(--bs-modal-header-padding-x)) calc(-.5 * var(--bs-modal-header-padding-y)) auto;">Utente</h4>
-                                                            </div><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form>
-                                                                <div class="form-group mb-3"><label class="form-label">Nome dell'evento:</label><input class="form-control" type="text" id="nomem" placeholder="Ex: &quot;Analisi I&quot;"></div>
-                                                                <div class="form-group mb-3">
-                                                                    <div class="insertData">
-                                                                        <div class="d-flex flex-row align-items-center"><label class="form-label">Data inizio:</label><input class="form-control space-inputs" type="date" id="fieldTimestampData-inizio"></div>
-                                                                        <div class="d-flex flex-row align-items-center"><label class="form-label">Data fine:</label><input class="form-control space-inputs" id="fieldTimestampData-fine" type="date"></div>
-                                                                    </div>
-                                                                    <div class="insertData">
-                                                                        <div class="d-flex flex-row align-items-center"><label class="form-label">Ora inizio:</label><input class="form-control mt-2" id="fieldTimestampTime-oraInizio" type="time" name="Timestamp_Time"></div>
-                                                                        <div class="d-flex flex-row align-items-center"><label class="form-label">Ora fine:</label><input class="form-control mt-2" id="fieldTimestampTime-oraFine" type="time" name="Timestamp_Time"></div>
-                                                                    </div>
-                                                                    <div class="d-flex flex-row align-items-center"><label class="form-label">Tipo</label><select class="form-select" id="tipoEvento">
-                                                                            <optgroup label="This is a group">
-                                                                                <option value="12" selected="">This is item 1</option>
-                                                                                <option value="13">This is item 2</option>
-                                                                                <option value="14">This is item 3</option>
-                                                                            </optgroup>
-                                                                        </select></div>
-                                                                </div>
-                                                                <div class="d-flex flex-row align-items-center"><label class="form-label">Responsabile:</label><input class="form-control" type="text" placeholder="ex: &quot;Carmine Gravino&quot;"></div>
-                                                                <div id="imageSelect"></div>
-                                                            </form>
-                                                        </div>
-                                                        <div class="modal-footer"><button class="btn btn-light" id="btnModelCloseAddDashboard" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary btn btn-outline-info btn-block" type="button">Save</button></div>
-                                                    </div>
+            </nav>
+            <div class="d-flex flex-column" id="content-wrapper">
+                <div id="content">
+                    <nav class="navbar navbar-expand bg-white shadow mb-4 topbar static-top navbar-light">
+                        <div class="container-fluid">
+                            <ul class="navbar-nav flex-nowrap ms-auto">
+                                <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
+                                        <form class="me-auto navbar-search w-100">
+                                            <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
+                                                <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown no-arrow mx-1">
+                                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter"></span></a>
+                                        <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
+                                            <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
+                                                <div class="me-3">
+                                                    <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
                                                 </div>
-                                            </div><input class="form-control" type="email" id="emailUtenteTI" placeholder="Ex: &quot;m.rossi@unisa.it&quot;">
+                                                <div><span class="small text-gray-500">December 12, 2019</span>
+                                                    <p>A new monthly report is ready to download!</p>
+                                                </div>
+                                            </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                                <div class="me-3">
+                                                    <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
+                                                </div>
+                                                <div><span class="small text-gray-500">December 7, 2019</span>
+                                                    <p>$290.29 has been deposited into your account!</p>
+                                                </div>
+                                            </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                                <div class="me-3">
+                                                    <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
+                                                </div>
+                                                <div><span class="small text-gray-500">December 2, 2019</span>
+                                                    <p>Spending Alert: We've noticed unusually high spending for your account.</p>
+                                                </div>
+                                            </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                                         </div>
-                                        <div class="d-flex flex-row align-items-center" style="margin-bottom: 1rem;"><label class="form-label">Nome:</label><input class="form-control" type="text" id="nomeUtenteTI" placeholder="ex: &quot;Mario&quot;"></div>
-                                        <div class="d-flex flex-row align-items-center" style="margin-bottom: 1rem;"><label class="form-label">Cognome:</label><input class="form-control" type="text" id="cognomeUtenteTI" placeholder="ex: &quot;Rossi&quot;"></div>
-                                        <div class="d-flex flex-row align-items-center"><label class="form-label">Password:</label>
-                                            <div class="mb-3 d-flex flex-row align-items-center"><input class="form-control form-control-lg form-pass-modal form-passwordField" type="password" id="InputUserPasswordTI" name="password" style="display: block;width: 21.5rem!important;padding: .375rem .75rem;font-size: 1rem!important;font-weight: 400;line-height: 1.5;"><span id="spanToggle"><i class="fa fa-eye spanIconPass" id="toggleEyePass" onclick="showModifyPasswordToggle()"></i></span></div>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown no-arrow mx-1">
+                                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter"></span></a>
+                                        <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
+                                            <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
+                                                <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar4.jpeg">
+                                                    <div class="bg-success status-indicator"></div>
+                                                </div>
+                                                <div class="fw-bold">
+                                                    <div class="text-truncate"><span>Hi there! I am wondering if you can help me with a problem I've been having.</span></div>
+                                                    <p class="small text-gray-500 mb-0">Emily Fowler - 58m</p>
+                                                </div>
+                                            </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                                <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar2.jpeg">
+                                                    <div class="status-indicator"></div>
+                                                </div>
+                                                <div class="fw-bold">
+                                                    <div class="text-truncate"><span>I have the photos that you ordered last month!</span></div>
+                                                    <p class="small text-gray-500 mb-0">Jae Chun - 1d</p>
+                                                </div>
+                                            </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                                <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar3.jpeg">
+                                                    <div class="bg-warning status-indicator"></div>
+                                                </div>
+                                                <div class="fw-bold">
+                                                    <div class="text-truncate"><span>Last month's report looks great, I am very happy with the progress so far, keep up the good work!</span></div>
+                                                    <p class="small text-gray-500 mb-0">Morgan Alvarez - 2d</p>
+                                                </div>
+                                            </a><a class="dropdown-item d-flex align-items-center" href="#">
+                                                <div class="dropdown-list-image me-3"><img class="rounded-circle" src="assets/img/avatars/avatar5.jpeg">
+                                                    <div class="bg-success status-indicator"></div>
+                                                </div>
+                                                <div class="fw-bold">
+                                                    <div class="text-truncate"><span>Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</span></div>
+                                                    <p class="small text-gray-500 mb-0">Chicken the Dog · 2w</p>
+                                                </div>
+                                            </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                                         </div>
-                                        <div class="d-flex flex-row align-items-center"><label class="form-label" for="permessiUtenteSelect">Permessi:</label><select class="form-select" id="permessiUtenteSelect">
-                                                <option value="amministratore" selected="">Amministratore</option>
-                                                <option value="nessunPermesso">Nessun permesso</option>
-                                            </select></div>
-                                        <div id="imageSelect"></div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer"><button class="btn btn-light" id="btnModelCloseAddDashboard" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary btn btn-outline-info btn-block" id="saveUserButton" type="button" onclick="sendRequestAggiungi()">Save</button></div>
+                                    </div>
+                                    <div class="shadow dropdown-list dropdown-menu dropdown-menu-end" aria-labelledby="alertsDropdown"></div>
+                                </li>
+                                <li class="nav-item dropdown no-arrow">
+                                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" id="spanEmailUser"></a>
+                                        <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="profile.html"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
+                                            <div class="dropdown-divider"></div><a class="dropdown-item" onclick="logOut()"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul><svg xmlns="http://www.w3.org/2000/svg" viewBox="-32 0 512 512" width="1em" height="1em" fill="currentColor" class="icon-circle" style="width: 2rem;color: #2c58a9;border: groove;height: auto;">
+                                <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. -->
+                                <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path>
+                            </svg>
+                        </div>
+                    </nav>
+                    <div class="container-fluid head-button">
+                        <h3 class="text-dark mb-1">Utenti</h3>
+                        <div class="d-flex flex-column">
+                            <div class="d-flex justify-content-end button" style="margin-bottom: 1rem;width: 92%;"><button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#utenteModal" onclick="setAddDataUserModal(0)">Aggiungi</button></div>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped" id="utentiTable">
+                                    <thead align="center">
+                                        <tr>
+                                            <th colspan="1" rowspan="1" tabindex="0">id</th>
+                                            <th colspan="1" rowspan="1" tabindex="0">nome</th>
+                                            <th colspan="1" rowspan="1" tabindex="0">cognome</th>
+                                            <th colspan="1" rowspan="1" tabindex="0">email</th>
+                                            <th colspan="1" rowspan="1" tabindex="0">permessi</th>
+                                            <th colspan="1" rowspan="1" tabindex="0"></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tbody"></tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                </section>
-            </div>
-        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+                    <section id="amihub-elemnt-menubar">
+                        <div class="modal fade" role="dialog" tabindex="-1" id="utenteModal" aria-labelledby="utenteModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header" id="modal-header">
+                                        <div class="icon-header"><i class="fa fa-plus icon-dashboard" id="icon_utente"></i>
+                                            <h4 style="padding: 0 calc(var(--bs-modal-header-padding-x) * .5);margin: calc(-.5 * var(--bs-modal-header-padding-y)) calc(-.5 * var(--bs-modal-header-padding-x)) calc(-.5 * var(--bs-modal-header-padding-y)) auto;">Utente</h4>
+                                        </div><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body" id="modalBody">
+                                        <form id="utenteForm">
+                                            <div class="form-group mb-3"><label class="form-label">Email:</label>
+                                                <div class="modal fade" role="dialog" tabindex="-1" aria-labelledby="addDashModalLabel">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <div class="icon-header"><i class="fa fa-plus icon-dashboard"></i>
+                                                                    <h4 style="padding: 0 calc(var(--bs-modal-header-padding-x) * .5);margin: calc(-.5 * var(--bs-modal-header-padding-y)) calc(-.5 * var(--bs-modal-header-padding-x)) calc(-.5 * var(--bs-modal-header-padding-y)) auto;">Utente</h4>
+                                                                </div><button class="btn-close" type="button" aria-label="Close" data-bs-dismiss="modal"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form>
+                                                                    <div class="form-group mb-3"><label class="form-label">Nome dell'evento:</label><input class="form-control" type="text" id="nomem" placeholder="Ex: &quot;Analisi I&quot;"></div>
+                                                                    <div class="form-group mb-3">
+                                                                        <div class="insertData">
+                                                                            <div class="d-flex flex-row align-items-center"><label class="form-label">Data inizio:</label><input class="form-control space-inputs" type="date" id="fieldTimestampData-inizio"></div>
+                                                                            <div class="d-flex flex-row align-items-center"><label class="form-label">Data fine:</label><input class="form-control space-inputs" id="fieldTimestampData-fine" type="date"></div>
+                                                                        </div>
+                                                                        <div class="insertData">
+                                                                            <div class="d-flex flex-row align-items-center"><label class="form-label">Ora inizio:</label><input class="form-control mt-2" id="fieldTimestampTime-oraInizio" type="time" name="Timestamp_Time"></div>
+                                                                            <div class="d-flex flex-row align-items-center"><label class="form-label">Ora fine:</label><input class="form-control mt-2" id="fieldTimestampTime-oraFine" type="time" name="Timestamp_Time"></div>
+                                                                        </div>
+                                                                        <div class="d-flex flex-row align-items-center"><label class="form-label">Tipo</label><select class="form-select" id="tipoEvento">
+                                                                                <optgroup label="This is a group">
+                                                                                    <option value="12" selected="">This is item 1</option>
+                                                                                    <option value="13">This is item 2</option>
+                                                                                    <option value="14">This is item 3</option>
+                                                                                </optgroup>
+                                                                            </select></div>
+                                                                    </div>
+                                                                    <div class="d-flex flex-row align-items-center"><label class="form-label">Responsabile:</label><input class="form-control" type="text" placeholder="ex: &quot;Carmine Gravino&quot;"></div>
+                                                                    <div id="imageSelect"></div>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer"><button class="btn btn-light" id="btnModelCloseAddDashboard" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary btn btn-outline-info btn-block" type="button">Save</button></div>
+                                                        </div>
+                                                    </div>
+                                                </div><input class="form-control" type="email" id="emailUtenteTI" placeholder="Ex: &quot;m.rossi@unisa.it&quot;">
+                                            </div>
+                                            <div class="d-flex flex-row align-items-center" style="margin-bottom: 1rem;"><label class="form-label">Nome:</label><input class="form-control" type="text" id="nomeUtenteTI" placeholder="ex: &quot;Mario&quot;"></div>
+                                            <div class="d-flex flex-row align-items-center" style="margin-bottom: 1rem;"><label class="form-label">Cognome:</label><input class="form-control" type="text" id="cognomeUtenteTI" placeholder="ex: &quot;Rossi&quot;"></div>
+                                            <div class="d-flex flex-row align-items-center"><label class="form-label">Password:</label>
+                                                <div class="mb-3 d-flex flex-row align-items-center"><input class="form-control form-control-lg form-pass-modal form-passwordField" type="password" id="InputUserPasswordTI" name="password" style="display: block;width: 21.5rem!important;padding: .375rem .75rem;font-size: 1rem!important;font-weight: 400;line-height: 1.5;"><span id="spanToggle"><i class="fa fa-eye spanIconPass" id="toggleEyePass" onclick="showModifyPasswordToggle()"></i></span></div>
+                                            </div>
+                                            <div class="d-flex flex-row align-items-center"><label class="form-label" for="permessiUtenteSelect">Permessi:</label><select class="form-select" id="permessiUtenteSelect">
+                                                    <option value="amministratore" selected="">Amministratore</option>
+                                                    <option value="nessunPermesso">Nessun permesso</option>
+                                                </select></div>
+                                            <div id="imageSelect"></div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer"><button class="btn btn-light" id="btnModelCloseAddDashboard" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary btn btn-outline-info btn-block" id="saveUserButton" type="button" onclick="sendRequestAggiungi()">Save</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+        </div>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

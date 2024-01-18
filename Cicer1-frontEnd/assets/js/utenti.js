@@ -13,15 +13,6 @@ function setup()  {
 
 
 function popolaTableUtenti(AdataUtenti)  {
-  /*let AdataUtenti = [
-    {"id": "1", "nome": "Abdul", "cognome": "Asmari", "email": "abdul@unisa.it", "permessi": "Amministratore", "": ""},
-    {"id": "2", "nome": "MArio", "cognome": "Rossi", "email": "m.rossi12@unisa.it", "permessi": "Nessun permesso", "": ""},
-    {"id": "3", "nome": "Luigi", "cognome": "Gagliardi", "email": "l.gagliardi3@unisa.it", "permessi": "Nessun permesso", "": ""},
-    {"id": "4", "nome": "GIGI", "cognome": "BUFFON", "email": "g.buffone@unisa.it", "permessi": "Amministratore", "": ""},
-    {"id": "5", "nome": "Gesu'", "cognome": "Bambino", "email": "g.bambino@unisa.it", "permessi": "Amministratore", "": ""}
-  ];*/
-  
-
   
   if(tableUtenti != undefined) {
     tableUtenti.destroy;
@@ -323,7 +314,7 @@ function sendRequestAggiungi()  {
                 if (result.isConfirmed) {
                   Swal.fire({
                     title: "Eliminato!",
-                    text: "L'evento è stato eliminato.",
+                    text: "Eliminazione effettuata con successo!",
                     icon: "success"
                   });
             

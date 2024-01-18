@@ -11,102 +11,7 @@ function setup()  {
   populateNommiUfficiSelect();
 }
 
-
 function popolaTableResponsabile(AdataResponsabile)  {
-  console.log('mannagg');
-  /*let AdataResponsabile = [
-    {
-      "id": 1,
-      "nome": "Mario",
-      "cognome": "Rossi",
-      "Inizio ricevimento": "09:00",
-      "Fine ricevimento": "10:00",
-      "Destinazione": "Ufficio 101",
-      "" : ""
-    },
-    {
-      "id": 2,
-      "nome": "Laura",
-      "cognome": "Bianchi",
-      "Inizio ricevimento": "10:30",
-      "Fine ricevimento": "11:30",
-      "Destinazione": "Ufficio 202",
-      "" : ""
-    },
-    {
-      "id": 3,
-      "nome": "Luca",
-      "cognome": "Verdi",
-      "Inizio ricevimento": "12:00",
-      "Fine ricevimento": "13:00",
-      "Destinazione": "Ufficio 303",
-      "" : ""
-    },
-    {
-      "id": 4,
-      "nome": "Giulia",
-      "cognome": "Gialli",
-      "Inizio ricevimento": "14:00",
-      "Fine ricevimento": "15:00",
-      "Destinazione": "Ufficio 404",
-      "" : ""
-    },
-    {
-      "id": 5,
-      "nome": "Andrea",
-      "cognome": "Azzurri",
-      "Inizio ricevimento": "15:30",
-      "Fine ricevimento": "16:30",
-      "Destinazione": "Ufficio 505",
-      "" : ""
-    },
-    {
-      "id": 6,
-      "nome": "Elena",
-      "cognome": "Neri",
-      "Inizio ricevimento": "17:00",
-      "Fine ricevimento": "18:00",
-      "Destinazione": "Ufficio 606",
-      "" : ""
-    },
-    {
-      "id": 7,
-      "nome": "Roberto",
-      "cognome": "Rosa",
-      "Inizio ricevimento": "09:00",
-      "Fine ricevimento": "10:00",
-      "Destinazione": "Ufficio 707",
-      "" : ""
-    },
-    {
-      "id": 8,
-      "nome": "Francesca",
-      "cognome": "Gialli",
-      "Inizio ricevimento": "10:30",
-      "Fine ricevimento": "11:30",
-      "Destinazione": "Ufficio 808",
-      "" : ""
-    },
-    {
-      "id": 9,
-      "nome": "Marco",
-      "cognome": "Verdi",
-      "Inizio ricevimento": "12:00",
-      "Fine ricevimento": "13:00",
-      "Destinazione": "Ufficio 909",
-      "" : ""
-    },
-    {
-      "id": 10,
-      "nome": "Simona",
-      "cognome": "Bianchi",
-      "Inizio ricevimento": "14:00",
-      "Fine ricevimento": "15:00",
-      "Destinazione": "Ufficio 1010",
-      "" : ""
-    }
-  ]*/
-  
   
   if(tableResponsabile != undefined)  {
     tableResponsabile.destroy;  
@@ -200,7 +105,7 @@ function isOraMaggiore(ora1, ora2) {
     }
 }
 
-function verifyInputs(Anome, Acognome, AoraInizio, AoraFine) {
+function verifyInputs(Anome, Acognome, AoraInizio, AoraFine, Aufficio) {
   let errori = '';
   let numeroErrori = 0;
   if(Anome == '' || Anome.length > 50) {
@@ -224,6 +129,13 @@ function verifyInputs(Anome, Acognome, AoraInizio, AoraFine) {
     }
   }
 
+  if(Aufficio == '')  {
+    if(errori != '')
+      errori += ','
+    numeroErrori++;
+    errori += 'Il campo "Ufficio" è vuoto'; 
+  }
+
   if(numeroErrori > 0)
     return errori;
   else return '';
@@ -239,7 +151,7 @@ function sendRequestAggiungi()  {
 
   let api = 'http://192.168.94.109:8080/Responsabile/';
   console.log(destinazioneUfficio);
-  let error = verifyInputs(nomeResponsabile, cognomeResponsabile, oraInizioRicevimento, oraFineRicevimento);
+  let error = verifyInputs(nomeResponsabile, cognomeResponsabile, oraInizioRicevimento, oraFineRicevimento, destinazioneUfficio);
   if(error != '')    {
     Swal.fire({
         icon: "warning",
@@ -270,13 +182,13 @@ function sendRequestAggiungi()  {
           if (response.status == 400) {
             if(currentResponsabileId == 0){
               Swal.fire({
-                title: "Aggiunta evento",
+                title: "Aggiunta responsabile",
                 text: "Ops! Alcuni campi sono errati...",
                 icon: "error"
               });
             } else  {
               Swal.fire({
-                title: "Modifica evento",
+                title: "Modifica responsabile",
                 text: "Alcuni campi sono errati..",
                 icon: "error"
               });
@@ -286,13 +198,13 @@ function sendRequestAggiungi()  {
             
             if(currentResponsabileId == 0){
               Swal.fire({
-                title: "Aggiunta evento",
+                title: "Aggiunta responsabile",
                 text: "Aggiunta non avvenuta.",
                 icon: "error"
               });
             } else  {
               Swal.fire({
-                title: "Modifica evento",
+                title: "Modifica responsabile",
                 text: "Aggiunta non avvenuta.",
                 icon: "error"
               });
@@ -308,20 +220,20 @@ function sendRequestAggiungi()  {
                   
             if(currentResponsabileId == 0){
               Swal.fire({
-                title: "Aggiunta evento",
+                title: "Aggiunta responsabile",
                 text: "Aggiunta effettuata con successo!",
                 icon: "success"
               });
             } else  {
               Swal.fire({
-                title: "Modifica evento",
+                title: "Modifica responsabile",
                 text: "Modifica effettuata con successo!",
                 icon: "success"
               });
             }
             setTimeout(function() {
               location.reload();
-          }, 3000);
+          }, 6000);
 
             $('#responsabileModal').modal('hide');
             
@@ -358,7 +270,7 @@ function sendRequestAggiungi()  {
               if (result.isConfirmed) {
                 Swal.fire({
                   title: "Eliminato!",
-                  text: "Il responsabile è stato eliminato.",
+                  text: "Eliminazione effettuata con successo.",
                   icon: "success"
                 });
                 setTimeout(function() {
