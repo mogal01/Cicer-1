@@ -36,6 +36,7 @@ type
       aIdDestinazione, aIdResponsabile: SmallInt): boolean;
     function getEvento(aFiltr: SmallInt): TFDQuery;
     function getNumEventi(): TFDQuery;
+    function getEventiDestSpec(aFiltr: SmallInt): TFDQuery;
   private
     fDB: tDB;
   end;
@@ -195,6 +196,7 @@ begin
   end;
 end;
 
+
 function tEventi.getEvento(aFiltr: SmallInt): TFDQuery;
 var
   lQuery: String;
@@ -253,6 +255,24 @@ begin
 
   end;
 
+end;
+function tEventi.getEventiDestSpec(aFiltr: SmallInt): TFDQuery;
+var
+  lQuery: String;
+  lFDQuery: TFDQuery;
+begin
+
+  result := nil;
+  try
+    lQuery := 'SELECT evento.nome as nomeE,destinazione.nome as nomeD,data_ora_inizio,data_ora_fine'
+      + ' FROM evento  join destinazione on evento.destinazione=destinazione.id '
+      + 'where (EXTRACT (DAY FROM CURRENT_DATE) between EXTRACT(DAY FROM data_ora_inizio) and EXTRACT(DAY FROM data_ora_fine)) '+
+     'and destinazione.id= '+aFiltr.ToString;
+    lFDQuery := fDB.getQueryResult(lQuery);
+    result := lFDQuery;
+  finally
+
+  end;
 end;
 
 end.

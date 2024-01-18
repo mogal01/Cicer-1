@@ -118,6 +118,10 @@ type
     [MVCHTTPMethod([httpGET])]
     procedure GetNumEventi();
 
+    [MVCPath('/Evento/GetEventiDestSpec/($aFiltro)')]
+    [MVCHTTPMethod([httpGET])]
+    procedure GetEventiDestSpec(aFiltro: SmallInt);
+
     [MVCPath('/Responsabile/Aggiungi/($aNome)/($aCognome)/($aOraInizioRicevimento)/($aOraFineRicevimento)/($aToken)/($aIdDestinazione)')
       ]
     [MVCHTTPMethod([httpPOST])]
@@ -902,6 +906,42 @@ begin
     end;
 
   end;
+end;
+
+procedure TApp1MainController.GetEventiDestSpec(aFiltro: SmallInt);
+var
+lEvento: tEventi;
+  lFDQuery: tFDQuery;
+  lJSONArray: TJsonArray;
+  lJSONRecord: TJsonObject;
+begin
+  lEvento := tEventi.Create;
+  lFDQuery := lEvento.getEventiDestSpec(aFiltro);
+  if (lFDQuery <> nil) then
+  begin
+
+    lJSONArray := TJsonArray.Create;
+    try
+      while (not lFDQuery.Eof) do
+      begin
+        lJSONRecord := TJsonObject.Create;
+        lJSONRecord.S['nomeE'] := lFDQuery.FieldByName('nomeE').AsString;
+        lJSONRecord.S['nomeD'] := lFDQuery.FieldByName('nomeD').AsString;
+        lJSONRecord.S['data_ora_inizio'] :=
+          lFDQuery.FieldByName('data_ora_inizio').AsString;
+        lJSONRecord.S['data_ora_fine'] :=
+          lFDQuery.FieldByName('data_ora_fine').AsString;
+
+        lJSONArray.Add(lJSONRecord);
+        lFDQuery.Next;
+      end;
+      render(lJSONArray, false);
+    finally
+      lJSONArray.Free;
+      lFDQuery.Free;
+      lEvento.Free;
+    end;
+    end;
 end;
 
 procedure TApp1MainController.GetEvento(aFiltro: SmallInt);
