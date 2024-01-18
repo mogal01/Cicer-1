@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setEventiCard();
 });
 
+
 function setAuleCard()  {
     let auleAttiveP = document.getElementById('auleAttiveP');
     let auleInManutenzioneP = document.getElementById('auleInManutenzioneP');

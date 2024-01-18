@@ -4,54 +4,10 @@ setup();
 let token = sessionStorage.getItem('token');
 
 function setup()    {
-  //popolaDestinazioniTable();
   sendRequestGetDestinazioneList();
 }
 
 function popolaDestinazioniTable(AdataDestinazioni)  {
-   /*let AdataDestinazioni = [
-        {"id": "1", "stato": "attivo", "nome": "F8", "nomeEd": "F2", "tipo": "Aula", "" : "", "" : ""},
-        {"id": "2", "stato": "attivo", "nome": "P21", "nomeEd": "F3", "tipo": "Aula", "" : "", "" : ""},
-        {"id": "3", "stato": "attivo", "nome": "P3", "nomeEd": "F3", "tipo": "Aula", "" : "", "" : ""},
-        {"id": "4", "stato": "attivo", "nome": "F1", "nomeEd": "F2", "tipo": "Aula", "" : "", "" : ""},
-        {"id": "5", "stato": "attivo", "nome": "Ufficio di pippotto", "nomeEd": "F", "tipo": "Ufficio", "" : "", "" : ""},
-        {"id": "6", "stato": "attivo", "nome": "Bar di scienze", "nomeEd": "F", "tipo": "Ristoro", "" : "", "" : ""},  {
-          "id": "7",
-          "nome": "Prodotto 1",
-          "stato": "Attivo",
-          "tipo": "Elettronica",
-          "nomeEd": "Editore 1"
-        },
-        {
-          "id": 8,
-          "nome": "Prodotto 2",
-          "stato": "Inattivo",
-          "tipo": "Abbigliamento",
-          "nomeEd": "Editore 2"
-        },
-        {
-          "id": 9,
-          "nome": "Prodotto 3",
-          "stato": "Attivo",
-          "tipo": "Libri",
-          "nomeEd": "Editore 3"
-        },
-        {
-          "id": 10,
-          "nome": "Prodotto 3",
-          "stato": "Attivo",
-          "tipo": "Libri",
-          "nomeEd": "Editore 3"
-        },
-        {
-          "id": 11,
-          "nome": "Prodotto 3",
-          "stato": "Attivo",
-          "tipo": "Libri",
-          "nomeEd": "Editore 3"
-        }
-      ];*/
-      
     
     if(tableDestinazioni != undefined)  {
       tableDestinazioni.destroy;  
