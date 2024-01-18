@@ -46,15 +46,15 @@ constructor tDestinazioni.Create;
 begin
 
   inherited;
-  fDB := tDB.Create();
+   fDB := tDB.Create;
 
 end;
 
 destructor tDestinazioni.Destroy;
 begin
-
+       fDB.Free;
   inherited;
-  fDB := tDB.Create();
+
 
 end;
 

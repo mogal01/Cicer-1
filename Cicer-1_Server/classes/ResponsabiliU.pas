@@ -47,15 +47,15 @@ constructor tResponsabili.Create;
 begin
 
   inherited;
-  fDB := tDB.Create();
+  fDB := tDB.Create;
 
 end;
 
 destructor tResponsabili.Destroy;
 begin
-
+  fDB.free;
   inherited;
-  fDB := tDB.Create();
+
 
 end;
 
