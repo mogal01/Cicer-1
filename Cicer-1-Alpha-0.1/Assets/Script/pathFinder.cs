@@ -16,17 +16,12 @@ public class pathFinder : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {        
-        iterativeDeepeningA(start, destination);
-        Debug.Log(" percorso trovato");
-        foreach (GameObject nodo in path)
-        {
-            Debug.Log(nodo.GetComponent<CheckpointData>().nome);
-        }
+       
         GameObject.Find("MovementManager").GetComponent<MovementOnPress>().pathPoints = path;
     }
 
      
-    void iterativeDeepeningA(GameObject point, GameObject Adestination)
+    public void iterativeDeepeningA(GameObject point, GameObject Adestination)
     {
         path.Add(point);
         float bound = euristica(point);
@@ -40,7 +35,7 @@ public class pathFinder : MonoBehaviour
             }
             if(t==float.MaxValue)
             {
-                Debug.Log("nient a fà scem");
+             
                 break;
             } 
             bound = t;

@@ -11,7 +11,7 @@ public class MovementOnPress : MonoBehaviour
     //public int numberOfPoints;
     public float speed;
 
-    private bool toNext;
+    private bool toNext = false;
 
     
 
@@ -27,6 +27,7 @@ public class MovementOnPress : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+  
         /*x = 0;
         numberOfPoints = 0;
         currentAngle = obj.transform.eulerAngles;
@@ -38,40 +39,53 @@ public class MovementOnPress : MonoBehaviour
         }*/
     }
 
-   public void toNextPositive()
+    public void parti()
     {
         toNext = true;
+        while (obj.transform.position != pathPoints[pathPoints.Count - 1].transform.position)
+        {
+            muovi();
+        }
+    }
+
+
+
+     void Update()
+    {
+        
     }
 
     // Update is called once per frame
-    void Update()
+    void muovi()
     {
-       
 
-        if (toNext)
+        if (pathPoints.Count > 0)
         {
-            
-            actualPosition = obj.transform.position;
-            obj.transform.position = Vector3.MoveTowards(actualPosition, pathPoints[x].transform.position, speed * Time.deltaTime);
-            //obj.transform.LookAt(pathPoints[x].transform);
-            if (actualPosition == pathPoints[x].transform.position && x != pathPoints.Count - 1)
+            if (toNext)
             {
-                x++;
-                toNext = false;
-         
-            }
-            //Vector3 tempVector = obj.transform.position;
-            //tempVector.y = (float)-8.5;
-            //obj.transform.position = tempVector;
-            
 
-           
-        }
+                actualPosition = obj.transform.position;
+                obj.transform.position = Vector3.MoveTowards(actualPosition, pathPoints[x].transform.position, speed * Time.deltaTime);
+                //obj.transform.LookAt(pathPoints[x].transform);
+                if (actualPosition == pathPoints[x].transform.position && x != pathPoints.Count - 1)
+                {
+                    x++;
+                    toNext = false;
+
+                }
+                //Vector3 tempVector = obj.transform.position;
+                //tempVector.y = (float)-8.5;
+                //obj.transform.position = tempVector;
+
+
+
+            }
             // Calcola la rotazione desiderata
             Quaternion desiredRotation = Quaternion.LookRotation(pathPoints[x].transform.position - obj.transform.position);
-        
+
             // Interpola tra la rotazione corrente e quella desiderata nel tempo
             obj.transform.rotation = Quaternion.Lerp(obj.transform.rotation, desiredRotation, Time.deltaTime * 2.0f);
+        }
         
     }
 
