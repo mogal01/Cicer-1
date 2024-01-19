@@ -23,10 +23,13 @@ uses
 type
 
   tDB = class
+  private
+    class var FInstance: tDB;
 
   Public
 
     FFDConnection: TfdConnection;
+    class function GetInstance: tDB;
     function connect: TfdConnection;
     function getQueryResult(aQuery: String): TFDQuery;
     function executeQuery(aQuery: String): TFDQuery;
@@ -36,6 +39,16 @@ type
 implementation
 
 { tDB }
+
+class function tDB.GetInstance: tDB;
+begin
+  // Se l'istanza non esiste ancora, creala
+  if not Assigned(FInstance) then
+    FInstance := tDB.Create;
+
+  // Restituisci l'istanza esistente o appena creata
+  Result := FInstance;
+end;
 
 function tDB.connect: TfdConnection;
 begin
@@ -48,36 +61,38 @@ begin
   FFDConnection.Params.Add('Database=Cicer1');
   FFDConnection.Params.Add('User_Name=postgres');
   FFDConnection.Params.Add('Password=159753');
+
   // Connessione effettiva al database
   FFDConnection.Connected := True;
   // Restituzione dell'oggetto TfdConnection
-  result := FFDConnection;
+  Result := FFDConnection;
 end;
 
 function tDB.getQueryResult(aQuery: String): TFDQuery;
 begin
   // Creazione di un nuovo oggetto TFDQuery
-  result := TFDQuery.Create(nil);
+
+  Result := TFDQuery.Create(nil);
   // Configurazione della connessione per la query
-  result.Connection := connect();
+  Result.Connection := connect();
   // Impostazione del testo della query SQL
-  result.SQL.Text := aQuery;
+  Result.SQL.Text := aQuery;
   // Esecuzione della query e apertura del set di risultati
-  result.Open();
+  Result.Open();
   // Spostamento al primo record nel set di risultati
-  result.First;
+  Result.First;
 end;
 
 function tDB.executeQuery(aQuery: String): TFDQuery;
 begin
   // Creazione di un nuovo oggetto TFDQuery
-  result := TFDQuery.Create(nil);
+  Result := TFDQuery.Create(nil);
   // Configurazione della connessione per l'esecuzione della query
-  result.Connection := connect();
+  Result.Connection := connect();
   // Impostazione del testo della query SQL
-  result.SQL.Text := aQuery;
+  Result.SQL.Text := aQuery;
   // Esecuzione della query senza restituzione di un set di risultati
-  result.ExecSQL();
+  Result.ExecSQL();
 
 end;
 
