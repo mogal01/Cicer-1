@@ -34,7 +34,7 @@ type
       aOraInizioRicevimento, aOraFineRicevimento: TTime;
       aDestinazione: SmallInt; aId: SmallInt): boolean;
     function getList(aFiltr: String): TFDQuery;
-    function getResponsabile(aFiltr:SmallInt): TFDQuery;
+    function getResponsabile(aFiltr: SmallInt): TFDQuery;
   private
     fDB: tDB;
   end;
@@ -47,15 +47,15 @@ constructor tResponsabili.Create;
 begin
 
   inherited;
-  fDB := tDB.Create();
+  fDB := tDB.Create;
 
 end;
 
 destructor tResponsabili.Destroy;
 begin
-
+  fDB.free;
   inherited;
-  fDB := tDB.Create();
+
 
 end;
 
@@ -70,14 +70,15 @@ begin
 
   result := true;
   try
+    // Costruzione della query SQL per l'inserimento del nuovo responsabile.
     lQuery := 'INSERT INTO responsabile (nome, cognome, orario_inizio_ricevimento, orario_fine_ricevimento, destinazione) VALUES ('
       + QuotedStr(aNome) + ', ' + QuotedStr(aCognome) + ', ' +
       QuotedStr(FormatDateTime('hh:nn:ss', aOraInizioRicevimento)) + ', ' +
       QuotedStr(FormatDateTime('hh:nn:ss', aOraInizioRicevimento)) + ', ' +
       aDestinazione.ToString + ')';
-
+    // Esecuzione della query di inserimento del nuovo responsabile.
     lFDQuery := fDB.executeQuery(lQuery);
-
+    // Se almeno una riga è stata influenzata dalla query, l'aggiunta è considerata riuscita.
     if (lFDQuery.RowsAffected > 0) then
     begin
 
@@ -101,10 +102,11 @@ var
 begin
   result := true;
   try
+    // Costruzione della query SQL per l'eliminazione del responsabile.
     lQuery := 'DELETE FROM responsabile WHERE id=' + (aId).ToString;
-
+    // Esecuzione della query di eliminazione del responsabile.
     lFDQuery := fDB.executeQuery(lQuery);
-
+    // Se almeno una riga è stata influenzata dalla query, l'eliminazione è considerata riuscita.
     if (lFDQuery.RowsAffected > 0) then
     begin
 
@@ -130,14 +132,16 @@ begin
 
   result := true;
   try
+    // Costruzione della query SQL per l'aggiornamento delle informazioni del responsabile.
     lQuery := 'UPDATE responsabile SET nome=' + QuotedStr(aNome) + ', cognome= '
       + QuotedStr(aCognome) + ', orario_inizio_ricevimento= ' +
-      QuotedStr(FormatDateTime('hh:nn:ss', aOraInizioRicevimento)) + ', orario_fine_ricevimento= ' +
-      QuotedStr(FormatDateTime('hh:nn:ss', aOraInizioRicevimento)) + ', destinazione= ' +
-      aDestinazione.ToString + ' WHERE id=' + aId.ToString;
-
+      QuotedStr(FormatDateTime('hh:nn:ss', aOraInizioRicevimento)) +
+      ', orario_fine_ricevimento= ' +
+      QuotedStr(FormatDateTime('hh:nn:ss', aOraInizioRicevimento)) +
+      ', destinazione= ' + aDestinazione.ToString + ' WHERE id=' + aId.ToString;
+    // Esecuzione della query di aggiornamento delle informazioni del responsabile.
     lFDQuery := fDB.executeQuery(lQuery);
-
+    // Se almeno una riga è stata influenzata dalla query, l'aggiornamento è considerato riuscito.
     if (lFDQuery.RowsAffected > 0) then
     begin
 
@@ -161,8 +165,9 @@ begin
 
   result := nil;
   try
-    lQuery := 'SELECT * FROM responsabile where UPPER(nome) LIKE UPPER(' +
-      QuotedStr('%' + aFiltr + '%') + ') or UPPER(cognome) LIKE UPPER(' +
+    // Costruzione della query SQL per ottenere la lista dei responsabili filtrati.
+    lQuery := 'SELECT r.id as ID, r.nome as NOME, r.cognome as COGNOME, r.orario_inizio_ricevimento AS ORA_INIZIO, r.orario_fine_ricevimento as ORA_FINE, d.nome as DNOME FROM responsabile r join destinazione d on r.destinazione=d.id where UPPER(r.nome) LIKE UPPER(' +
+      QuotedStr('%' + aFiltr + '%') + ') or UPPER(r.cognome) LIKE UPPER(' +
       QuotedStr('%' + aFiltr + '%') + ')';
     lFDQuery := fDB.getQueryResult(lQuery);
     result := lFDQuery;
@@ -172,7 +177,6 @@ begin
 
 end;
 
-
 function tResponsabili.getResponsabile(aFiltr: SmallInt): TFDQuery;
 var
   lQuery: String;
@@ -181,8 +185,9 @@ begin
 
   result := nil;
   try
-    lQuery := 'SELECT *  FROM responsabile WHERE id= '+aFiltr.ToString;
-
+    // Costruzione della query SQL per ottenere le informazioni di un responsabile specifico.
+    lQuery := 'SELECT *  FROM responsabile WHERE id= ' + aFiltr.ToString;
+    // Esecuzione della query per ottenere le informazioni di un responsabile specifico.
     lFDQuery := fDB.getQueryResult(lQuery);
 
     result := lFDQuery;

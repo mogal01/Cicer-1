@@ -118,3 +118,13 @@ a {
 img {
 }
 
+#spanEmailUser {
+  color: var(--bs-gray-700);
+  padding: 0.2px 2px;
+  margin-right: 1rem;
+}
+
+#spanEmailUser:hover {
+  color: var(--bs-gray-900);
+}
+

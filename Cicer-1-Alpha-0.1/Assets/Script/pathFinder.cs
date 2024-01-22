@@ -18,8 +18,11 @@ public class pathFinder : MonoBehaviour
     void Start()
     {        
        
+<<<<<<< HEAD
        
         //iterativeDeepeningA(start, destination);
+=======
+>>>>>>> c7e57e626e703d0b4b40aba77325b358d14838bd
         GameObject.Find("MovementManager").GetComponent<MovementOnPress>().pathPoints = path;
         //GameObject.Find("SceltaPartenzaManager").GetComponent<PopolaMenuSceltaPartenza>().parti();
     }

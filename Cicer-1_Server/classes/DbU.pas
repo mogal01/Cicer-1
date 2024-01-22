@@ -23,10 +23,13 @@ uses
 type
 
   tDB = class
+  private
+    class var FInstance: tDB;
 
   Public
 
     FFDConnection: TfdConnection;
+    class function GetInstance: tDB;
     function connect: TfdConnection;
     function getQueryResult(aQuery: String): TFDQuery;
     function executeQuery(aQuery: String): TFDQuery;
@@ -37,37 +40,59 @@ implementation
 
 { tDB }
 
+class function tDB.GetInstance: tDB;
+begin
+  // Se l'istanza non esiste ancora, creala
+  if not Assigned(FInstance) then
+    FInstance := tDB.Create;
+
+  // Restituisci l'istanza esistente o appena creata
+  Result := FInstance;
+end;
+
 function tDB.connect: TfdConnection;
 begin
+  // Creazione di un nuovo oggetto TfdConnection
   FFDConnection := TfdConnection.Create(nil);
-
+  // Impostazione del driver per PostgreSQL
   FFDConnection.DriverName := 'PG';
-
+  // Configurazione dei parametri di connessione al database PostgreSQL
   FFDConnection.Params.Add('Server=localhost');
   FFDConnection.Params.Add('Database=Cicer1');
   FFDConnection.Params.Add('User_Name=postgres');
   FFDConnection.Params.Add('Password=159753');
-  FFDConnection.Connected := True;
 
-  result := FFDConnection;
+  // Connessione effettiva al database
+  FFDConnection.Connected := True;
+  // Restituzione dell'oggetto TfdConnection
+  Result := FFDConnection;
 end;
 
 function tDB.getQueryResult(aQuery: String): TFDQuery;
 begin
-  result := TFDQuery.Create(nil);
-  result.Connection := connect();
-  result.SQL.Text := aQuery;
-  result.Open();
-  result.First;
+  // Creazione di un nuovo oggetto TFDQuery
+
+  Result := TFDQuery.Create(nil);
+  // Configurazione della connessione per la query
+  Result.Connection := connect();
+  // Impostazione del testo della query SQL
+  Result.SQL.Text := aQuery;
+  // Esecuzione della query e apertura del set di risultati
+  Result.Open();
+  // Spostamento al primo record nel set di risultati
+  Result.First;
 end;
 
 function tDB.executeQuery(aQuery: String): TFDQuery;
 begin
-
-  result := TFDQuery.Create(nil);
-  result.Connection := connect();
-  result.SQL.Text := aQuery;
-  result.ExecSQL();
+  // Creazione di un nuovo oggetto TFDQuery
+  Result := TFDQuery.Create(nil);
+  // Configurazione della connessione per l'esecuzione della query
+  Result.Connection := connect();
+  // Impostazione del testo della query SQL
+  Result.SQL.Text := aQuery;
+  // Esecuzione della query senza restituzione di un set di risultati
+  Result.ExecSQL();
 
 end;
 

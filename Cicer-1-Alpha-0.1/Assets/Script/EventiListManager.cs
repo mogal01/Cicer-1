@@ -36,7 +36,11 @@ public class EventiListManager : MonoBehaviour
     public void popolaListaSuDestinazione(int destinazione)
     {
         Debug.Log("TEST RIGA 38");
+<<<<<<< HEAD
         StartCoroutine(GetRequestForDestination("http://192.168.215.27:8081/Evento/GetEventiDestSpec/" + destinazione));
+=======
+        StartCoroutine(GetRequestForDestination("http://192.168.94.109:8080/Evento/GetEventiDestSpec/" + destinazione));
+>>>>>>> c7e57e626e703d0b4b40aba77325b358d14838bd
     }
 
     [System.Serializable]

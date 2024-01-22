@@ -4898,6 +4898,10 @@ MonoBehaviour:
   nodiConnessi:
   - {fileID: 244102290}
   - {fileID: 764706214}
+<<<<<<< HEAD
+=======
+  - {fileID: 850584530}
+>>>>>>> c7e57e626e703d0b4b40aba77325b358d14838bd
   nome: F3 - Corridoio Piano Terra
 --- !u!1 &853987203 stripped
 GameObject:
@@ -13920,7 +13924,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   path: []
   Euristiche: []
-  point: {fileID: 0}
   count: 0
 --- !u!1001 &1970133228
 PrefabInstance:

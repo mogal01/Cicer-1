@@ -28,20 +28,40 @@ public class MovementOnPress : MonoBehaviour
     void Start()
     {
   
+<<<<<<< HEAD
         x = 0;
       
+=======
+        /*x = 0;
+        numberOfPoints = 0;
+>>>>>>> c7e57e626e703d0b4b40aba77325b358d14838bd
         currentAngle = obj.transform.eulerAngles;
         toNext = false;
       
     }
 
+<<<<<<< HEAD
     public void step()
+=======
+    public void parti()
+>>>>>>> c7e57e626e703d0b4b40aba77325b358d14838bd
     {
         toNext = true;
+        while (obj.transform.position != pathPoints[pathPoints.Count - 1].transform.position)
+        {
+            muovi();
+        }
+    }
+
+
+
+     void Update()
+    {
+        
     }
 
     // Update is called once per frame
-    void Update()
+    void muovi()
     {
 
         if (pathPoints.Count > 0)
