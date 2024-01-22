@@ -10,7 +10,7 @@ public class SearchManager : MonoBehaviour
     public GameObject ContentHolder;
     public GameObject[] Element;
     public GameObject SearchBar;
-    public int totalElements;
+    private int totalElements;
     private bool isEmpty;
     public GameObject erroreRicerca;
     public GameObject erroreCarattereSpeciale;
@@ -30,7 +30,7 @@ public class SearchManager : MonoBehaviour
         }
     }
 
-    public void MainSearch()
+    public void MainSearchEvent()
     {
         // Ottieni il valore selezionato
         int selectedValue = dp.value;
@@ -58,6 +58,9 @@ public class SearchManager : MonoBehaviour
             SearchByResponsabile();
             Debug.Log("Eccomi 52");
         }
+
+
+
     }
 
     public void SearchByName()
@@ -74,6 +77,7 @@ public class SearchManager : MonoBehaviour
 
         if ((!match.Success) && (SearchText!=""))
         {
+         
             erroreCarattereSpeciale.SetActive(true);
         } else
         {

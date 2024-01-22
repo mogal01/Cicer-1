@@ -19,6 +19,8 @@ public class MainMenuNavigate : MonoBehaviour
     public GameObject ricercaufficio;
 
     public GameObject searchManagerEvento;
+    public GameObject searchManagerDestinazione;
+   
 
     public void PressStart()
     {
@@ -46,6 +48,7 @@ public class MainMenuNavigate : MonoBehaviour
         ricercaristoro.SetActive(false);
         ricercaufficio.SetActive(false);
         menuricercadestinazione.SetActive(true);
+        searchManagerDestinazione.GetComponent<DestinazioniListManager>().popolaListaDestinazioni("aula");
 
     }
 
@@ -55,6 +58,7 @@ public class MainMenuNavigate : MonoBehaviour
         ricercaristoro.SetActive(false);
         ricercaufficio.SetActive(false);
         menuricercadestinazione.SetActive(true);
+        searchManagerDestinazione.GetComponent<DestinazioniListManager>().popolaListaDestinazioni("ristoro");
 
     }
 
@@ -64,6 +68,8 @@ public class MainMenuNavigate : MonoBehaviour
         ricercaristoro.SetActive(false);
         ricercaufficio.SetActive(false);
         menuricercadestinazione.SetActive(true);
+        searchManagerDestinazione.GetComponent<DestinazioniListManager>().popolaListaDestinazioni("ufficio");
+
 
 
     }
@@ -75,6 +81,8 @@ public class MainMenuNavigate : MonoBehaviour
         menuricercaevento.SetActive(true);
         searchManagerEvento.GetComponent<EventiListManager>().popolaListaEventi();
     }
+
+ 
 
     public void PressIndietro()
     {

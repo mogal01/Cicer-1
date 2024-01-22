@@ -30,9 +30,15 @@ public class EventiListManager : MonoBehaviour
     public void popolaListaEventi()
     {  
         Debug.Log("ciao");
-        StartCoroutine(GetRequest("http://192.168.94.109:8080/Evento/GetList/"));        
+        StartCoroutine(GetRequest("http://192.168.215.27:8081/Evento/GetList/"));        
     }
-   
+
+    public void popolaListaSuDestinazione(int destinazione)
+    {
+        Debug.Log("TEST RIGA 38");
+        StartCoroutine(GetRequestForDestination("http://192.168.215.27:8081/Evento/GetEventiDestSpec/" + destinazione));
+    }
+
     [System.Serializable]
     public class EventiList
     {
@@ -73,6 +79,47 @@ public class EventiListManager : MonoBehaviour
         }
     }
 
+
+    IEnumerator GetRequestForDestination(string uri)
+    {
+        UnityWebRequest uwr = UnityWebRequest.Get(uri);
+        yield return uwr.SendWebRequest();
+
+        if (uwr.isNetworkError)
+        {
+            Debug.Log("Error While Sending: " + uwr.error);
+        }
+        else
+        {
+            Debug.Log("Received: " + uwr.downloadHandler.text);
+
+            string json = "{\"eventi\":" + uwr.downloadHandler.text + "}";
+
+            myEventiList = JsonUtility.FromJson<EventiList>(json);
+
+            foreach (Evento evento in myEventiList.eventi)
+            {
+                Button instance = Instantiate(prefabBottone);
+                instance.transform.SetParent(parent);
+                instance.transform.localScale = desiredScale;
+                // Assumi che instance sia il tuo bottone con un RectTransform
+                RectTransform rectTransform = instance.GetComponent<RectTransform>();
+
+                // Per cambiare il left margin
+                rectTransform.offsetMin = new Vector2(-210, rectTransform.offsetMin.y);
+
+                // Oppure, se vuoi cambiare la posizione ancorata, che è relativa agli anchor points
+                rectTransform.anchoredPosition = new Vector2(-210, rectTransform.anchoredPosition.y);
+
+                instance.transform.GetChild(0).GetComponent<Text>().text = evento.nome;
+                instance.transform.GetChild(1).GetComponent<Text>().text = evento.responsabile;
+                instance.transform.GetChild(2).GetComponent<Text>().text = evento.data_ora_inizio;
+                instance.onClick.AddListener(delegate { this.CaricaPaginaEvento(evento.nome, evento.data_ora_inizio, evento.destinazione, evento.responsabile); });
+            }
+            this.gameObject.GetComponent<SearchManager>().popola();
+        }
+    }
+
     public void CaricaPaginaEvento(string nome, string data_ora_inizio, string destinazione, string responsabile)
     {
         Debug.Log(nome);
@@ -84,6 +131,8 @@ public class EventiListManager : MonoBehaviour
         PaginaEvento.transform.GetChild(5).GetComponent<TMP_Text>().SetText(responsabile);
 
     }
+
+
     // Start is called before the first frame update
     void Start()
     {

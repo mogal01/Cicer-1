@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ApriPaginaDestinazione : MonoBehaviour
 {
@@ -21,6 +24,14 @@ public class ApriPaginaDestinazione : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+    }
+
+
+    public void iniziaNavigazione()
+    {
+        string nomeDestinazione=paginaDestinazione.transform.GetChild(1).GetComponent<TMP_Text>().text;
+        PlayerPrefs.SetString("destinazione", nomeDestinazione);
+        SceneManager.LoadScene("NavigationScene");
+       
     }
 }

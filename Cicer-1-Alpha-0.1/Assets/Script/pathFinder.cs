@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using JetBrains.Annotations;
 
 public class pathFinder : MonoBehaviour
 {
 
     public List<GameObject> path;
-    public GameObject start;
-    public GameObject destination;
+    //private GameObject start;
+    private GameObject destination;
     public float[] Euristiche;
     public GameObject point;
     public int count=0; 
@@ -16,17 +17,25 @@ public class pathFinder : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {        
-        iterativeDeepeningA(start, destination);
-        Debug.Log(" percorso trovato");
-        foreach (GameObject nodo in path)
-        {
-            Debug.Log(nodo.GetComponent<CheckpointData>().nome);
-        }
+       
+       
+        //iterativeDeepeningA(start, destination);
         GameObject.Find("MovementManager").GetComponent<MovementOnPress>().pathPoints = path;
+        //GameObject.Find("SceltaPartenzaManager").GetComponent<PopolaMenuSceltaPartenza>().parti();
+    }
+
+    /*public void setStart(GameObject s)
+    {
+        start = s;
+    }*/
+    
+    public void setDestination(GameObject d)
+    {
+        destination = d;
     }
 
      
-    void iterativeDeepeningA(GameObject point, GameObject Adestination)
+    public void iterativeDeepeningA(GameObject point, GameObject Adestination)
     {
         path.Add(point);
         float bound = euristica(point);
@@ -40,12 +49,13 @@ public class pathFinder : MonoBehaviour
             }
             if(t==float.MaxValue)
             {
-                Debug.Log("nient a fà scem");
+             
                 break;
             } 
             bound = t;
              
         }
+        GameObject.Find("MovementManager").GetComponent<MovementOnPress>().pathPoints = path;
         return;
     }
 
