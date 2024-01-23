@@ -37,6 +37,7 @@ public class EventiListManager : MonoBehaviour
     {
         Debug.Log("TEST RIGA 38");
         StartCoroutine(GetRequestForDestination("http://192.168.215.27:8081/Evento/GetEventiDestSpec/" + destinazione));
+
     }
 
     [System.Serializable]

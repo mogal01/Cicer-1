@@ -35,6 +35,7 @@ public class DestinazioniListManager : MonoBehaviour
     {
         Debug.Log("ciao");
         StartCoroutine(GetRequest("http://192.168.215.27:8081/Destinazione/GetList/" + tipo + "/"));
+
     }
 
     [System.Serializable]

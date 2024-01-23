@@ -36,12 +36,8 @@ public class PopolaMenuSceltaPartenza : MonoBehaviour
         SceltaPartenzaManager.GetComponent<SearchManager>().popola();
     }
 
-    public void parti() {
-        //MM.GetComponent<MovementOnPress>().parti();
-
-}
-
-    // Esempio di funzione chiamata quando un checkpoint viene selezionato
+    
+   // Esempio di funzione chiamata quando un checkpoint viene selezionato
     void OnCheckpointSelected(GameObject checkpoint)
     {
         Debug.Log("Checkpoint selezionato: " + checkpoint.name);
@@ -49,7 +45,7 @@ public class PopolaMenuSceltaPartenza : MonoBehaviour
         string destinazione=PlayerPrefs.GetString("destinazione");
         //GruppoCheckpoints.GetComponent<pathFinder>().destination=GameObject.Find(destinazione);
         avatar.transform.position = checkpoint.transform.position;
-        GameObject destinazioneVera = GameObject.Find(destinazione);
+        GameObject destinazioneVera = GameObject.Find("F8");
 
         GruppoCheckpoints.GetComponent<pathFinder>().setDestination(destinazioneVera);
         GruppoCheckpoints.GetComponent<pathFinder>().iterativeDeepeningA(checkpoint, destinazioneVera);

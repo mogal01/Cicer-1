@@ -9114,3 +9114,6 @@ Forse intendevi referenziare la colonna "r.orario_inizio_ricevimento". [PathInfo
 2024-01-18 16:23:06:027  [TID 17412   ][INFO      ] GET:/Evento/GetEventiDestSpec/1 [192.168.94.198] -> Maincontroller.TApp1MainController.GetEventiDestSpec - 200 OK [dmvcframework]
 2024-01-18 16:51:21:615  [TID 6816    ][INFO      ] GET:/Evento/GetList/ [192.168.94.198] -> Maincontroller.TApp1MainController.GetListEventi - 200 OK [dmvcframework]
 2024-01-18 16:52:37:582  [TID 19788   ][INFO      ] GET:/Evento/GetList/ [192.168.94.198] -> Maincontroller.TApp1MainController.GetListEventi - 200 OK [dmvcframework]
+2024-01-19 16:40:12:702  [TID 18784   ][INFO      ] Default Logger initialized [dmvcframework]
+2024-01-19 16:40:12:702  [TID 18784   ][INFO      ] Server started on port 8081 [dmvcframework]
+2024-01-19 16:40:12:803  [TID 18784   ][INFO      ] Server started on port 8081 [dmvcframework]

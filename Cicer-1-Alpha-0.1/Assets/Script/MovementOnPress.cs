@@ -35,7 +35,7 @@ public class MovementOnPress : MonoBehaviour
       
     }
 
-    public void step()
+    public void parti()
     {
         toNext = true;
     }

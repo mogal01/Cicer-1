@@ -6195,7 +6195,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1799511493}
         m_TargetAssemblyTypeName: MovementOnPress, Assembly-CSharp
-        m_MethodName: step
+        m_MethodName: parti
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
