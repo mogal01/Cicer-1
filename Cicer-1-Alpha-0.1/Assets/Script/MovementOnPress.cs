@@ -28,35 +28,20 @@ public class MovementOnPress : MonoBehaviour
     void Start()
     {
   
-        /*x = 0;
-        numberOfPoints = 0;
+        x = 0;
+      
         currentAngle = obj.transform.eulerAngles;
         toNext = false;
-        for(int i=1; i < 17; i++)
-        {
-            pathPoints.Add(GameObject.Find("Checkpoint (" + i + ")"));
-            numberOfPoints++;
-        }*/
+      
     }
 
-    public void parti()
+    public void step()
     {
         toNext = true;
-        while (obj.transform.position != pathPoints[pathPoints.Count - 1].transform.position)
-        {
-            muovi();
-        }
-    }
-
-
-
-     void Update()
-    {
-        
     }
 
     // Update is called once per frame
-    void muovi()
+    void Update()
     {
 
         if (pathPoints.Count > 0)

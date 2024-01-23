@@ -4898,7 +4898,6 @@ MonoBehaviour:
   nodiConnessi:
   - {fileID: 244102290}
   - {fileID: 764706214}
-  - {fileID: 850584530}
   nome: F3 - Corridoio Piano Terra
 --- !u!1 &853987203 stripped
 GameObject:
@@ -6196,7 +6195,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1799511493}
         m_TargetAssemblyTypeName: MovementOnPress, Assembly-CSharp
-        m_MethodName: toNextPositive
+        m_MethodName: step
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9983,6 +9982,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Checkpoint (31)
       objectReference: {fileID: 0}
+    - target: {fileID: 2209598551394040774, guid: 3583a8ef003bf56439e02710fa7c21d1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13003,7 +13007,7 @@ PrefabInstance:
     - target: {fileID: 5126094769646505610, guid: b4b2dff3e675a6c49ac75268827a13a5,
         type: 3}
       propertyPath: m_Name
-      value: DestinationCheckpoint (8)
+      value: P11
       objectReference: {fileID: 0}
     - target: {fileID: 5126094769646505610, guid: b4b2dff3e675a6c49ac75268827a13a5,
         type: 3}
@@ -13046,7 +13050,7 @@ MonoBehaviour:
   nodiConnessi:
   - {fileID: 1504819571}
   - {fileID: 1335882651}
-  nome: 
+  nome: P11
 --- !u!1001 &1865422719
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13915,9 +13919,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   path: []
-  start: {fileID: 1328927906}
-  destination: {fileID: 1598189910}
   Euristiche: []
+  point: {fileID: 0}
   count: 0
 --- !u!1001 &1970133228
 PrefabInstance:
