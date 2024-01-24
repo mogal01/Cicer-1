@@ -30,13 +30,13 @@ public class EventiListManager : MonoBehaviour
     public void popolaListaEventi()
     {  
         Debug.Log("ciao");
-        StartCoroutine(GetRequest("http://192.168.215.27:8081/Evento/GetList/"));        
+        StartCoroutine(GetRequest("http://localhost:8081/Evento/GetList/"));        
     }
 
     public void popolaListaSuDestinazione(int destinazione)
     {
         Debug.Log("TEST RIGA 38");
-        StartCoroutine(GetRequestForDestination("http://192.168.215.27:8081/Evento/GetEventiDestSpec/" + destinazione));
+        StartCoroutine(GetRequestForDestination("http://localhost:8081/Evento/GetEventiDestSpec/" + destinazione));
 
     }
 
@@ -109,7 +109,7 @@ public class EventiListManager : MonoBehaviour
                 // Per cambiare il left margin
                 rectTransform.offsetMin = new Vector2(-210, rectTransform.offsetMin.y);
 
-                // Oppure, se vuoi cambiare la posizione ancorata, che è relativa agli anchor points
+                // Oppure, se vuoi cambiare la posizione ancorata, che ï¿½ relativa agli anchor points
                 rectTransform.anchoredPosition = new Vector2(-210, rectTransform.anchoredPosition.y);
 
                 instance.transform.GetChild(0).GetComponent<Text>().text = evento.nome;
