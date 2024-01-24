@@ -11,6 +11,8 @@ public class PopolaMenuSceltaPartenza : MonoBehaviour
     public GameObject MM;
     private GameObject[] checkpoints;
     public GameObject SceltaPartenzaManager;
+    public GameObject zoomIn;
+    public GameObject zoomOut;
 
     void Start()
     {
@@ -50,6 +52,9 @@ public class PopolaMenuSceltaPartenza : MonoBehaviour
         GruppoCheckpoints.GetComponent<pathFinder>().setDestination(destinazioneVera);
         GruppoCheckpoints.GetComponent<pathFinder>().iterativeDeepeningA(checkpoint, destinazioneVera);
         menuScegliPartenza.SetActive(false);
+        zoomIn.SetActive(true);
+        zoomOut.SetActive(true);
+
         //MM.GetComponent<MovementOnPress>().parti();
 
     }

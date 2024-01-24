@@ -8,6 +8,7 @@ public class MovementOnPress : MonoBehaviour
 
     public GameObject obj;
     public List<GameObject> pathPoints;
+    public GameObject destinazionetrovata;
     //public int numberOfPoints;
     public float speed;
 
@@ -61,6 +62,10 @@ public class MovementOnPress : MonoBehaviour
                 //Vector3 tempVector = obj.transform.position;
                 //tempVector.y = (float)-8.5;
                 //obj.transform.position = tempVector;
+                else if(x==pathPoints.Count - 1 && actualPosition == pathPoints[x].transform.position)
+                {
+                    destinazionetrovata.SetActive(true);
+                }
 
 
 

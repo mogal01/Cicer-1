@@ -34,7 +34,7 @@ public class DestinazioniListManager : MonoBehaviour
     public void popolaListaDestinazioni(string tipo)
     {
         Debug.Log("ciao");
-        StartCoroutine(GetRequest("http://localhost:8081/Destinazione/GetList/" + tipo + "/"));
+        StartCoroutine(GetRequest("http://172.19.159.150:8081/Destinazione/GetList/" + tipo + "/"));
 
     }
 
