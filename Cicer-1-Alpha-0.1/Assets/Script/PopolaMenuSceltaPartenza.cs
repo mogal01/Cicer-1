@@ -45,7 +45,7 @@ public class PopolaMenuSceltaPartenza : MonoBehaviour
         string destinazione=PlayerPrefs.GetString("destinazione");
         //GruppoCheckpoints.GetComponent<pathFinder>().destination=GameObject.Find(destinazione);
         avatar.transform.position = checkpoint.transform.position;
-        GameObject destinazioneVera = GameObject.Find("F8");
+        GameObject destinazioneVera = GameObject.Find("P11");
 
         GruppoCheckpoints.GetComponent<pathFinder>().setDestination(destinazioneVera);
         GruppoCheckpoints.GetComponent<pathFinder>().iterativeDeepeningA(checkpoint, destinazioneVera);

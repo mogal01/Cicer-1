@@ -21,43 +21,70 @@ public class VisualizzaPiani : MonoBehaviour
     {
         if (player.transform.position.y <= -5.75)
         {
-            piani0.SetActive(false);
-            piani1.SetActive(false);
-            piani2.SetActive(false);
-            piani3.SetActive(false);
+            nascondirenderer(piani0);
+            nascondirenderer(piani1);
+            nascondirenderer(piani2);
+            nascondirenderer(piani3);
+
 
         }
         if (player.transform.position.y >-5.75 && player.transform.position.y <= -4.75)
         {
-            piani0.SetActive(true);
-            piani1.SetActive(false);
-            piani2.SetActive(false);
-            piani3.SetActive(false);
+            attivarenderer(piani0);
+            nascondirenderer(piani1);
+            nascondirenderer(piani2);
+            nascondirenderer(piani3);
 
         }
         if (player.transform.position.y > -4.75 && player.transform.position.y <= -3.5)
         {
-            piani0.SetActive(true);
-            piani1.SetActive(true);
-            piani2.SetActive(false);
-            piani3.SetActive(false);
+            attivarenderer(piani0);
+            attivarenderer(piani1);
+            nascondirenderer(piani2);
+            nascondirenderer(piani3);
 
         }
         if (player.transform.position.y > -3.5 && player.transform.position.y <= -2.4)
         {
-            piani0.SetActive(true);
-            piani1.SetActive(true);
-            piani2.SetActive(true);
-            piani3.SetActive(false);
+            attivarenderer(piani0);
+            attivarenderer(piani1);
+            attivarenderer(piani2);
+            nascondirenderer(piani3);
 
         }
         if (player.transform.position.y > 2.4)
         {
-            piani0.SetActive(true);
-            piani1.SetActive(true);
-            piani2.SetActive(true);
-            piani3.SetActive(true);
+            attivarenderer(piani0);
+            attivarenderer(piani1);
+            attivarenderer(piani2);
+            attivarenderer(piani3);
 
+        }
+    }
+
+
+    private void nascondirenderer(GameObject piano)
+    {
+        MeshRenderer renderer = piano.GetComponent<MeshRenderer>();
+        if (renderer != null)
+        {
+            renderer.enabled = false;
+        }
+        foreach (Transform child in piano.transform)
+        {
+            nascondirenderer(child.gameObject);
+        }
+    }
+    private void attivarenderer(GameObject piano)
+    {
+        MeshRenderer renderer = piano.GetComponent<MeshRenderer>();
+        if (renderer != null)
+        {
+            renderer.enabled = true;
+        }
+        foreach (Transform child in piano.transform)
+        {
+            attivarenderer(child.gameObject);
         }
     }
 }
