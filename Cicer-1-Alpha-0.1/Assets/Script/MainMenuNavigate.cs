@@ -8,15 +8,12 @@ public class MainMenuNavigate : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject start;
-    public GameObject ricercaevento;
-    public GameObject ricercadestinazione;
+    public GameObject tipoRicerca;    
     public GameObject menuricercadestinazione;
     public GameObject menuricercaevento;
     public GameObject cambiaavatar;
     public GameObject tornaindietro;
-    public GameObject ricercaaula;
-    public GameObject ricercaristoro;
-    public GameObject ricercaufficio;
+    public GameObject tipoDestinazione;     
 
     public GameObject searchManagerEvento;
     public GameObject searchManagerDestinazione;
@@ -24,8 +21,7 @@ public class MainMenuNavigate : MonoBehaviour
 
     public void PressStart()
     {
-        ricercaevento.SetActive(true);
-        ricercadestinazione.SetActive(true);
+        tipoRicerca.SetActive(true);        
         start.SetActive(false);
         cambiaavatar.SetActive(false);
         tornaindietro.SetActive(true);
@@ -34,50 +30,38 @@ public class MainMenuNavigate : MonoBehaviour
 
     public void PressRicercaDestinazione()
     {
-        ricercaevento.SetActive(false);
-        ricercadestinazione.SetActive(false);
-        ricercaaula.SetActive(true);
-        ricercaristoro.SetActive(true);
-        ricercaufficio.SetActive(true);
+        tipoRicerca.SetActive(false);              
+        tipoDestinazione.SetActive(true);
 
     }
 
     public void PressRicercaAula()
-    {
-        ricercaaula.SetActive(false);
-        ricercaristoro.SetActive(false);
-        ricercaufficio.SetActive(false);
+    {      
+        tipoDestinazione.SetActive(false);
         menuricercadestinazione.SetActive(true);
         searchManagerDestinazione.GetComponent<DestinazioniListManager>().popolaListaDestinazioni("aula");
 
     }
 
     public void PressRicercaRistoro()
-    {
-        ricercaaula.SetActive(false);
-        ricercaristoro.SetActive(false);
-        ricercaufficio.SetActive(false);
+    {        
+        tipoDestinazione.SetActive(false);
         menuricercadestinazione.SetActive(true);
         searchManagerDestinazione.GetComponent<DestinazioniListManager>().popolaListaDestinazioni("ristoro");
 
     }
 
     public void PressRicercaUfficio()
-    {
-        ricercaaula.SetActive(false);
-        ricercaristoro.SetActive(false);
-        ricercaufficio.SetActive(false);
+    {        
+        tipoDestinazione.SetActive(false);
         menuricercadestinazione.SetActive(true);
         searchManagerDestinazione.GetComponent<DestinazioniListManager>().popolaListaDestinazioni("ufficio");
-
-
 
     }
 
     public void PressRicercaEvento()
     {
-        ricercaevento.SetActive(false);
-        ricercadestinazione.SetActive(false);
+        tipoRicerca.SetActive(false);        
         menuricercaevento.SetActive(true);
         searchManagerEvento.GetComponent<EventiListManager>().popolaListaEventi();
     }
