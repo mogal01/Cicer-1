@@ -10,7 +10,7 @@ function setAuleCard()  {
     let auleAttiveP = document.getElementById('auleAttiveP');
     let auleInManutenzioneP = document.getElementById('auleInManutenzioneP');
     let totaleAuleP = document.getElementById('totaleAuleP');
-    const apiUrl = 'http://192.168.94.109:8080/Destinazione/GetNumDest';
+    const apiUrl = 'http://192.168.216.109:8080/Destinazione/GetNumDest';
     const requestOptions = {
         method: 'GET',  
     };
@@ -35,7 +35,7 @@ function setEventiCard()  {
     let eventiMeseCorrenteP = document.getElementById('eventiMeseCorrenteP');
     let eventiGiornoCorrenteP = document.getElementById('eventiGiornoCorrenteP');
     let nEventiTotaleP = document.getElementById('nEventiTotaleP');
-    const apiUrl = 'http://192.168.94.109:8080/Evento/GetNumEventi';
+    const apiUrl = 'http://192.168.216.109:8080/Evento/GetNumEventi';
     const requestOptions = {
         method: 'GET',  
     };
@@ -57,10 +57,10 @@ function setEventiCard()  {
 }
 
 function setAdminCard()  {
-    let nAmministratoriP = document.getElementById('nAmministratoriP');
-    let nSubAdminP = document.getElementById('nSubAdminP');
-    let nAdminTotP = document.getElementById('nAdminTotP');
-    const apiUrl = 'http://192.168.94.109:8080/Utente/GetNumUtenti';
+    let nAmministratoriP = document.getElementById('nUtentiPerm');
+    let nSubAdminP = document.getElementById('nUtentiSenzaPerm');
+    let nAdminTotP = document.getElementById('nUtentiTot');
+    const apiUrl = 'http://192.168.216.109:8080/Utente/GetNumUtenti';
     const requestOptions = {
         method: 'GET',  
     };

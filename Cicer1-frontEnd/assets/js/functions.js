@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }, 2000); // 2000 millisecondi (2 secondi) di ritardo simulato, cambialo secondo le tue esigenze
 });
 
+
 function setup()  {
   setUserData();
 }
@@ -14,11 +15,27 @@ function sendLoginRequestServer()    {
     let email = document.getElementById('InputUtenteEmailTI').value;
     let password = document.getElementById('InputUserPasswordTI').value;
 
-    const apiUrlLog = 'http://192.168.94.109:8080/Login/' + email + '/' + password;
+    const apiUrlLog = 'http://192.168.216.109:8080/Login/' + email + '/' + password;
     fetch(apiUrlLog, {
     method: 'POST'    
     })
-    .then(response => response.json())
+    .then(response => {
+
+    if (response.status === 403) 
+    {
+      Swal.fire({
+        title: "Login",
+        text: "Ops! Sembra che le credenziali sono errate",
+        icon: "error"
+      });
+      
+      throw new Error('Campi errati. Status code: ' + response.status);
+    }
+
+
+
+    return response.json();
+  })
     .then(data => {
         if(data.token != null)  {
           sessionStorage.setItem('token', data.token);
@@ -49,7 +66,7 @@ function showModifyPasswordToggle() {
 
 function logOut() {
   let tokk = sessionStorage.getItem('token');
-  const apiUrlLogOut = 'http://192.168.94.109:8080/LogOut/' + tokk;
+  const apiUrlLogOut = 'http://192.168.216.109:8080/LogOut/' + tokk;
     fetch(apiUrlLogOut, {
     method: 'POST'    
     })
@@ -63,7 +80,7 @@ function logOut() {
 
 function setUserData()  {
   let tokk = sessionStorage.getItem('token');
-  const apiUrl = 'http://192.168.94.109:8080/Utente/GetProfilo/' + tokk;
+  const apiUrl = 'http://192.168.216.109:8080/Utente/GetProfilo/' + tokk;
   const requestOptions = {
     method: 'GET',  
   };

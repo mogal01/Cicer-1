@@ -19,10 +19,13 @@
 
 .loader {
   border: 8px solid #f3f3f3;
-  border-top: 8px solid #4534db;
+  border-top: 16px solid rgb(13, 56, 124);
+  border-right: 16px solid rgb(67, 83, 116);
+  border-bottom: 16px solid rgb(131, 128, 80);
+  border-left: 16px solid rgb(227, 196, 0);
   border-radius: 50%;
-  width: 6rem;
-  height: 6rem;
+  width: 7rem;
+  height: 7rem;
   display: flex;
   justify-content: center;
   align-items: center;

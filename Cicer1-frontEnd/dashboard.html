@@ -29,12 +29,12 @@
 </head>
 
 <body id="page-top">
-    <div id="loading-screen">
+    <div id="loading-screen" style="display: none;">
         <div class="loader">
             <p class="paragraph-loader">Loading...</p>
         </div>
     </div>
-    <div id="mainContent">
+    <div id="main-content" style="display: block;">
         <div id="wrapper">
             <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
                 <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#"><img src="assets/img/logo_edited.png" width="50" height="auto">
@@ -137,7 +137,7 @@
                                     <div class="shadow dropdown-list dropdown-menu dropdown-menu-end" aria-labelledby="alertsDropdown"></div>
                                 </li>
                                 <li class="nav-item dropdown no-arrow">
-                                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" id="spanEmailUser"></a>
+                                    <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" id="spanEmailUser">Profilo</a>
                                         <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="profile.html"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
                                             <div class="dropdown-divider"></div><a class="dropdown-item" onclick="logOut()"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                         </div>
@@ -164,15 +164,15 @@
                                             <div class="row">
                                                 <div class="col-12 col-sm-6 col-lg-4">
                                                     <h6>Accessibili</h6>
-                                                    <p id="auleAttiveP"></p>
+                                                    <p id="auleAttiveP">20</p>
                                                 </div>
                                                 <div class="col-6 col-lg-4">
                                                     <h6>Non accessibili</h6>
-                                                    <p id="auleInManutenzioneP"></p>
+                                                    <p id="auleInManutenzioneP">2</p>
                                                 </div>
                                                 <div class="col-6 col-lg-4">
                                                     <h6>Totale</h6>
-                                                    <p id="totaleAuleP"></p>
+                                                    <p id="totaleAuleP">22</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -189,11 +189,11 @@
                                             <div class="row">
                                                 <div class="col-12 col-sm-6 col-lg-4">
                                                     <h6>Mese corrente</h6>
-                                                    <p id="eventiMeseCorrenteP"></p>
+                                                    <p id="eventiMeseCorrenteP">19</p>
                                                 </div>
                                                 <div class="col-6 col-lg-4">
                                                     <h6>Giorno corrente</h6>
-                                                    <p id="eventiGiornoCorrenteP"></p>
+                                                    <p id="eventiGiornoCorrenteP">3</p>
                                                 </div>
                                                 <div class="col-6 col-lg-4">
                                                     <h6>Totale</h6>
@@ -211,15 +211,15 @@
                                             <div class="row">
                                                 <div class="col-12 col-sm-6 col-lg-4">
                                                     <h6>Amministratori</h6>
-                                                    <p id="nAmministratoriP"></p>
+                                                    <p id="nAmministratoriP">6</p>
                                                 </div>
                                                 <div class="col-6 col-lg-4">
                                                     <h6>Sub-amministratori</h6>
-                                                    <p id="nSubAdminP"></p>
+                                                    <p id="nSubAdminP">8</p>
                                                 </div>
                                                 <div class="col-6 col-lg-4">
                                                     <h6>Totale</h6>
-                                                    <p id="nAdminTotP"></p>
+                                                    <p id="nAdminTotP">14</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -237,9 +237,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="assets/js/theme.js"></script>
-    <script src="assets/js/functions.js"></script>
+    <script src="assets/js/common.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="assets/js/index.js"></script>
 </body>
 
 </html>
