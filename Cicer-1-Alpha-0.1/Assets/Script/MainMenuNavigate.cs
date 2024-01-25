@@ -18,6 +18,18 @@ public class MainMenuNavigate : MonoBehaviour
     public GameObject searchManagerEvento;
     public GameObject searchManagerDestinazione;
    
+    void Start()
+    {
+        if (PlayerPrefs.GetInt("ChangeForItinerario") == 1)
+        {
+            PlayerPrefs.SetInt("ChangeForItinerario", 0);
+            GameObject.Find("MenuControl").GetComponent<MainMenuNavigate>().PressRicercaDestinazione();
+         
+            start.SetActive(false);
+            cambiaavatar.SetActive(false);
+            tornaindietro.SetActive(true);
+        }
+    }
 
     public void PressStart()
     {

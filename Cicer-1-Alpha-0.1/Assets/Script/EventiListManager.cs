@@ -30,13 +30,13 @@ public class EventiListManager : MonoBehaviour
     public void popolaListaEventi()
     {  
         Debug.Log("ciao");
-        StartCoroutine(GetRequest("http://172.19.159.150:8081/Evento/GetList/"));        
+        StartCoroutine(GetRequest("http://192.168.216.109:8080/Evento/GetList/"));        
     }
 
     public void popolaListaSuDestinazione(int destinazione)
     {
         Debug.Log("TEST RIGA 38");
-        StartCoroutine(GetRequestForDestination("http://172.19.159.150:8081/Evento/GetEventiDestSpec/" + destinazione));
+        StartCoroutine(GetRequestForDestination("http://192.168.216.109:8080/Evento/GetEventiDestSpec/" + destinazione));
 
     }
 

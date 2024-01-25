@@ -9,6 +9,7 @@ public class ApriPaginaDestinazione : MonoBehaviour
 {
     public GameObject ricercaDestinazione;
     public GameObject paginaDestinazione;
+    public GameObject paginaEvento;
     // Start is called before the first frame update
     public void apriPaginaDestinazione()
     {
@@ -30,8 +31,36 @@ public class ApriPaginaDestinazione : MonoBehaviour
     public void iniziaNavigazione()
     {
         string nomeDestinazione=paginaDestinazione.transform.GetChild(1).GetComponent<TMP_Text>().text;
-        PlayerPrefs.SetString("destinazione", nomeDestinazione);
+        if (PlayerPrefs.GetInt("SecondDestination") == 1)
+        {
+            Debug.Log("ECCCOMI 35 APRIPAGINADESTINAZIONE");
+            PlayerPrefs.SetString("destinazione2", nomeDestinazione);
+            PlayerPrefs.SetInt("SecondDestination", 2);
+        }
+        else
+        {
+            PlayerPrefs.SetString("destinazione", nomeDestinazione);
+        }
         SceneManager.LoadScene("NavigationScene");
        
     }
+
+    public void iniziaNavigazioneDaEvento()
+    {
+        string nomeDestinazione = paginaEvento.transform.GetChild(4).GetComponent<TMP_Text>().text;
+        if (PlayerPrefs.GetInt("SecondDestination") == 1)
+        {
+            Debug.Log("ECCCOMI 35 APRIPAGINADESTINAZIONE");
+            PlayerPrefs.SetString("destinazione2", nomeDestinazione);
+            PlayerPrefs.SetInt("SecondDestination", 2);
+        }
+        else
+        {
+            PlayerPrefs.SetString("destinazione", nomeDestinazione);
+        }
+        SceneManager.LoadScene("NavigationScene");
+
+    }
+
+
 }

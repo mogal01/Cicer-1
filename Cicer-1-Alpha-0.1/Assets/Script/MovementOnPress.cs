@@ -14,8 +14,8 @@ public class MovementOnPress : MonoBehaviour
 
     private bool toNext = false;
 
-    
 
+    public GameObject GruppoCheckpoints;
     private Vector3 actualPosition;
     private int x;
     
@@ -62,8 +62,33 @@ public class MovementOnPress : MonoBehaviour
                 //Vector3 tempVector = obj.transform.position;
                 //tempVector.y = (float)-8.5;
                 //obj.transform.position = tempVector;
-                else if(x==pathPoints.Count - 1 && actualPosition == pathPoints[x].transform.position)
+                else if(actualPosition == pathPoints[x].transform.position && x == pathPoints.Count - 1) 
                 {
+                    if (PlayerPrefs.GetInt("SecondDestination") == 2)
+                    {
+                        PlayerPrefs.SetInt("SecondDestination", 0);
+                        string destinazioneNuova=PlayerPrefs.GetString("destinazione2");
+                        obj.transform.position = pathPoints[x].transform.position;
+                        Debug.Log("RIGA 71:" + destinazioneNuova);
+                        GruppoCheckpoints.GetComponent<pathFinder>().setDestination(GameObject.Find(destinazioneNuova));
+                        GameObject start = pathPoints[x];
+                        for(int i = pathPoints.Count-1; i > 0; i--)
+                        {
+                            pathPoints.Remove(pathPoints[i]);
+                        }
+                        pathPoints.Remove(pathPoints[0]);
+                        Debug.Log("x vale:" + x);
+                        x = 1;
+                        GruppoCheckpoints.GetComponent<pathFinder>().iterativeDeepeningA(start, GameObject.Find(destinazioneNuova));
+                        if(x+1 < pathPoints.Count)
+                         x++;
+                        toNext = false;
+                    }
+                    
+                }
+                if(x==pathPoints.Count - 1 && actualPosition == pathPoints[x].transform.position && PlayerPrefs.GetInt("SecondDestination") == 0)
+                {
+                
                     destinazionetrovata.SetActive(true);
                 }
 
@@ -71,10 +96,14 @@ public class MovementOnPress : MonoBehaviour
 
             }
             // Calcola la rotazione desiderata
-            Quaternion desiredRotation = Quaternion.LookRotation(pathPoints[x].transform.position - obj.transform.position);
+            if (pathPoints[x].transform.position - obj.transform.position != Vector3.zero)
+            {
+                Quaternion desiredRotation = Quaternion.LookRotation(pathPoints[x].transform.position - obj.transform.position);
 
-            // Interpola tra la rotazione corrente e quella desiderata nel tempo
-            obj.transform.rotation = Quaternion.Lerp(obj.transform.rotation, desiredRotation, Time.deltaTime * 2.0f);
+
+                // Interpola tra la rotazione corrente e quella desiderata nel tempo
+                obj.transform.rotation = Quaternion.Lerp(obj.transform.rotation, desiredRotation, Time.deltaTime * 2.0f);
+            }
         }
         
     }

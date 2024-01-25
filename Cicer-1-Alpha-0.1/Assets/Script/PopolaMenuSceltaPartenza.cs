@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PopolaMenuSceltaPartenza : MonoBehaviour
@@ -13,10 +14,15 @@ public class PopolaMenuSceltaPartenza : MonoBehaviour
     public GameObject SceltaPartenzaManager;
     public GameObject zoomIn;
     public GameObject zoomOut;
+    public GameObject pulsanteItinerario;
+    public GameObject prossimoCheckpoint;
+    
 
     void Start()
     {
         GenerateCheckpointButtons();
+       
+
     }
 
     void GenerateCheckpointButtons()
@@ -42,20 +48,39 @@ public class PopolaMenuSceltaPartenza : MonoBehaviour
    // Esempio di funzione chiamata quando un checkpoint viene selezionato
     void OnCheckpointSelected(GameObject checkpoint)
     {
+      
         Debug.Log("Checkpoint selezionato: " + checkpoint.name);
         //GruppoCheckpoints.GetComponent<pathFinder>().start = checkpoint;
         string destinazione=PlayerPrefs.GetString("destinazione");
+        /*if (PlayerPrefs.GetInt("SecondDestination") == 2)
+        {
+            destinazione= PlayerPrefs.GetString("destinazione2");
+            PlayerPrefs.SetInt("SecondDestination", 3);
+        }*/
         //GruppoCheckpoints.GetComponent<pathFinder>().destination=GameObject.Find(destinazione);
         avatar.transform.position = checkpoint.transform.position;
-        GameObject destinazioneVera = GameObject.Find("P11");
+        GameObject destinazioneVera = GameObject.Find(destinazione);
 
         GruppoCheckpoints.GetComponent<pathFinder>().setDestination(destinazioneVera);
         GruppoCheckpoints.GetComponent<pathFinder>().iterativeDeepeningA(checkpoint, destinazioneVera);
+        pulsanteItinerario.SetActive(false);
         menuScegliPartenza.SetActive(false);
         zoomIn.SetActive(true);
         zoomOut.SetActive(true);
 
+        prossimoCheckpoint.SetActive(true);
         //MM.GetComponent<MovementOnPress>().parti();
+
+    }
+
+    public void scegliItinerario()
+    {
+        PlayerPrefs.SetInt("SecondDestination", 1);
+        PlayerPrefs.SetInt("ChangeForItinerario", 1);
+        SceneManager.LoadScene("MainMenu");
+        GameObject.Find("MenuScegliPartenza").SetActive(false);
+       
+      
 
     }
 

@@ -34,7 +34,7 @@ public class DestinazioniListManager : MonoBehaviour
     public void popolaListaDestinazioni(string tipo)
     {
         Debug.Log("ciao");
-        StartCoroutine(GetRequest("http://172.19.159.150:8081/Destinazione/GetList/" + tipo + "/"));
+        StartCoroutine(GetRequest("http://192.168.216.109:8080/Destinazione/GetList/" + tipo + "/"));
 
     }
 
@@ -85,7 +85,6 @@ public class DestinazioniListManager : MonoBehaviour
     {
 
         listaEventiDiDestinazione.GetComponent<EventiListManager>().popolaListaSuDestinazione(id);
-        Debug.Log("Riga 76: " + nome);
         MenuRicercaDestinazione.SetActive(false);
         PaginaDestinazione.SetActive(true);
         PaginaDestinazione.transform.GetChild(1).GetComponent<TMP_Text>().SetText(nome);
@@ -106,5 +105,16 @@ public class DestinazioniListManager : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public void test()
+    {
+        listaEventiDiDestinazione.GetComponent<EventiListManager>().popolaListaSuDestinazione(1);
+        MenuRicercaDestinazione.SetActive(false);
+        PaginaDestinazione.SetActive(true);
+        PaginaDestinazione.transform.GetChild(1).GetComponent<TMP_Text>().SetText("test");
+        PaginaDestinazione.transform.GetChild(2).GetChild(3).GetComponent<TMP_Text>().SetText("test");
+        PaginaDestinazione.transform.GetChild(2).GetChild(2).GetComponent<TMP_Text>().SetText("test");
+        PaginaDestinazione.transform.GetChild(2).GetChild(1).GetComponent<TMP_Text>().SetText("test");
     }
 }
