@@ -1,4 +1,0 @@
-repository "Cicer-1 Alpha 0.1@Hird0@cloud"
-  path "/"
-    br "/main"
-    co "/main"
