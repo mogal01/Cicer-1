@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Cicer-1 Alpha 0.1.sln"
+    "dotnet.defaultSolution": "Cicer-1-Alpha-0.1.sln"
 }

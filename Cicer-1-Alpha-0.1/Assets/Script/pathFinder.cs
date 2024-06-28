@@ -17,8 +17,6 @@ public class pathFinder : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {        
-       
-       
         //iterativeDeepeningA(start, destination);
         GameObject.Find("MovementManager").GetComponent<MovementOnPress>().pathPoints = path;
         //GameObject.Find("SceltaPartenzaManager").GetComponent<PopolaMenuSceltaPartenza>().parti();
@@ -119,11 +117,22 @@ public class pathFinder : MonoBehaviour
                              point.transform.position.z - destination.transform.position.z);
 
                              
-        float distance =(float) Math.Sqrt(
+        float ipotenusa =(float) Math.Sqrt(
         Math.Pow(difference.x, 2f) +
         Math.Pow(difference.y, 2f) +
         Math.Pow(difference.z, 2f));
 
-        return distance;
+       
+       
+        float primoCateto = (float) point.transform.position.y - destination.transform.position.y; // considerare il valore assoluto
+        float secondoCateto = (float) Math.Sqrt(Math.Pow(ipotenusa, 2f) - Math.Pow(primoCateto, 2f));
+              
+        Debug.Log("ipotenusa" + ipotenusa);
+        Debug.Log("primoCateto" + primoCateto);
+        Debug.Log("secondoCateto" + secondoCateto);
+
+        Debug.Log("Euristica" + primoCateto + secondoCateto);
+       
+        return primoCateto + secondoCateto;
     }
 }
