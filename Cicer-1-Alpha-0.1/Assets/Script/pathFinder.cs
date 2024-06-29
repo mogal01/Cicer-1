@@ -16,16 +16,18 @@ public class pathFinder : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {        
-        //iterativeDeepeningA(start, destination);
+    {                
         GameObject.Find("MovementManager").GetComponent<MovementOnPress>().pathPoints = path;
-        //GameObject.Find("SceltaPartenzaManager").GetComponent<PopolaMenuSceltaPartenza>().parti();
     }
 
-    /*public void setStart(GameObject s)
+    void ConfigureLineRenderer(LineRenderer lineRenderer)
     {
-        start = s;
-    }*/
+        lineRenderer.startWidth = 0.05f;
+        lineRenderer.endWidth = 0.05f;
+        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        lineRenderer.startColor = Color.blue;
+        lineRenderer.endColor = Color.blue;
+    }
     
     public void setDestination(GameObject d)
     {
@@ -54,6 +56,19 @@ public class pathFinder : MonoBehaviour
              
         }
         GameObject.Find("MovementManager").GetComponent<MovementOnPress>().pathPoints = path;
+        
+        for (int i = 0; i < path.Count - 1; i++)
+        {
+            LineRenderer lineRenderer = path[i].AddComponent<LineRenderer>();
+            ConfigureLineRenderer(lineRenderer);
+
+            // Imposta i punti della linea
+            Vector3[] positions = new Vector3[2];
+            positions[0] = path[i].transform.position;
+            positions[1] = path[i + 1].transform.position;
+            lineRenderer.SetPositions(positions);
+        }
+    
         return;
     }
 
