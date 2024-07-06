@@ -32,12 +32,11 @@ public class MainMenuNavigate : MonoBehaviour
     }
 
     public void PressStart()
-    {
+    {      
         tipoRicerca.SetActive(true);        
         start.SetActive(false);
         cambiaavatar.SetActive(false);
         tornaindietro.SetActive(true);
-
     }
 
     public void PressRicercaDestinazione()

@@ -8,23 +8,7 @@ public class AvatarManager : MonoBehaviour
     public GameObject selectedAvatar;
     public GameObject[] avatars;
     private int currentIndex = 0;
-
-
-
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-
+   
     public void PressChangeAvatar()
     {
         // Disattiva l'avatar corrente
