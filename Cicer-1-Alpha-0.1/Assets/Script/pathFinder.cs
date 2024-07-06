@@ -33,28 +33,29 @@ public class pathFinder : MonoBehaviour
     {
         destination = d;
     }
-
      
-    public void iterativeDeepeningA(GameObject point, GameObject Adestination)
+    public void iterativeDeepeningA(GameObject startingPoint, GameObject Adestination)
     {
-        path.Add(point);
-        float bound = euristica(point);
+        path.Add(startingPoint);
+        float bound = euristica(startingPoint);//inizializzazione valore di taglio
 
         while (true)
         {         
             float t = searchPath(path, 0, bound);
-            if (t==-1) {
-           
+            
+            if (t==-1) {           
                 break;
             }
+
             if(t==float.MaxValue)
-            {
-             
+            {             
                 break;
             } 
-            bound = t;
-             
+
+            bound = t;             
         }
+
+        //--------------------------------------------------
         GameObject.Find("MovementManager").GetComponent<MovementOnPress>().pathPoints = path;
         
         for (int i = 0; i < path.Count - 1; i++)
@@ -73,33 +74,33 @@ public class pathFinder : MonoBehaviour
     }
 
     float searchPath(List<GameObject> apath, float g, float bound)
-    {        
-       
-        GameObject node = apath[path.Count - 1];
+    {               
+        GameObject currentNode = apath[path.Count - 1];
 
-        float f = g + euristica(node);
-       // Debug.Log(euristica(node));
-    
-        if (f > bound) return f;
+        float f = g + euristica(currentNode); //g + euristica(node);
+       
+        if (f > bound) return f; // restituisce un bound superiore se f > bound
       
-        if(node==destination) return -1;
+        if(currentNode==destination) return -1; // uno dei possibili percorsi trovato
         
         float min = float.MaxValue;
       
-        foreach (GameObject vicino in node.GetComponent<CheckpointData>().nodiConnessi)
+        foreach (GameObject vicino in currentNode.GetComponent<CheckpointData>().nodiConnessi)
         {
             if(!apath.Contains(vicino))
             {
                 apath.Add(vicino);
                 
-                float t = searchPath(apath, g + getDistance(node, vicino), bound);
+                float t = searchPath(apath, g + getDistance(currentNode, vicino), bound);
                
-                foreach (GameObject nodo in apath)
+                /*foreach (GameObject nodo in apath)
                 {
                     Debug.Log(nodo.GetComponent<CheckpointData>().nome);
-                }
-                count++;
-                if (t == -1) return t;
+                }*/
+
+                //count++;
+
+                if (t == -1) return t; // ritarndando t si ottiene l'arresto della funzione searchPath e il ritorno del percorso trovato
                 if (t < min) min = t;
                 apath.RemoveAt(apath.Count - 1);
             }
@@ -135,9 +136,7 @@ public class pathFinder : MonoBehaviour
         float ipotenusa =(float) Math.Sqrt(
         Math.Pow(difference.x, 2f) +
         Math.Pow(difference.y, 2f) +
-        Math.Pow(difference.z, 2f));
-
-       
+        Math.Pow(difference.z, 2f));    
        
         float primoCateto = (float) point.transform.position.y - destination.transform.position.y; // considerare il valore assoluto
         float secondoCateto = (float) Math.Sqrt(Math.Pow(ipotenusa, 2f) - Math.Pow(primoCateto, 2f));
@@ -146,8 +145,16 @@ public class pathFinder : MonoBehaviour
         Debug.Log("primoCateto" + primoCateto);
         Debug.Log("secondoCateto" + secondoCateto);
 
-        Debug.Log("Euristica" + primoCateto + secondoCateto);
-       
+        Debug.Log("Euristica 1" + primoCateto + secondoCateto);
+
+        //aaaaa
+        primoCateto = (float) point.transform.position.x - destination.transform.position.x;
+        secondoCateto = (float) point.transform.position.y - destination.transform.position.y;
+         
+        Debug.Log("Euristica 2" + (primoCateto + secondoCateto));
+
         return primoCateto + secondoCateto;
     }
 }
+
+
