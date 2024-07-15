@@ -92,16 +92,12 @@ public class pathFinder : MonoBehaviour
                 apath.Add(vicino);
                 
                 float t = searchPath(apath, g + getDistance(currentNode, vicino), bound);
-               
-                /*foreach (GameObject nodo in apath)
-                {
-                    Debug.Log(nodo.GetComponent<CheckpointData>().nome);
-                }*/
 
-                //count++;
+                // restituendo t si ottiene l'arresto della funzione searchPath e il ritorno del percorso trovato
+                if (t == -1) return t; 
 
-                if (t == -1) return t; // ritarndando t si ottiene l'arresto della funzione searchPath e il ritorno del percorso trovato
                 if (t < min) min = t;
+                
                 apath.RemoveAt(apath.Count - 1);
             }
             
@@ -126,34 +122,13 @@ public class pathFinder : MonoBehaviour
     }
 
     float euristica(GameObject point){
+        Debug.Log("TEST EURISTICA");
+        Debug.Log("point" + point.transform.position.x);
+        Debug.Log("Dest" + destination.transform.position.x);
 
-        Vector3 difference = new Vector3(
-                             point.transform.position.x - destination.transform.position.x,
-                             point.transform.position.y - destination.transform.position.y,
-                             point.transform.position.z - destination.transform.position.z);
-
-                             
-        float ipotenusa =(float) Math.Sqrt(
-        Math.Pow(difference.x, 2f) +
-        Math.Pow(difference.y, 2f) +
-        Math.Pow(difference.z, 2f));    
-       
-        float primoCateto = (float) point.transform.position.y - destination.transform.position.y; // considerare il valore assoluto
-        float secondoCateto = (float) Math.Sqrt(Math.Pow(ipotenusa, 2f) - Math.Pow(primoCateto, 2f));
-              
-        Debug.Log("ipotenusa" + ipotenusa);
-        Debug.Log("primoCateto" + primoCateto);
-        Debug.Log("secondoCateto" + secondoCateto);
-
-        Debug.Log("Euristica 1" + primoCateto + secondoCateto);
-
-        //aaaaa
-        primoCateto = (float) point.transform.position.x - destination.transform.position.x;
-        secondoCateto = (float) point.transform.position.y - destination.transform.position.y;
-         
-        Debug.Log("Euristica 2" + (primoCateto + secondoCateto));
-
-        return primoCateto + secondoCateto;
+        float primoCateto = (float) point.transform.position.x - destination.transform.position.x;
+        
+        return Math.Abs(primoCateto) + Math.Abs(point.transform.position.y) + Math.Abs(destination.transform.position.y);
     }
 }
 

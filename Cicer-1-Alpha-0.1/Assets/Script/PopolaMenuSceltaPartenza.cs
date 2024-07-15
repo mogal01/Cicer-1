@@ -35,11 +35,7 @@ public class PopolaMenuSceltaPartenza : MonoBehaviour
             GameObject buttonObj = Instantiate(buttonPrefab, content);
             buttonObj.GetComponentInChildren<Text>().text = checkpoint.GetComponent<CheckpointData>().nome; // Imposta il testo del bottone
             buttonObj.GetComponent<Button>().onClick.AddListener(() => OnCheckpointSelected(checkpoint));
-            Debug.Log("Eccomi 30");
-
-
-            // Aggiungi qui un listener per l'evento onClick del bottone, se necessario
-            // Ad esempio: buttonObj.GetComponent<Button>().onClick.AddListener(() => OnCheckpointSelected(checkpoint));
+         
         }
         SceltaPartenzaManager.GetComponent<SearchManager>().popola();
     }
