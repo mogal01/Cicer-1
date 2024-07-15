@@ -123,12 +123,16 @@ public class pathFinder : MonoBehaviour
 
     float euristica(GameObject point){
         Debug.Log("TEST EURISTICA");
-        Debug.Log("point" + point.transform.position.x);
-        Debug.Log("Dest" + destination.transform.position.x);
-
-        float primoCateto = (float) point.transform.position.x - destination.transform.position.x;
         
-        return Math.Abs(primoCateto) + Math.Abs(point.transform.position.y) + Math.Abs(destination.transform.position.y);
+        float distanzaEuclidea = (float) Math.Sqrt(
+            Math.Pow(point.transform.position.x - destination.transform.position.x, 2f) + 
+            Math.Pow(point.transform.position.z - destination.transform.position.z, 2f)
+            );
+
+        Debug.Log("distanza euclidea:" + distanzaEuclidea);  
+        Debug.Log("differenza tra le x:" + (float)(point.transform.position.x - destination.transform.position.x));     
+        
+        return Math.Abs(distanzaEuclidea) + Math.Abs(point.transform.position.y) + Math.Abs(destination.transform.position.y);
     }
 }
 
